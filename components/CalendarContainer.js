@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Dimensions } from "react-native";
 
 const screenWidth = Dimensions.get("window").width;
 const days = ["Su", "M", "Tu", "W", "Th", "F", "Sa"];
 
-function CalendarContainer({ handleGoToCalendar, calendarModalVisible }) {
-  const [selectedDay, setSelectedDay] = useState("");
-
-  useEffect(() => {
-    if (!calendarModalVisible) {
-      setSelectedDay("");
-    }
-  }, [calendarModalVisible]);
-
+function CalendarContainer({ handleGoToCalendar, selectedDay }) {
   const today = new Date();
   const currentDay = today.getDay();
   const prevTwoDays = [days[(currentDay - 2 + 7) % 7], days[(currentDay - 1 + 7) % 7]];
@@ -37,10 +29,7 @@ function CalendarContainer({ handleGoToCalendar, calendarModalVisible }) {
               index === 2 && styles.today,
               day === selectedDay && styles.selectedDay,
             ]}
-            onPress={() => {
-              handleGoToCalendar(day);
-              setSelectedDay(day);
-            }}>
+            onPress={() => handleGoToCalendar(day)}>
             <Text style={styles.dayText}>{day}</Text>
           </TouchableOpacity>
         ))}

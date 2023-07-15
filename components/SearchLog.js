@@ -23,7 +23,7 @@ const screenWidth = Dimensions.get("window").width;
 const SearchLog = (props) => {
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
-  const [state, setState] = useContext(AuthContext)
+  const [state, setState] = useContext(AuthContext);
 
   const data = {
     labels: ["Protien"], // optional
@@ -76,8 +76,6 @@ const SearchLog = (props) => {
     useShadowColorFromDataset: false, // optional,
   };
 
-
-
   const Modalpop = (props) => {
     const [showModal, setShowModal] = React.useState(props.visible);
 
@@ -96,37 +94,33 @@ const SearchLog = (props) => {
     });
   }, []);
 
-  const handleLog = async () =>{
-
+  const handleLog = async () => {
     const foodObject = {
       foodName: props.foodObject.name,
       protein: props.protein,
-      carbs: props.carbs, 
+      carbs: props.carbs,
       fats: props.fat,
       servingAmount: props.serving,
-      calories: props.calories
-    }
+      calories: props.calories,
+    };
 
-    try{
-      const resp = await axios.post('http://localhost:8000/api/addFood', {foodObject, id: state.user._id})
-      if(resp.data.error){
-        alert(resp.data.error)
-      }else{
-        setState(resp.data)
-        await AsyncStorage.setItem('auth-rn', JSON.stringify(resp.data))
-        setVisible(false)
-        navigation.navigate("Nutrition")
-
-
+    try {
+      const resp = await axios.post("http://localhost:8000/api/addFood", {
+        foodObject,
+        id: state.user._id,
+      });
+      if (resp.data.error) {
+        alert(resp.data.error);
+      } else {
+        setState(resp.data);
+        await AsyncStorage.setItem("auth-rn", JSON.stringify(resp.data));
+        setVisible(false);
+        navigation.navigate("Nutrition");
       }
-    }catch (error) {
+    } catch (error) {
       console.error("An error occurred:", error.message);
     }
-
-
-
-  }
-  
+  };
 
   return (
     <View style={styles.container}>

@@ -1,5 +1,3 @@
-// This component displays a modal that shows the categories of exercises (Chest, Back, Legs, Arms...).
-// When a user clicks on a category, the app navigates to the CategoryModal.
 import React from "react";
 import {
   View,
@@ -12,7 +10,6 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
-// Different categories of exercises
 const categories = [
   "Chest",
   "Back",
@@ -24,26 +21,19 @@ const categories = [
   "Other",
 ];
 
-function AddExerciseModal({ visible, navigate }) {
-  // Function to handle the opening of Category Modal
-  const handleOpenCategoryModal = (category) => {
-    // lower case because of the API link call
-    navigate("exerciseModal", "categoryModal", null, category.toLowerCase());
+function ExerciseCategoryModal({ visible, onClose, onOpenCategoryModal }) {
+  const handleCategoryClick = (category) => {
+    onOpenCategoryModal(category);
+    onClose();
   };
 
   return (
-    <Modal
-      animationType="none"
-      transparent={true}
-      visible={visible}
-      onRequestClose={() => navigate("exerciseModal", "addWorkout")}>
+    <Modal animationType="none" transparent={true} visible={visible}>
       <SafeAreaView style={styles.modalSafeArea}>
         <View style={styles.exerciseModal}>
           <ScrollView>
             <View style={styles.exerciseModalHeader}>
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigate("exerciseModal", "addWorkout")}>
+              <TouchableOpacity style={styles.backButton} onPress={onClose}>
                 <Feather name="x" size={24} color="white" />
               </TouchableOpacity>
             </View>
@@ -52,7 +42,7 @@ function AddExerciseModal({ visible, navigate }) {
                 <TouchableOpacity
                   key={index}
                   style={styles.boxContainer}
-                  onPress={() => handleOpenCategoryModal(category)}>
+                  onPress={() => handleCategoryClick(category)}>
                   <Text style={styles.boxText}>{category}</Text>
                 </TouchableOpacity>
               ))}
@@ -112,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddExerciseModal;
+export default ExerciseCategoryModal;

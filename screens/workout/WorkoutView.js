@@ -4,10 +4,9 @@ import { Feather } from "@expo/vector-icons";
 import ExerciseCard from "../../components/ExerciseCard";
 import { createUUID } from "../../utils/generateUUID";
 
-// boxName is passed from workoutmanager that is passed from workout to display the workoutName
-// navigate is passed from workoutmanager to navigate
-function WorkoutView({ boxName, navigate }) {
-  // exercises should also be passed in from workoutmanager to show the exercises that are saved
+function WorkoutView({ route, navigation }) {
+  const { workoutName } = route.params;
+
   const [exercises, setExercises] = useState([
     {
       id: createUUID(),
@@ -23,37 +22,17 @@ function WorkoutView({ boxName, navigate }) {
       sets: [
         { id: createUUID(), name: "Set 1" },
         { id: createUUID(), name: "Set 2" },
-        { id: createUUID(), name: "Set 3" },
       ],
     },
   ]);
 
-  // close the modal
+  const handleStartWorkout = () => {};
+
   const handleGoBack = () => {
-    navigate("workoutView", "workout");
+    navigation.goBack();
   };
 
-  // if edit button no need for this
-  const handleAddExercise = () => {
-    navigate("workoutView", "exerciseModal");
-  };
-
-  // still need to implement this
-  const handleStartWorkout = () => {
-    // Start workout functionality here
-  };
-
-  //  if edit button no need for this
-  const handleDeleteSet = (exerciseId, setId) => {
-    setExercises(
-      exercises.map((exercise) => {
-        if (exercise.id === exerciseId) {
-          return { ...exercise, sets: exercise.sets.filter((set) => set.id !== setId) };
-        }
-        return exercise;
-      })
-    );
-  };
+  const handleAddExercise = () => {};
 
   const handleAddSet = (exerciseId) => {
     setExercises(
@@ -67,13 +46,24 @@ function WorkoutView({ boxName, navigate }) {
     );
   };
 
+  const handleDeleteSet = (exerciseId, setId) => {
+    setExercises(
+      exercises.map((exercise) => {
+        if (exercise.id === exerciseId) {
+          return { ...exercise, sets: exercise.sets.filter((set) => set.id !== setId) };
+        }
+        return exercise;
+      })
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
           <Feather name="arrow-left" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.title}>Your {boxName} Routine</Text>
+        <Text style={styles.title}>Your {workoutName} Routine</Text>
         <TouchableOpacity style={styles.exportButton}>
           <Feather name="download" size={24} color="black" />
         </TouchableOpacity>

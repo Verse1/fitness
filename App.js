@@ -29,6 +29,9 @@ import WorkoutManager from "./screens/workout/WorkoutManager";
 
 // New Changes
 import AddWorkout from "./screens/workout/AddWorkout";
+import Workout from "./screens/workout/Workout";
+import WorkoutView from "./screens/workout/WorkoutView";
+import WorkoutSplit from "./screens/workout/WorkoutSplit";
 
 const withNavbar = (Component) => {
   return (props) => (
@@ -46,7 +49,6 @@ export default function App() {
   const isSignedIn = true;
 
   return (
-
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <AuthProvider>
@@ -77,6 +79,9 @@ export default function App() {
 
                 {/* New CHanges */}
                 <Stack.Screen name="AddWorkout" component={AddWorkout} />
+                <Stack.Screen name="Workout" component={withNavbar(Workout)} />
+                <Stack.Screen name="WorkoutView" component={WorkoutView} />
+                <Stack.Screen name="WorkoutSplit" component={WorkoutSplit} />
               </>
             ) : (
               // User isn't signed in

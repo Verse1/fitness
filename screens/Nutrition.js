@@ -93,17 +93,15 @@ const chartConfigFat = {
 
 const Nutrition = () => {
   const [state, setState] = useContext(AuthContext);
-  const [foodArray, setFoodArray] = useState([])
+  const [foodArray, setFoodArray] = useState([]);
 
   const navigation = useNavigation();
 
-  console.log(foodArray)
-
+  console.log(foodArray);
 
   useEffect(() => {
-
     if (state) {
-      setFoodArray(state.user.dailyFood)
+      setFoodArray(state.user.dailyFood);
 
       // console.log(weightArray)
     }
@@ -235,9 +233,18 @@ const Nutrition = () => {
           <Text style={{ fontSize: 20, fontWeight: "700", paddingLeft: 5 }}>
             Logged Food
           </Text>
-          {foodArray && foodArray.length > 0 &&  foodArray.map((item, index) => (
-            <FoodLogged  foodName={item.foodName} calories={item.calories} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} />
-          ))}
+          {foodArray &&
+            foodArray.length > 0 &&
+            foodArray.map((item, index) => (
+              <FoodLogged
+                foodName={item.foodName}
+                calories={item.calories}
+                serving={item.servingAmount}
+                protein={item.protein}
+                carbs={item.carbs}
+                fats={item.fats}
+              />
+            ))}
         </View>
 
         <View style={{ paddingTop: 10, paddingLeft: 10 }}>

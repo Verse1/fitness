@@ -9,7 +9,6 @@ import {
 } from "react-native";
 
 function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
-  // Mapping days to full names
   const dayMap = {
     Su: "Sunday",
     M: "Monday",
@@ -20,9 +19,7 @@ function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
     Sa: "Saturday",
   };
 
-  // Full name of selected day
   const selectedDayFull = dayMap[selectedDay];
-  // Selected workout from the workout split
   const selectedWorkout =
     workoutSplit && selectedDayFull && workoutSplit[selectedDayFull];
 
@@ -39,7 +36,6 @@ function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
               <Text style={styles.textStyle}>X</Text>
             </TouchableOpacity>
             <Text style={styles.dayText}>{selectedDayFull}</Text>
-            <Text></Text>
           </View>
           <Text style={styles.workoutText}>{selectedWorkout || "Rest"}</Text>
           <TouchableOpacity style={styles.workoutButton}>

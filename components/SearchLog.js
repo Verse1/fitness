@@ -24,9 +24,6 @@ const SearchLog = (props) => {
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
   const [state, setState] = useContext(AuthContext);
- 
-
-
 
 
   const data = {
@@ -80,6 +77,8 @@ const SearchLog = (props) => {
     useShadowColorFromDataset: false, // optional,
   };
 
+
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -101,6 +100,7 @@ const SearchLog = (props) => {
         "http://localhost:8000/api/addFood",
         { foodObject, id: state.user._id }
       );
+
       if (resp.data.error) {
         alert(resp.data.error);
       } else {
@@ -114,6 +114,7 @@ const SearchLog = (props) => {
     }
   };
 
+
   const handleOverlayPress = () => {
     setVisible(false);
   };
@@ -122,6 +123,7 @@ const SearchLog = (props) => {
   function capitalizeFirstChar(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
+
 
   return (
     <View style={styles.container}>

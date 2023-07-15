@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  Keyboard,
-} from "react-native";
+import { Text, TextInput, TouchableOpacity, View, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const days = [
   "Sunday",
@@ -19,10 +12,8 @@ const days = [
   "Saturday",
 ];
 
-// visible is passed by workoutmanager to show when its visible and when its not
-// onModalClose is exported to workoutmanager to close the modal
-// onSplitUpdate is passed to workoutmanager to update the split
-const WorkoutSplitModal = ({ visible, onModalClose, onSplitUpdate }) => {
+function WorkoutSplit() {
+  const navigation = useNavigation();
   const [splits, setSplits] = useState({
     Sunday: "",
     Monday: "",
@@ -34,20 +25,12 @@ const WorkoutSplitModal = ({ visible, onModalClose, onSplitUpdate }) => {
   });
 
   const handleSplitUpdate = () => {
-    onSplitUpdate(splits);
-    onModalClose();
+    navigation.goBack();
   };
 
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={visible}
-      onRequestClose={onModalClose}>
-      <TouchableOpacity
-        style={styles.container}
-        activeOpacity={1}
-        onPress={Keyboard.dismiss}>
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.container} activeOpacity={1}>
         <View style={styles.modalView}>
           {days.map((day) => (
             <View key={day} style={styles.dayContainer}>
@@ -65,9 +48,9 @@ const WorkoutSplitModal = ({ visible, onModalClose, onSplitUpdate }) => {
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
-    </Modal>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -112,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WorkoutSplitModal;
+export default WorkoutSplit;

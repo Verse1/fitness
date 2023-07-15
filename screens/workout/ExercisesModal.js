@@ -11,7 +11,6 @@ import {
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
 
-// Mapping the hard-coded categories to the API categories
 const categoryApiMapping = {
   legs: ["upper%20legs", "lower%20legs"],
   arms: ["upper%20arms", "lower%20arms"],
@@ -19,11 +18,9 @@ const categoryApiMapping = {
   other: ["neck"],
 };
 
-function CategoryModal({ visible, navigate, selectedCategory, onAddExercise }) {
-  // State for the exercises fetched from the API
+function ExercisesModal({ visible, onClose, selectedCategory, onAddExercise }) {
   const [data, setData] = useState([]);
 
-  // Fetching exercises from the API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -43,7 +40,6 @@ function CategoryModal({ visible, navigate, selectedCategory, onAddExercise }) {
           allData = [...allData, ...response.data];
         }
 
-        // Update the state with the fetched data
         setData(allData);
       } catch (error) {
         console.error(error);
@@ -53,13 +49,9 @@ function CategoryModal({ visible, navigate, selectedCategory, onAddExercise }) {
     fetchData();
   }, [selectedCategory]);
 
-  const handleCloseModal = () => {
-    navigate("categoryModal", "exerciseModal");
-  };
-
   const handleExerciseSelect = (item) => {
     onAddExercise(item);
-    navigate("categoryModal", "addWorkout");
+    onClose();
   };
 
   return (
@@ -67,11 +59,11 @@ function CategoryModal({ visible, navigate, selectedCategory, onAddExercise }) {
       animationType="none"
       transparent={true}
       visible={visible}
-      onRequestClose={handleCloseModal}>
+      onRequestClose={onClose}>
       <SafeAreaView style={styles.modalSafeArea}>
         <View style={styles.exerciseModal}>
           <View style={styles.exerciseModalHeader}>
-            <TouchableOpacity style={styles.backButton} onPress={handleCloseModal}>
+            <TouchableOpacity style={styles.backButton} onPress={onClose}>
               <Feather name="x" size={24} color="white" />
             </TouchableOpacity>
           </View>
@@ -121,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategoryModal;
+export default ExercisesModal;

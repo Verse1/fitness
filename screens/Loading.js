@@ -8,8 +8,8 @@ const Loading = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.navigate("GeneratedWorkout");
-    }, 2000);
-    return () => clearTimeout(timer); // this will clear the timeout if the component unmounts before 3 seconds.
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [navigation]);
 
   return (

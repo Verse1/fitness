@@ -51,9 +51,10 @@ const userSchema = new Schema({
       date: {
         type: String,
         required: true,
-      }
-    
-    }],
+      },
+    },
+  ],
+
 
     dailyFood: [{
         servingAmount: {
@@ -118,5 +119,6 @@ const userSchema = new Schema({
 
 
   
+
 
 export default mongoose.model("User", userSchema);

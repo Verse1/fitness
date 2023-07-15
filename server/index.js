@@ -24,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan("dev"));
 
+
 // reset every 24 hours
 cron.schedule("43 23 * * *", async () => {
     try {
@@ -70,6 +71,7 @@ cron.schedule("43 23 * * *", async () => {
       console.error("An error occurred during the cron job:", error);
     }
   });
+
 
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Origin", "*");

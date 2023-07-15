@@ -10,39 +10,43 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import CalendarModal from "./CalendarModal";
 import Navbar from "../../components/Navbar";
 import Boxes from "../../components/Box";
-import LogButton from "../../components/LogButton"; //Added thus
-import Calendar from "../../components/CalendarContainer"; //added this
+import LogButton from "../../components/LogButton";
+import Calendar from "../../components/CalendarContainer";
 
-// newBoxes is imported from workoutmanager to render number of boxes
-// this page navigates to 3 modals, calendarModal, workoutSplitModal, and workoutView, and to page Add Workout and GeneratedWorkout
-function Workout({ newBoxes, navigate, deleteBox, calendarModalVisible }) {
+function Workout({ newBoxes, deleteBox }) {
   const navigation = useNavigation();
   const boxes = useMemo(() => newBoxes, [newBoxes]);
+
+  const [calendarModalVisible, setCalendarModalVisible] = useState(false);
+  const [selectedDay, setSelectedDay] = useState("");
 
   const handleGoToGeneratedWorkout = () => {
     navigation.navigate("Loading");
   };
 
-  // WorkoutView is Modal should be handled by WorkoutManager
   const handleGoToWorkoutView = (workoutName) => {
-    navigate("workout", "workoutView", null, null, workoutName);
+    navigation.navigate("WorkoutView", { workoutName });
   };
 
-  // Calendar is a Modal should be handled by WorkoutManager
-  const handleGoToCalendar = () => {
-    navigate("workout", "calendarModal");
+  const handleGoToCalendar = (day) => {
+    setSelectedDay(day);
+    setCalendarModalVisible(true);
   };
 
-  // WorkoutSplit is Modal should be handled by WorkoutManager
+  const closeCalendarModal = () => {
+    setCalendarModalVisible(false);
+    setSelectedDay("");
+  };
+
   const handleGoToWorkoutSplit = () => {
-    navigate("workout", "workoutSplitModal");
+    navigation.navigate("WorkoutSplit");
   };
 
-  //brought this back, edited the log component so that it accepts a onPress prop adn then passed this down
   const handleGoToAddWorkout = () => {
-    navigate("workout", "addWorkout");
+    navigation.navigate("AddWorkout");
   };
 
   const onDeleteHandler = (index) => {
@@ -62,10 +66,7 @@ function Workout({ newBoxes, navigate, deleteBox, calendarModalVisible }) {
               <Feather name="edit" size={24} color="black" />
             </TouchableOpacity>
           </View>
-          <Calendar
-            handleGoToCalendar={handleGoToCalendar}
-            calendarModalVisible={calendarModalVisible}
-          />
+          <Calendar handleGoToCalendar={handleGoToCalendar} selectedDay={selectedDay} />
           <View style={styles.listContainer}>
             {boxes.length === 0 && (
               <Text style={styles.noWorkoutsText}>
@@ -93,6 +94,11 @@ function Workout({ newBoxes, navigate, deleteBox, calendarModalVisible }) {
       </ScrollView>
       <LogButton onPress={handleGoToAddWorkout} />
       <Navbar />
+      <CalendarModal
+        visible={calendarModalVisible}
+        onModalClose={closeCalendarModal}
+        selectedDay={selectedDay}
+      />
     </View>
   );
 }

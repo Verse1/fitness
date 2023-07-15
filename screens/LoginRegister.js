@@ -102,14 +102,14 @@ const LoginRegister = ({ navigation }) => {
             autoCapitalize="none"
             placeholder="Email"
             keyboardType="email-address"
-            textContentType="emailAddress"
+            textContentType="oneTimeCode" //Changed this to oneTimeCode from email-address so the keychain bullshit doesnt appear
           />
           <TextInput
             style={styles.input}
             onChangeText={setPassword}
             value={password}
             placeholder="Password"
-            textContentType="password"
+            textContentType="oneTimeCode" //Changed this to oneTimeCode from password so the keychain bullshit doesnt appear
             secureTextEntry
           />
 

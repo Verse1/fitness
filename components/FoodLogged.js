@@ -243,10 +243,9 @@ const FoodLogged = (props) => {
               paddingTop: 12.5,
               fontSize: 16,
               fontWeight: "500",
-              width: '75%'
+              width: "75%",
             }}>
             {props.foodName}
-            
           </Text>
           <Text
             style={{
@@ -259,7 +258,9 @@ const FoodLogged = (props) => {
           </Text>
         </View>
 
-        <Text style={{ paddingLeft: 14, fontWeight: "bold" }}>Serving: {props.serving}G</Text>
+        <Text style={{ paddingLeft: 14, fontWeight: "bold" }}>
+          Serving: {props.serving}G
+        </Text>
       </TouchableOpacity>
     </View>
   );

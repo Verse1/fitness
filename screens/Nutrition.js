@@ -28,17 +28,17 @@ import DayLogged from "../components/DayLogged";
 
 const Nutrition = () => {
   const [state, setState] = useContext(AuthContext);
+
   const [foodArray, setFoodArray] = useState([])
   const [weekArray, setWeekArray] = useState([])
 
 
+
   const navigation = useNavigation();
 
-  console.log(foodArray)
-
+  console.log(foodArray);
 
   useEffect(() => {
-
     if (state) {
       setFoodArray(state.user.dailyFood)
       setWeekArray(state.user.weeklyFood)

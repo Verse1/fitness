@@ -147,11 +147,12 @@ const weightTracking = () => {
 const styles = StyleSheet.create({
   button: {
     position: "absolute",
-    backgroundColor: "#0081CF",
+    backgroundColor: "#00A3FF",
     right: screenWidth * 0.05,
     bottom: screenHeight * 0.02,
-    width: 75,
-    height: 75,
+    width: 60,
+    height: 60,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "50%",

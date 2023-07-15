@@ -82,6 +82,33 @@ const userSchema = new Schema({
         }
            
     }],
+    weeklyFood: [{
+        day: {
+            type: String,
+            required: true
+        },
+        date:{
+            type: String,
+            required: true
+        },
+        calories:{
+            type: Number,
+            required: true
+        },
+        protein:{
+            type: Number,
+            required: true
+        },
+        carbs:{
+            type: Number, 
+            required: true
+        },
+        fats:{
+            type: Number,
+            required: true
+        }
+    }]
+    ,
     workouts: [
         {
           type: String,

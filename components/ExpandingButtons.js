@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
+
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
@@ -95,8 +96,11 @@ const ExpandingButtons = (props) => {
   return (
     <View style={{ flex: 1 }}>
       <Animated.View style={[styles.circle, { bottom: icon_1 }]}>
-        <TouchableOpacity onPress={() => navigation.navigate("LogMeal")}>
-          <Icon name="cloud-upload" size={25} color="white" />
+        <TouchableOpacity onPress={() => {
+          navigation.navigate("LogMeal") 
+          }}>
+                    <Icon name="cloud-upload" size={25} color="white" />
+
         </TouchableOpacity>
       </Animated.View>
 

@@ -43,6 +43,7 @@ export const signup = async (req, res) => {
       weightHistory: [],
       dailyFood: [],
       workouts: [],
+      weeklyFood: []
     }).save();
 
     //creating signed token

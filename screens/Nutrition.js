@@ -22,78 +22,15 @@ import { StatusBar } from "react-native";
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 import { ProgressChart } from "react-native-chart-kit";
+import DayLogged from "../components/DayLogged";
 
-const data = {
-  labels: ["Protein"], // optional
-  data: [159 / 250],
-  colors: ["red"],
-};
 
-const dataC = {
-  labels: ["Carbs"], // optional
-  data: [39 / 250],
-  colors: ["green"],
-};
-
-const dataF = {
-  labels: ["Fats"], // optional
-  data: [89 / 250],
-  colors: ["blue"],
-};
-
-const dataCals = {
-  labels: ["Cals"], // optional
-  data: [2000 / 3000],
-  colors: ["orange"],
-};
-
-const chartConfig = {
-  backgroundGradientFrom: "white",
-  backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: "white",
-  backgroundGradientToOpacity: 0,
-  color: (opacity = 1, _index) => `rgba(255,0,0,0.07)`,
-  strokeWidth: 2, // optional, default 3
-  barPercentage: 0.35,
-  useShadowColorFromDataset: false, // optional,
-};
-
-const chartConfigCals = {
-  backgroundGradientFrom: "white",
-  backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: "white",
-  backgroundGradientToOpacity: 0,
-  color: (opacity = 1, _index) => `rgba(255,0,0,0.07)`,
-  strokeWidth: 2, // optional, default 3
-  barPercentage: 0.35,
-  useShadowColorFromDataset: false, // optional,
-};
-
-const chartConfigCarbs = {
-  backgroundGradientFrom: "white",
-  backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: "white",
-  backgroundGradientToOpacity: 0,
-  color: (opacity = 1, _index) => `rgba(0,255,0,0.1)`,
-  strokeWidth: 2, // optional, default 3
-  barPercentage: 0.35,
-  useShadowColorFromDataset: false, // optional,
-};
-
-const chartConfigFat = {
-  backgroundGradientFrom: "white",
-  backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: "white",
-  backgroundGradientToOpacity: 0,
-  color: (opacity = 1, _index) => `rgba(0,0,255,.07)`,
-  strokeWidth: 2, // optional, default 3
-  barPercentage: 0.35,
-  useShadowColorFromDataset: false, // optional,
-};
 
 const Nutrition = () => {
   const [state, setState] = useContext(AuthContext);
   const [foodArray, setFoodArray] = useState([])
+  const [weekArray, setWeekArray] = useState([])
+
 
   const navigation = useNavigation();
 
@@ -104,20 +41,97 @@ const Nutrition = () => {
 
     if (state) {
       setFoodArray(state.user.dailyFood)
+      setWeekArray(state.user.weeklyFood)
 
-      // console.log(weightArray)
     }
   }, [state]);
 
+  const totalProtein = foodArray.reduce((sum, item) => sum + item.protein, 0);
+  const totalCarbs = foodArray.reduce((sum, item) => sum + item.carbs, 0);
+  const totalFats = foodArray.reduce((sum, item) => sum + item.fats, 0);
+  const totalCals = foodArray.reduce((sum, item) => sum + item.calories, 0);
+
+
+
+  const data = {
+    labels: ["Protein"], // optional
+    data: [ totalProtein / 250],
+    colors: ["red"],
+  };
+  
+  const dataC = {
+    labels: ["Carbs"], // optional
+    data: [totalCarbs / 250],
+    colors: ["green"],
+  };
+  
+  const dataF = {
+    labels: ["Fats"], // optional
+    data: [totalFats/ 250],
+    colors: ["blue"],
+  };
+  
+  const dataCals = {
+    labels: ["Cals"], // optional
+    data: [totalCals / 3000],
+    colors: ["orange"],
+  };
+  
+  const chartConfig = {
+    backgroundGradientFrom: "white",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "white",
+    backgroundGradientToOpacity: 0,
+    color: (opacity = 1, _index) => `rgba(255,0,0,0.07)`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.35,
+    useShadowColorFromDataset: false, // optional,
+  };
+  
+  const chartConfigCals = {
+    backgroundGradientFrom: "white",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "white",
+    backgroundGradientToOpacity: 0,
+    color: (opacity = 1, _index) => `rgba(255,0,0,0.07)`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.35,
+    useShadowColorFromDataset: false, // optional,
+  };
+  
+  const chartConfigCarbs = {
+    backgroundGradientFrom: "white",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "white",
+    backgroundGradientToOpacity: 0,
+    color: (opacity = 1, _index) => `rgba(0,255,0,0.1)`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.35,
+    useShadowColorFromDataset: false, // optional,
+  };
+  
+  const chartConfigFat = {
+    backgroundGradientFrom: "white",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "white",
+    backgroundGradientToOpacity: 0,
+    color: (opacity = 1, _index) => `rgba(0,0,255,.07)`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.35,
+    useShadowColorFromDataset: false, // optional,
+  };
+
   return (
+    
     <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
+
       <SafeAreaView>
         <View style={styles.header}>
           <Text style={styles.headerText}>My Nutrition</Text>
           <Image style={styles.pfp} source={require("../images/cole.jpeg")}></Image>
         </View>
       </SafeAreaView>
-      <ScrollView style={{ flex: 1 }}>
         <View
           style={{
             flexDirection: "row",
@@ -149,7 +163,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "red", fontWeight: "bold" }}>Protein</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                25/340g
+                {Math.floor(totalProtein)}/340g
               </Text>
             </View>
           </View>
@@ -174,7 +188,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "green", fontWeight: "bold" }}>Carbs</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                49/340g
+                {Math.floor(totalCarbs)}/340g
               </Text>
             </View>
           </View>
@@ -200,7 +214,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "blue", fontWeight: "bold" }}>Fat</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                49/340g
+                {Math.floor(totalFats)}/340g
               </Text>
             </View>
           </View>
@@ -225,7 +239,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "orange", fontWeight: "bold" }}>Calories</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                2000/3000
+                {Math.floor(totalCals)}/3000
               </Text>
             </View>
           </View>
@@ -236,11 +250,11 @@ const Nutrition = () => {
             Logged Food
           </Text>
           {foodArray && foodArray.length > 0 &&  foodArray.map((item, index) => (
-            <FoodLogged  foodName={item.foodName} calories={item.calories} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} />
+            <FoodLogged  foodName={item.foodName} calories={Math.floor(item.calories)} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} />
           ))}
         </View>
 
-        <View style={{ paddingTop: 10, paddingLeft: 10 }}>
+        <View style={{ paddingTop: screenHeight * 0.05, paddingLeft: 10 }}>
           <Text
             style={{
               fontSize: 20,
@@ -250,7 +264,16 @@ const Nutrition = () => {
             }}>
             Previous Food Logs
           </Text>
-          <WeekLogged />
+          <View>
+          <ScrollView
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            style={styles.containerWeek}>
+              {weekArray && weekArray.map((item) => (
+                <DayLogged protein={item.protein} carbs={item.carbs} fats={item.fats} calories={item.calories} day={item.day} date={item.date} />
+              ))}
+          </ScrollView>
+          </View>
         </View>
       </ScrollView>
       <View>
@@ -264,7 +287,6 @@ const styles = StyleSheet.create({
   header: {
     paddingLeft: 20,
     flexDirection: "row",
-    paddingBottom: screenHeight * 0.02,
   },
   headerText: {
     paddingTop: 20,
@@ -335,6 +357,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  containerWeek:{
+    width: "100%",
+  }
 });
 
 export default Nutrition;

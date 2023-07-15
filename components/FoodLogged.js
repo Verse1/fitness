@@ -146,7 +146,7 @@ const FoodLogged = (props) => {
               width: "50%",
               textAlign: "right",
             }}>
-            {props.calories} kcal
+            {Math.floor(Math.floor(props.calories))} kcal
           </Text>
         </View>
         <View style={{ flexDirection: "row", marginRight: 20, paddingTop: 5 }}>

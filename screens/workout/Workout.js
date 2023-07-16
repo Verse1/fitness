@@ -11,14 +11,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CalendarModal from "./CalendarModal";
-import Navbar from "../../components/Navbar";
 import Boxes from "../../components/Box";
 import LogButton from "../../components/LogButton";
 import Calendar from "../../components/CalendarContainer";
 
 function Workout({ newBoxes, deleteBox }) {
   const navigation = useNavigation();
-  const boxes = useMemo(() => newBoxes, [newBoxes]);
+  const [boxes, setBoxes] = useState(["Push", "Pull", "Legs", "Core"]);
 
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
@@ -93,7 +92,6 @@ function Workout({ newBoxes, deleteBox }) {
         </SafeAreaView>
       </ScrollView>
       <LogButton onPress={handleGoToAddWorkout} />
-      <Navbar />
       <CalendarModal
         visible={calendarModalVisible}
         onModalClose={closeCalendarModal}

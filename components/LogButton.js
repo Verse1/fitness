@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 10,
-    marginBottom: 100,
+    marginBottom: 20,
   },
 });
 

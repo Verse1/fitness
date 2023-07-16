@@ -25,8 +25,9 @@ import axios from "axios";
 // 2. When User presses generate workout get all templates for user
 // 3. Get users workout split
 
-function Workout({ deleteBox }) {
+function Workout({ deleteBox, route }) {
   const navigation = useNavigation();
+  const newWorkout = route.params?.newWorkout;
 
   const [state] = useContext(AuthContext);
   const workouts = state.user.workouts.map((workout) => workout.workoutName);
@@ -63,6 +64,11 @@ function Workout({ deleteBox }) {
 
   const onDeleteHandler = (index) => {
     deleteBox(index);
+  };
+
+  const handleAddWorkout = () => {
+    // Inside here add the new workout to the database
+    // and add it to the user's temporary workouts array
   };
 
   return (

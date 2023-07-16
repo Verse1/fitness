@@ -1,98 +1,51 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { PanGestureHandler } from "react-native-gesture-handler";
-import Animated, {
-  runOnJS,
-  useAnimatedGestureHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
-import { Feather } from "@expo/vector-icons";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import SetCard from "./SetCard";
 
-const LIST_ITEM_HEIGHT = 50;
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * 0.3;
-
-function ExerciseCard({ name, onDelete }) {
-  const translateX = useSharedValue(0);
-
-  const panGesture = useAnimatedGestureHandler({
-    onActive: (event) => {
-      translateX.value = event.translationX;
-    },
-    onEnd: () => {
-      const shouldBeDismissed = translateX.value < TRANSLATE_X_THRESHOLD;
-      if (shouldBeDismissed) {
-        translateX.value = withSpring(-SCREEN_WIDTH);
-        runOnJS(onDelete)();
-      } else {
-        translateX.value = withSpring(0);
-      }
-    },
-  });
-
-  const rStyle = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateX: translateX.value,
-      },
-    ],
-  }));
-
-  const rIconContainerStyle = useAnimatedStyle(() => {
-    return {
-      opacity: translateX.value < TRANSLATE_X_THRESHOLD ? 1 : 0,
-    };
-  });
-
+const ExerciseCard = ({ exercise, handleAddSet, handleDeleteSet }) => {
   return (
-    <Animated.View style={styles.taskContainer}>
-      <Animated.View style={[styles.iconContainer, rIconContainerStyle]}>
-        <Feather name={"trash-2"} size={LIST_ITEM_HEIGHT * 0.4} color={"red"} />
-      </Animated.View>
-      <PanGestureHandler onGestureEvent={panGesture}>
-        <Animated.View style={[styles.task, rStyle]}>
-          <Text style={styles.taskTitle}>{name}</Text>
-        </Animated.View>
-      </PanGestureHandler>
-    </Animated.View>
+    <View key={exercise.id} style={styles.card}>
+      <Text style={styles.cardTitle}>{exercise.name}</Text>
+      {exercise.sets.map((set, index) => (
+        <SetCard
+          key={set.id}
+          data={set}
+          setNumber={index + 1}
+          onDelete={() => handleDeleteSet(exercise.id, set.id)}
+        />
+      ))}
+      <TouchableOpacity
+        style={styles.addSetButton}
+        onPress={() => handleAddSet(exercise.id)}>
+        <Text style={styles.addSetText}>Add Set</Text>
+      </TouchableOpacity>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  taskContainer: {
-    width: "100%",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  task: {
-    width: "100%",
-    height: LIST_ITEM_HEIGHT,
-    justifyContent: "center",
-    paddingLeft: 20,
-    backgroundColor: "white",
+  card: {
+    backgroundColor: "#000",
     borderRadius: 10,
-    // Shadow for iOS
-    shadowOpacity: 0.08,
-    shadowOffset: {
-      width: 0,
-      height: 20,
-    },
-    shadowRadius: 10,
-    // Shadow for Android
-    elevation: 5,
+    padding: 20,
+    marginBottom: 20,
   },
-  taskTitle: {
+  cardTitle: {
+    color: "#fff",
     fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
-  iconContainer: {
-    height: LIST_ITEM_HEIGHT,
-    width: LIST_ITEM_HEIGHT,
-    justifyContent: "center",
+  addSetButton: {
     alignItems: "center",
-    position: "absolute",
-    right: 0,
+    padding: 10,
+    borderRadius: 5,
+    borderColor: "#fff",
+    borderWidth: 1,
+    marginTop: 10,
+  },
+  addSetText: {
+    color: "#fff",
   },
 });
 

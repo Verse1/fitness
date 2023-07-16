@@ -34,11 +34,12 @@ const Credentials = () => {
     userWeight,
     heightUnit,
     weightUnit,
-    // userCalories,
-    // userProtein,
-    // userCarbs,
-    // userFats,
+    userCalories,
+    userProtein,
+    userCarbs,
+    userFats,
   } = route.params;
+
 
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
@@ -63,11 +64,10 @@ const Credentials = () => {
         age: userAge,
         heightUnit: heightUnit,
         weightUnit: weightUnit,
-        // didnt do the backend schema yet
-        // calories: userCalories,
-        // protein: userProtein,
-        // carbs: userCarbs,
-        // fats: userFats,
+        dailyCalories: userCalories,
+        dailyProtein: userProtein,
+        dailyCarbs: userCarbs,
+        dailyFats: userFats,
       });
       console.log(resp.data.error);
       if (resp.data.error) {

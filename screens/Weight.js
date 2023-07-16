@@ -45,16 +45,18 @@ const weightTracking = () => {
   const handleInput = () => {
     const today = new Date();
     const currentDate = today.toDateString();
+    navigation.navigate("InputWeight");
 
-    if (
-      weightArray.length > 0 &&
-      weightArray[weightArray.length - 1].date ===
-        currentDate.slice(4, 10) + currentDate.slice(10)
-    ) {
-      alert("Already Entered Today's Date");
-    } else {
-      navigation.navigate("InputWeight");
-    }
+
+    // if (
+    //   weightArray.length > 0 &&
+    //   weightArray[weightArray.length - 1].date ===
+    //     currentDate.slice(4, 10) + currentDate.slice(10)
+    // ) {
+    //   alert("Already Entered Today's Date");
+    // } else {
+    //   navigation.navigate("InputWeight");
+    // }
   };
 
   useEffect(() => {
@@ -65,6 +67,7 @@ const weightTracking = () => {
     }
   }, [state]);
 
+
   let labels = [];
   let dataPoints = [];
 
@@ -73,7 +76,7 @@ const weightTracking = () => {
     const currentDate =
       today.toDateString().slice(4, 10) + today.toDateString().slice(10);
     labels = [currentDate];
-    dataPoints = [87];
+    dataPoints = [state.user.weight];
   } else {
     labels = weightArray.map((item) => item.date.slice(0, 6));
     dataPoints = weightArray.map((item) => item.weight);
@@ -127,12 +130,17 @@ const weightTracking = () => {
         <View style={styles.weightHistory}>
           <Text style={styles.historyTitle}>Weight History</Text>
           <View style={styles.weightBars}>
-            {weightArray
+          {weightArray
               .slice()
               .reverse()
-              .map((item, index) => (
-                <WeightBar date={item.date} weight={item.weight} />
-              ))}
+              .map((item, index) => {
+                console.log(index)
+                if (index === 0) {
+                  return <WeightBar date={item.date} weight={item.weight} change={item.changeWeight}/>;
+                } else {
+                  return <WeightBar date={item.date} weight={item.weight} change={item.changeWeight}  />;
+                }
+              })}
           </View>
         </View>
       </ScrollView>

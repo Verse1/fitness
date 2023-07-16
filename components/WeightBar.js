@@ -15,8 +15,19 @@ const WeightBar = (props) => {
         <Text style={styles.dateText}>{props.date}</Text>
         <Text style={styles.actualWeight}>{props.weight}</Text>
       </View>
-      <Text style={styles.weightChange}>1 kg</Text>
-    </View>
+      {props.change > 0 ? (
+        <View style={{flexDirection: 'row'}}>
+
+          <Text style={[styles.weightChange, {color: "#118c4f"}]}>+{props.change}</Text>
+          <Text style={{fontSize: 15,fontWeight: "300", color: "#118c4f"}}> kg</Text>
+        </View>
+    ) : props.change < 0 ? (
+        <Text style={[styles.weightChange, {color: "#e75757"}]}>{props.change} kg</Text>
+    ) : (
+      <Text style={[styles.weightChange]}>{props.change} kg</Text>
+
+    )}
+    </View> 
   );
 };
 

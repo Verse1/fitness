@@ -52,6 +52,10 @@ const userSchema = new Schema({
         type: String,
         required: true,
       },
+      changeWeight:{
+        type: Number, 
+        required: true
+      }
     },
   ],
 
@@ -108,8 +112,23 @@ const userSchema = new Schema({
             type: Number,
             required: true
         }
-    }]
-    ,
+    }],
+    dailyProtein: {
+        type: Number,
+        required: true
+    },
+    dailyCarbs: {
+        type: Number,
+        required: true
+    },
+    dailyFats: {
+        type: Number,
+        required: true
+    },
+    dailyCalories: {
+        type: Number,
+        required: true
+    },
     workouts: [
         {
           type: String,

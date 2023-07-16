@@ -294,7 +294,7 @@ const Nutrition = () => {
         </View>
       </ScrollView>
       <View>
-        <ExpandingButtons />
+        <ExpandingButtons  />
       </View>
     </View>
   );

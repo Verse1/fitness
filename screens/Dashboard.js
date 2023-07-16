@@ -168,7 +168,6 @@ const Dashboard = (props) => {
           const response = await fetch(apiUrl);
           const json = await response.json();
 
-          // Filter videos so there are no duplicates cus I added a key to each video but then I got duplicate key warning
           if (json.items && json.items.length > 0) {
             setVideos((prevVideos) => [...prevVideos, json.items[0]]);
           }

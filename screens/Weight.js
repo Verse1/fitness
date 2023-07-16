@@ -131,7 +131,8 @@ const weightTracking = () => {
               .slice()
               .reverse()
               .map((item, index) => (
-                <WeightBar date={item.date} weight={item.weight} />
+                // if it caused unwanted changes then use key={item.id}
+                <WeightBar date={item.date} weight={item.weight} key={index} />
               ))}
           </View>
         </View>

@@ -37,6 +37,11 @@ const Nutrition = () => {
   const [dailyFats, setDailyFats] = useState(0)
   const [dailyCalories, setDailyCalories] = useState(0)
 
+  function capitalizeFirstChar(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+
 
 
 
@@ -267,7 +272,7 @@ const Nutrition = () => {
             Logged Food
           </Text>
           {foodArray && foodArray.length > 0 &&  foodArray.map((item, index) => (
-            <FoodLogged  foodName={item.foodName} calories={Math.floor(item.calories)} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} />
+            <FoodLogged  foodName={capitalizeFirstChar(item.foodName)} calories={Math.floor(item.calories)} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} />
           ))}
         </View>
 

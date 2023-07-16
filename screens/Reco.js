@@ -9,11 +9,12 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
+  Animated
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { create } from "d3";
-import { useState, useContext, useRoute } from "react";
+import { create, style } from "d3";
+import { useState, useContext, useRoute, useRef } from "react";
 import { useLayoutEffect, useEffect } from "react";
 const spoon = "https://api.spoonacular.com/recipes/complexSearch";
 const headerConfig = { headers: { Accept: "application/json" } };
@@ -37,6 +38,23 @@ const Reco = () => {
   const [dailyCarbs, setDailyCarbs] = useState(0)
   const [dailyFats, setDailyFats] = useState(0)
   const [dailyCalories, setDailyCalories] = useState(0)
+
+  const fadeAnim = useRef(new Animated.Value(0)).current
+  const [selectedItem, setSelectedItem] = useState(null)
+
+  const handleItemClick = (item) =>{
+    setSelectedItem(item)
+    fadeAnim.setValue(0);
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500, 
+      useNativeDriver: true
+    }).start()
+  };
+
+  const isItemSelected = (item) =>{
+    return selectedItem === item 
+  }
 
 
   const [input, setInput] = useState("");
@@ -179,6 +197,41 @@ const Reco = () => {
         left...
       </Text>
 
+      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={styles.barContainer}>
+          <TouchableOpacity 
+          style={[styles.item, isItemSelected(1) && styles.selectedItem, {
+            opacity: isItemSelected(1) ? fadeAnim : 1
+          }]}
+          onPress={() => handleItemClick(1)}
+          >
+            <Text style={{color: 'white', fontSize: 20, fontWeight: '700'}}>1</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+          style={[styles.item, isItemSelected(2) && styles.selectedItem, {
+            opacity: isItemSelected(2) ? fadeAnim : 2
+          }]}
+          onPress={() => handleItemClick(2)}
+          >
+            <Text style={{color: 'white', fontSize: 20, fontWeight: '700'}}>2</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+          style={[styles.item, isItemSelected(3) && styles.selectedItem, {
+            opacity: isItemSelected(3) ? fadeAnim : 3
+          }]}
+          onPress={() => handleItemClick(3)}
+          >
+            <Text style={{color: 'white', fontSize: 20, fontWeight: '700'}}>3</Text>
+          </TouchableOpacity>
+          
+        
+          
+
+        </View>
+      </View>
+
       <TouchableOpacity
         onPress={() => navigation.navigate("GeneratedMeals")}
         style={styles.button}>
@@ -245,7 +298,7 @@ const styles = StyleSheet.create({
     height: screenHeight * 0.4,
   },
   button: {
-    backgroundColor: "blue",
+    backgroundColor: "#00A3FF",
     width: screenWidth * 0.6,
     height: screenHeight * 0.06,
     borderRadius: 25,
@@ -254,6 +307,24 @@ const styles = StyleSheet.create({
     marginLeft: screenWidth * 0.2,
     marginTop: screenHeight * 0.05,
   },
+  barContainer:{
+    width: '80%',
+    height: screenHeight * 0.05,
+    backgroundColor: "#00A3FF",
+    borderRadius: 25,
+    marginTop: 40,
+    flexDirection: 'row'
+  },
+  item:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+  selectedItem:{
+    backgroundColor: 'green',
+    borderRadius: 25
+  }
 });
 
 export default Reco;

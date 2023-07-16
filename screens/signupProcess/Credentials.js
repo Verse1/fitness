@@ -22,6 +22,7 @@ import { AuthContext } from "../../context/auth";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
+
 const Credentials = () => {
   const route = useRoute();
 
@@ -33,17 +34,23 @@ const Credentials = () => {
     userWeight,
     heightUnit,
     weightUnit,
+    // userCalories,
+    // userProtein,
+    // userCarbs,
+    // userFats,
   } = route.params;
 
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [state, setState] = useContext(AuthContext);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   }, []);
+
   const handleCredentials = async () => {
     try {
       const resp = await axios.post("http://localhost:8000/api/signup", {
@@ -56,6 +63,11 @@ const Credentials = () => {
         age: userAge,
         heightUnit: heightUnit,
         weightUnit: weightUnit,
+        // didnt do the backend schema yet
+        // calories: userCalories,
+        // protein: userProtein,
+        // carbs: userCarbs,
+        // fats: userFats,
       });
       console.log(resp.data.error);
       if (resp.data.error) {
@@ -85,7 +97,7 @@ const Credentials = () => {
                 <View style={styles.progressBar}>
                   <View style={styles.progress} />
                 </View>
-                <Text style={styles.progressText}>5 of 5</Text>
+                <Text style={styles.progressText}>6 of 6!</Text>
               </View>
 
               {/* Back button */}
@@ -227,7 +239,7 @@ const styles = StyleSheet.create({
   },
   progress: {
     height: "100%",
-    width: `${(5 / 5) * 100}%`,
+    width: `${(6 / 6) * 100}%`,
     borderRadius: 5,
     backgroundColor: "blue",
   },

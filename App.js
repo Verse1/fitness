@@ -23,6 +23,7 @@ import Gender from "./screens/signupProcess/Gender";
 import Age from "./screens/signupProcess/Age";
 import Loading from "./screens/Loading";
 import GeneratedWorkout from "./screens/workout/GeneratedWorkout";
+import Macros from "./screens/signupProcess/Macros";
 
 // Workout Manager
 import WorkoutManager from "./screens/workout/WorkoutManager";
@@ -63,6 +64,7 @@ export default function App() {
                 <Stack.Screen name="Gender" component={Gender} />
                 <Stack.Screen name="Age" component={Age} />
                 <Stack.Screen name="Metrics" component={Metrics} />
+                <Stack.Screen name="Macros" component={Macros} />
                 <Stack.Screen name="Credentials" component={Credentials} />
                 <Stack.Screen name="Dashboard" component={withNavbar(Dashboard)} />
                 <Stack.Screen name="WorkoutManager" component={WorkoutManager} />
@@ -92,6 +94,7 @@ export default function App() {
                 <Stack.Screen name="Age" component={Age} />
                 <Stack.Screen name="Metrics" component={Metrics} />
                 <Stack.Screen name="Credentials" component={Credentials} />
+                <Stack.Screen name="Macros" component={Macros} />
               </>
             )}
           </Stack.Navigator>

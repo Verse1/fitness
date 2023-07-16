@@ -42,7 +42,7 @@ const Gender = () => {
         <View style={styles.progressBar}>
           <View style={styles.progress} />
         </View>
-        <Text style={styles.progressText}>2 of 5</Text>
+        <Text style={styles.progressText}>2 of 6</Text>
       </View>
 
       {/* Back button */}
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   progress: {
     height: "100%",
-    width: `${(2 / 5) * 100}%`,
+    width: `${(2 / 6) * 100}%`,
     borderRadius: 5,
     backgroundColor: "blue",
   },

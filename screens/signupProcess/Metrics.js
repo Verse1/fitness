@@ -44,7 +44,7 @@ const Metrics = () => {
   }, []);
 
   const handleMeasure = () => {
-    navigation.navigate("Credentials", {
+    navigation.navigate("Macros", {
       userInfo: userName,
       userGender: userGender,
       userAge: userAge,
@@ -62,7 +62,7 @@ const Metrics = () => {
         <View style={styles.progressBar}>
           <View style={styles.progress} />
         </View>
-        <Text style={styles.progressText}>4 of 5</Text>
+        <Text style={styles.progressText}>4 of 6</Text>
       </View>
 
       {/* Back button */}
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   progress: {
     height: "100%",
-    width: `${(4 / 5) * 100}%`,
+    width: `${(4 / 6) * 100}%`,
     borderRadius: 5,
     backgroundColor: "blue",
   },

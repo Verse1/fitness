@@ -52,7 +52,7 @@ const AgeSelection = () => {
         <View style={styles.progressBar}>
           <View style={styles.progress} />
         </View>
-        <Text style={styles.progressText}>3 of 5</Text>
+        <Text style={styles.progressText}>3 of 6</Text>
       </View>
 
       {/* Back button */}
@@ -64,7 +64,7 @@ const AgeSelection = () => {
             height: screenWidth * 0.1,
             justifyContent: "center",
             alignItems: "center",
-            borderRadius: "50%",
+            borderRadius: 50,
           }}>
           <AntDesign name="arrowleft" style={{ color: "white", fontSize: 20 }} />
         </View>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   progress: {
     height: "100%",
-    width: `${(3 / 5) * 100}%`,
+    width: `${(3 / 6) * 100}%`,
     borderRadius: 5,
     backgroundColor: "blue",
   },
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     width: "80%",
     padding: 10,
-    borderRadius: 6,
+    borderRadius: 10,
     borderWidth: 0.7,
     borderColor: "blue",
     alignSelf: "center",
@@ -159,12 +159,12 @@ const styles = StyleSheet.create({
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     backgroundColor: "rgb(225,225,225)",
-    width: "15%",
+    width: 200,
     padding: 20,
     borderColor: "gray",
     alignSelf: "center",
     marginVertical: 5,
-    borderRadius: "20%",
+    borderRadius: 20,
     fontSize: 15,
   },
 });

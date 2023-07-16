@@ -24,54 +24,55 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan("dev"));
 
-
 // reset every 24 hours
 cron.schedule("43 23 * * *", async () => {
-    try {
-      // find all user accounts
-      const users = await User.find({});
+  try {
+    // find all user accounts
+    const users = await User.find({});
 
-      //make logic for weekly.... 
+    //make logic for weekly....
 
-      const dayName = new Date().toLocaleString('en-US', { weekday: 'long' });
-      const formattedDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+    const dayName = new Date().toLocaleString("en-US", { weekday: "long" });
+    const formattedDate = new Date().toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+    });
 
-  
-      // clear  the dailyFood array for each user
-      users.forEach(async (user) => {
+    // clear  the dailyFood array for each user
+    users.forEach(async (user) => {
+      let protein = 0,
+        carbs = 0,
+        fats = 0,
+        calories = 0;
 
-        let protein = 0, carbs =0, fats = 0, calories =0;
+      const { dailyFood } = user;
 
-        const { dailyFood } = user;
+      for (const item of dailyFood) {
+        protein += item.protein;
+        carbs += item.carbs;
+        fats += item.fats;
+        calories += item.calories;
+      }
 
+      const dailyObject = {
+        day: dayName,
+        date: formattedDate,
+        calories: calories,
+        protein: protein,
+        carbs: carbs,
+        fats: fats,
+      };
 
-        for(const item of dailyFood){
-            protein += item.protein
-            carbs += item.carbs
-            fats += item.fats
-            calories += item.calories
-        }
-        
-        const dailyObject = {
-            day: dayName,
-            date: formattedDate,
-            calories: calories,
-            protein: protein,
-            carbs: carbs,
-            fats: fats
-        }
+      user.weeklyFood.push(dailyObject);
+      user.dailyFood = [];
+      await user.save();
+    });
 
-        user.weeklyFood.push(dailyObject)
-        user.dailyFood = [];
-        await user.save();
-      });
-  
-      console.log("Cron job completed successfully.");
-    } catch (error) {
-      console.error("An error occurred during the cron job:", error);
-    }
-  });
-
+    console.log("Cron job completed successfully.");
+  } catch (error) {
+    console.error("An error occurred during the cron job:", error);
+  }
+});
 
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Origin", "*");

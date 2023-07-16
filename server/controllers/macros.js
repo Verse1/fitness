@@ -1,9 +1,11 @@
 import User from "../models/user";
 
-export const addWeight = async (req, res) => {
+export const macros = async (req, res) => {
   try {
-    const { weight, date } = req.body.weightToday;
-    const userId = req.body.id;
+    // const foodObject = req.body.foodObject;
+    const {dailyCalories, dailyProtein, dailyFats, dailyCarbs } = req.body
+
+    const userId = req.body.id
 
     // Find the user by ID
     const user = await User.findById(userId);
@@ -14,13 +16,15 @@ export const addWeight = async (req, res) => {
       });
     }
 
-    // Push the weight and date object to the weightHistory array in the user document
-    const changeWeight = req.body.weightToday.weight -  user.weightHistory[user.weightHistory.length - 1].weight 
-    user.weightHistory.push({ weight, date, changeWeight });
+    user.dailyCalories = dailyCalories
+    user.dailyProtein = dailyProtein
+    user.dailyFats = dailyFats
+    user.dailyCarbs = dailyCarbs
 
+
+    // user.dailyFood.push(foodObject);
     await user.save();
 
-    // Save the updated user document
     user.password = undefined;
     user.secret = undefined;
     return res.json({

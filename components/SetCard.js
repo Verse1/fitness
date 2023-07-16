@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { TextInput, Dimensions, StyleSheet, Text, View } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
@@ -14,8 +14,14 @@ const LIST_ITEM_HEIGHT = 50;
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * 0.3;
 
-function SetCard({ set, onDelete, setNumber }) {
+function SetCard({ data, setNumber, onDelete, onSetChange }) {
   const translateX = useSharedValue(0);
+  const [weight, setWeight] = useState(data.weight || "");
+  const [reps, setReps] = useState(data.reps || "");
+
+  useEffect(() => {
+    onSetChange(weight, reps);
+  }, [weight, reps]);
 
   const panGesture = useAnimatedGestureHandler({
     onActive: (event) => {
@@ -63,8 +69,18 @@ function SetCard({ set, onDelete, setNumber }) {
             <View style={styles.inputContainer}>
               <Text style={styles.input}>{setNumber}</Text>
               <TextInput style={styles.input} keyboardType="numeric" />
-              <TextInput style={styles.input} keyboardType="numeric" />
-              <TextInput style={styles.input} keyboardType="numeric" />
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                value={weight}
+                onChangeText={setWeight}
+              />
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                value={reps}
+                onChangeText={setReps}
+              />
             </View>
           </View>
         </Animated.View>

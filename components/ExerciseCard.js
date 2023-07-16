@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import SetCard from "./SetCard";
+import { createUUID } from "../utils/generateUUID";
 
 const ExerciseCard = ({ exercise, handleAddSet, handleDeleteSet }) => {
+  const [sets, setSets] = useState(exercise.sets || []);
+
+  useEffect(() => {
+    handleAddSet(exercise.id, sets);
+  }, [sets]);
+
+  const handleSetChange = (index, weight, reps) => {
+    const newSets = [...sets];
+    newSets[index] = { ...newSets[index], weight, reps };
+    setSets(newSets);
+  };
+
+  const handleAddSetLocal = () => {
+    setSets((prevSets) => {
+      const newSets = [
+        ...prevSets,
+        {
+          id: createUUID(),
+          weight: "",
+          reps: "",
+        },
+      ];
+      handleAddSet(exercise.id, newSets);
+      return newSets;
+    });
+  };
+
   return (
     <View key={exercise.id} style={styles.card}>
       <Text style={styles.cardTitle}>{exercise.name}</Text>
@@ -11,12 +39,15 @@ const ExerciseCard = ({ exercise, handleAddSet, handleDeleteSet }) => {
           key={set.id}
           data={set}
           setNumber={index + 1}
-          onDelete={() => handleDeleteSet(exercise.id, set.id)}
+          // Ong chatgpt the goat Ion even know what the fuck this code does but it works
+          onDelete={() => {
+            handleDeleteSet(exercise.id, set.id);
+            setSets(sets.filter((s) => s.id !== set.id));
+          }}
+          onSetChange={(weight, reps) => handleSetChange(index, weight, reps)}
         />
       ))}
-      <TouchableOpacity
-        style={styles.addSetButton}
-        onPress={() => handleAddSet(exercise.id)}>
+      <TouchableOpacity style={styles.addSetButton} onPress={handleAddSetLocal}>
         <Text style={styles.addSetText}>Add Set</Text>
       </TouchableOpacity>
     </View>

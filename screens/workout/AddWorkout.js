@@ -57,32 +57,41 @@ function AddWorkout({}) {
       return;
     }
 
+    console.log(exercises);
+
     const workout = {
       name: workoutName,
       notes: notes,
-      exercises: exercises.map((exercise) => exercise.name),
+      exercises: exercises.map((exercise) => ({
+        name: exercise.name,
+        sets: exercise.sets.map((set) => ({
+          reps: set.reps,
+          weight: set.weight,
+        })),
+      })),
     };
+
     setWorkoutName("");
     setNotes("");
     setExercises([]);
-
-    try {
-      const response = await axios.post("/workout", {
-        workoutName: workout.name,
-        userId: state.auth.user._id,
-      });
-
-      if (response.data.error) {
-        throw new Error(response.data.error);
-      }
-
-      navigation.navigate("Workout", { newWorkout: workout });
-    } catch (error) {
-      console.error("Error creating workout:", error);
-      Alert.alert("Sorry", "Your workout is so trash we cant save it");
-    }
+    navigation.navigate("Workout", { newWorkout: workout });
   };
 
+  // try {
+  //   const response = await axios.post("/workout", {
+  //     workoutName: workout.name,
+  //     userId: state.auth.user._id,
+  //   });
+
+  //   if (response.data.error) {
+  //     throw new Error(response.data.error);
+  //   }
+
+  //   navigation.navigate("Workout", { newWorkout: workout });
+  // } catch (error) {
+  //   console.error("Error creating workout:", error);
+  //   Alert.alert("Sorry", "Your workout is so trash we cant save it");
+  // }
   const handleOpenCategoryModal = () => {
     setCategoryModalVisible(true);
   };
@@ -106,22 +115,10 @@ function AddWorkout({}) {
     setExercises(exercises.filter((exercise) => exercise.id !== exerciseId));
   };
 
-  const handleAddSet = (exerciseId, reps, weight) => {
+  const handleAddSet = (exerciseId, sets) => {
     setExercises((prevExercises) =>
       prevExercises.map((exercise) =>
-        exercise.id === exerciseId
-          ? {
-              ...exercise,
-              sets: [
-                ...exercise.sets,
-                {
-                  id: createUUID(),
-                  reps,
-                  weight,
-                },
-              ],
-            }
-          : exercise
+        exercise.id === exerciseId ? { ...exercise, sets: sets } : exercise
       )
     );
   };

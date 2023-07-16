@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
+
 const userSchema = new Schema({
   name: {
     type: String,
@@ -55,70 +56,68 @@ const userSchema = new Schema({
     },
   ],
 
-
-    dailyFood: [{
-        servingAmount: {
-            type: Number,
-            required: true
-        },
-        protein:{
-            type: Number,
-            required: true
-        },
-        carbs:{
-            type: Number, 
-            required: true
-        },
-        fats:{
-            type: Number,
-            required: true
-        },
-        calories:{
-            type: Number,
-            required: true
-        },
-        foodName: {
-            type: String, 
-            required: true 
-        }
-           
-    }],
-    weeklyFood: [{
-        day: {
-            type: String,
-            required: true
-        },
-        date:{
-            type: String,
-            required: true
-        },
-        calories:{
-            type: Number,
-            required: true
-        },
-        protein:{
-            type: Number,
-            required: true
-        },
-        carbs:{
-            type: Number, 
-            required: true
-        },
-        fats:{
-            type: Number,
-            required: true
-        }
-    }]
-    ,
-    workouts: [
-        {
-          type: String,
-        },
-      ], 
-})
-
-
-  
-
+  dailyFood: [
+    {
+      servingAmount: {
+        type: Number,
+        required: true,
+      },
+      protein: {
+        type: Number,
+        required: true,
+      },
+      carbs: {
+        type: Number,
+        required: true,
+      },
+      fats: {
+        type: Number,
+        required: true,
+      },
+      calories: {
+        type: Number,
+        required: true,
+      },
+      foodName: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  weeklyFood: [
+    {
+      day: {
+        type: String,
+        required: true,
+      },
+      date: {
+        type: String,
+        required: true,
+      },
+      calories: {
+        type: Number,
+        required: true,
+      },
+      protein: {
+        type: Number,
+        required: true,
+      },
+      carbs: {
+        type: Number,
+        required: true,
+      },
+      fats: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
+  workouts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Workout",
+    },
+  ],
+});
 
 export default mongoose.model("User", userSchema);

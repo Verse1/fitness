@@ -2,6 +2,7 @@ import User from "../models/user";
 import { hashedPassword, comparePassword } from "../helpers/auth";
 import jwt from "jsonwebtoken";
 require("dotenv").config();
+
 export const signup = async (req, res) => {
   try {
     const { name, email, password, gender, weight, height, age, heightUnit, weightUnit } =
@@ -43,7 +44,7 @@ export const signup = async (req, res) => {
       weightHistory: [],
       dailyFood: [],
       workouts: [],
-      weeklyFood: []
+      weeklyFood: [],
     }).save();
 
     //creating signed token
@@ -51,8 +52,6 @@ export const signup = async (req, res) => {
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
-
-    console.log(user);
 
     const { password: userPassword, ...rest } = user._doc;
 
@@ -70,7 +69,8 @@ export const signin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    // Changed this from const to let user so that I can use it down to retrieve teh workout information with the user sign in
+    let user = await User.findOne({ email });
 
     if (!user) {
       return res.json({
@@ -90,6 +90,9 @@ export const signin = async (req, res) => {
 
     // If the password matches, continue with further logic
 
+    //Added this line
+    user = await User.findOne({ email }).populate("workouts", "workoutName");
+
     //create signed token
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
@@ -97,6 +100,7 @@ export const signin = async (req, res) => {
 
     user.password = undefined;
     user.secret = undefined;
+    console.log("Printing here", user);
 
     return res.json({
       token,

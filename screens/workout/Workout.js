@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -10,14 +10,27 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../context/auth";
 import CalendarModal from "./CalendarModal";
 import Boxes from "../../components/Box";
 import LogButton from "../../components/LogButton";
 import Calendar from "../../components/CalendarContainer";
+import axios from "axios";
 
-function Workout({ newBoxes, deleteBox }) {
+// Calls to Backend :
+// 1. When user signs in get all workouts for user
+// Inside all of these workouts there will be a list of exercises
+// Each exercise has a list of sets
+// Each list of sets has a weight recorded and a number of reps
+// 2. When User presses generate workout get all templates for user
+// 3. Get users workout split
+
+function Workout({ deleteBox }) {
   const navigation = useNavigation();
-  const [boxes, setBoxes] = useState(["Push", "Pull", "Legs", "Core"]);
+
+  const [state] = useContext(AuthContext);
+  const workouts = state.user.workouts.map((workout) => workout.workoutName);
+  const workoutIds = state.user.workouts.map((workout) => workout._id);
 
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
@@ -67,17 +80,17 @@ function Workout({ newBoxes, deleteBox }) {
           </View>
           <Calendar handleGoToCalendar={handleGoToCalendar} selectedDay={selectedDay} />
           <View style={styles.listContainer}>
-            {boxes.length === 0 && (
+            {workouts.length === 0 && (
               <Text style={styles.noWorkoutsText}>
                 You have no workouts, create a new template or generate one!
               </Text>
             )}
 
-            {boxes.map((workout, index) => (
+            {workouts.map((workout, index) => (
               <Boxes
                 box={workout}
                 key={index}
-                isLastBox={boxes.length % 2 !== 0 && index === boxes.length - 1}
+                isLastBox={workouts.length % 2 !== 0 && index === workouts.length - 1}
                 handleGoToWorkoutView={() => handleGoToWorkoutView(workout)}
                 onDeleteBox={() => onDeleteHandler(index)}
               />

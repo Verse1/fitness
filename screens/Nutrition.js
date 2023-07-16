@@ -24,15 +24,11 @@ const screenWidth = Dimensions.get("window").width;
 import { ProgressChart } from "react-native-chart-kit";
 import DayLogged from "../components/DayLogged";
 
-
-
 const Nutrition = () => {
   const [state, setState] = useContext(AuthContext);
 
-  const [foodArray, setFoodArray] = useState([])
-  const [weekArray, setWeekArray] = useState([])
-
-
+  const [foodArray, setFoodArray] = useState([]);
+  const [weekArray, setWeekArray] = useState([]);
 
   const navigation = useNavigation();
 
@@ -40,9 +36,8 @@ const Nutrition = () => {
 
   useEffect(() => {
     if (state) {
-      setFoodArray(state.user.dailyFood)
-      setWeekArray(state.user.weeklyFood)
-
+      setFoodArray(state.user.dailyFood);
+      setWeekArray(state.user.weeklyFood);
     }
   }, [state]);
 
@@ -51,32 +46,30 @@ const Nutrition = () => {
   const totalFats = foodArray.reduce((sum, item) => sum + item.fats, 0);
   const totalCals = foodArray.reduce((sum, item) => sum + item.calories, 0);
 
-
-
   const data = {
     labels: ["Protein"], // optional
-    data: [ totalProtein / 250],
+    data: [totalProtein / 250],
     colors: ["red"],
   };
-  
+
   const dataC = {
     labels: ["Carbs"], // optional
     data: [totalCarbs / 250],
     colors: ["green"],
   };
-  
+
   const dataF = {
     labels: ["Fats"], // optional
-    data: [totalFats/ 250],
+    data: [totalFats / 250],
     colors: ["blue"],
   };
-  
+
   const dataCals = {
     labels: ["Cals"], // optional
     data: [totalCals / 3000],
     colors: ["orange"],
   };
-  
+
   const chartConfig = {
     backgroundGradientFrom: "white",
     backgroundGradientFromOpacity: 0,
@@ -87,7 +80,7 @@ const Nutrition = () => {
     barPercentage: 0.35,
     useShadowColorFromDataset: false, // optional,
   };
-  
+
   const chartConfigCals = {
     backgroundGradientFrom: "white",
     backgroundGradientFromOpacity: 0,
@@ -98,7 +91,7 @@ const Nutrition = () => {
     barPercentage: 0.35,
     useShadowColorFromDataset: false, // optional,
   };
-  
+
   const chartConfigCarbs = {
     backgroundGradientFrom: "white",
     backgroundGradientFromOpacity: 0,
@@ -109,7 +102,7 @@ const Nutrition = () => {
     barPercentage: 0.35,
     useShadowColorFromDataset: false, // optional,
   };
-  
+
   const chartConfigFat = {
     backgroundGradientFrom: "white",
     backgroundGradientFromOpacity: 0,
@@ -122,16 +115,14 @@ const Nutrition = () => {
   };
 
   return (
-    
     <View style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
-
-      <SafeAreaView>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>My Nutrition</Text>
-          <Image style={styles.pfp} source={require("../images/cole.jpeg")}></Image>
-        </View>
-      </SafeAreaView>
+        <SafeAreaView>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>My Nutrition</Text>
+            <Image style={styles.pfp} source={require("../images/cole.jpeg")}></Image>
+          </View>
+        </SafeAreaView>
         <View
           style={{
             flexDirection: "row",
@@ -249,9 +240,19 @@ const Nutrition = () => {
           <Text style={{ fontSize: 20, fontWeight: "700", paddingLeft: 5 }}>
             Logged Food
           </Text>
-          {foodArray && foodArray.length > 0 &&  foodArray.map((item, index) => (
-            <FoodLogged  foodName={item.foodName} calories={Math.floor(item.calories)} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} />
-          ))}
+          {foodArray &&
+            foodArray.length > 0 &&
+            foodArray.map((item, index) => (
+              <FoodLogged
+                foodName={item.foodName}
+                calories={Math.floor(item.calories)}
+                serving={item.servingAmount}
+                protein={item.protein}
+                carbs={item.carbs}
+                fats={item.fats}
+                key={index}
+              />
+            ))}
         </View>
 
         <View style={{ paddingTop: screenHeight * 0.05, paddingLeft: 10 }}>
@@ -265,14 +266,23 @@ const Nutrition = () => {
             Previous Food Logs
           </Text>
           <View>
-          <ScrollView
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            style={styles.containerWeek}>
-              {weekArray && weekArray.map((item) => (
-                <DayLogged protein={item.protein} carbs={item.carbs} fats={item.fats} calories={item.calories} day={item.day} date={item.date} />
-              ))}
-          </ScrollView>
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              horizontal
+              style={styles.containerWeek}>
+              {weekArray &&
+                weekArray.map((item, index) => (
+                  <DayLogged
+                    protein={item.protein}
+                    carbs={item.carbs}
+                    fats={item.fats}
+                    calories={item.calories}
+                    day={item.day}
+                    date={item.date}
+                    key={index}
+                  />
+                ))}
+            </ScrollView>
           </View>
         </View>
       </ScrollView>
@@ -357,9 +367,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  containerWeek:{
+  containerWeek: {
     width: "100%",
-  }
+  },
 });
 
 export default Nutrition;

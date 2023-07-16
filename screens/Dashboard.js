@@ -309,7 +309,9 @@ const Dashboard = (props) => {
         showsHorizontalScrollIndicator={false}
         style={styles.videoSection}>
         {videos.map((video) => (
-          <View style={styles.videoCard}>
+          // I added a key to each video so the error is gone but now getting duplicate error cus the YoutubeAPi has duplicate videos
+          // To fix we need to filter out but later
+          <View key={video.id.videoId} style={styles.videoCard}>
             <Image
               source={{ uri: video.snippet.thumbnails.medium.url }}
               style={{

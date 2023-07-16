@@ -131,9 +131,7 @@ const weightTracking = () => {
               .slice()
               .reverse()
               .map((item, index) => (
-                // remove console warning for key
-                // Im not sure how ur code works but if this fucks shit up do key={item.id}
-                <WeightBar date={item.date} weight={item.weight} key={index} />
+                <WeightBar date={item.date} weight={item.weight} />
               ))}
           </View>
         </View>

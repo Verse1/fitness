@@ -168,6 +168,7 @@ const Dashboard = (props) => {
           const response = await fetch(apiUrl);
           const json = await response.json();
 
+          // Filter videos so there are no duplicates cus I added a key to each video but then I got duplicate key warning
           if (json.items && json.items.length > 0) {
             setVideos((prevVideos) => [...prevVideos, json.items[0]]);
           }
@@ -181,7 +182,12 @@ const Dashboard = (props) => {
       try {
         const storedVideos = await AsyncStorage.getItem("videos");
         if (storedVideos) {
-          setVideos(JSON.parse(storedVideos));
+          // Filter videos so that they are unique so there is no duplicate key warning
+          const videosFromStorage = JSON.parse(storedVideos);
+          const uniqueVideos = [
+            ...new Map(videosFromStorage.map((item) => [item.id.videoId, item])).values(),
+          ];
+          setVideos(uniqueVideos);
         } else {
           fetchVideos();
         }

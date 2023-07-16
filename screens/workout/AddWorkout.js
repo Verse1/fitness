@@ -12,8 +12,10 @@ import {
 import { Feather } from "@expo/vector-icons";
 import ExerciseCard from "../../components/ExerciseCard";
 import { useNavigation } from "@react-navigation/native";
+import { createUUID } from "../../utils/generateUUID";
 import ExerciseCategoryModal from "./ExerciseCategoryModal";
 import ExercisesModal from "./ExercisesModal";
+import axios from "axios";
 
 function AddWorkout({}) {
   const navigation = useNavigation();
@@ -47,7 +49,7 @@ function AddWorkout({}) {
     navigation.goBack();
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (workoutName === "") {
       Alert.alert("Missing Workout Name", "Please enter a name for the workout", [
         { text: "OK" },
@@ -55,16 +57,30 @@ function AddWorkout({}) {
       return;
     }
 
-    console.log({
+    const workout = {
       name: workoutName,
       notes: notes,
       exercises: exercises.map((exercise) => exercise.name),
-    });
-
+    };
     setWorkoutName("");
     setNotes("");
     setExercises([]);
-    navigation.goBack();
+
+    try {
+      const response = await axios.post("/workout", {
+        workoutName: workout.name,
+        userId: state.auth.user._id,
+      });
+
+      if (response.data.error) {
+        throw new Error(response.data.error);
+      }
+
+      navigation.navigate("Workout", { newWorkout: workout });
+    } catch (error) {
+      console.error("Error creating workout:", error);
+      Alert.alert("Sorry", "Your workout is so trash we cant save it");
+    }
   };
 
   const handleOpenCategoryModal = () => {
@@ -76,11 +92,51 @@ function AddWorkout({}) {
   };
 
   const handleAddExercise = (exercise) => {
-    setExercises((prevExercises) => [...prevExercises, exercise]);
+    setExercises((prevExercises) => [
+      ...prevExercises,
+      {
+        id: createUUID(),
+        name: exercise.name,
+        sets: [],
+      },
+    ]);
   };
 
   const handleDeleteExercise = (exerciseId) => {
     setExercises(exercises.filter((exercise) => exercise.id !== exerciseId));
+  };
+
+  const handleAddSet = (exerciseId, reps, weight) => {
+    setExercises((prevExercises) =>
+      prevExercises.map((exercise) =>
+        exercise.id === exerciseId
+          ? {
+              ...exercise,
+              sets: [
+                ...exercise.sets,
+                {
+                  id: createUUID(),
+                  reps,
+                  weight,
+                },
+              ],
+            }
+          : exercise
+      )
+    );
+  };
+
+  const handleDeleteSet = (exerciseId, setId) => {
+    setExercises((prevExercises) =>
+      prevExercises.map((exercise) =>
+        exercise.id === exerciseId
+          ? {
+              ...exercise,
+              sets: exercise.sets.filter((set) => set.id !== setId),
+            }
+          : exercise
+      )
+    );
   };
 
   return (
@@ -110,8 +166,9 @@ function AddWorkout({}) {
       {exercises.map((exercise) => (
         <ExerciseCard
           key={exercise.id}
-          name={exercise.name}
-          onDelete={() => handleDeleteExercise(exercise.id)}
+          exercise={exercise}
+          handleAddSet={handleAddSet}
+          handleDeleteSet={handleDeleteSet}
         />
       ))}
       <TouchableOpacity style={styles.addButton} onPress={handleOpenCategoryModal}>
@@ -325,6 +382,29 @@ const styles = StyleSheet.create({
   },
   filterButton: {
     marginTop: 20,
+  },
+  card: {
+    backgroundColor: "#000",
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
+  },
+  cardTitle: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  addSetButton: {
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 5,
+    borderColor: "#fff",
+    borderWidth: 1,
+    marginTop: 10,
+  },
+  addSetText: {
+    color: "#fff",
   },
 });
 

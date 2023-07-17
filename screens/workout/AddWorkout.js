@@ -17,8 +17,9 @@ import ExerciseCategoryModal from "./ExerciseCategoryModal";
 import ExercisesModal from "./ExercisesModal";
 import axios from "axios";
 
-function AddWorkout({}) {
+function AddWorkout({ route }) {
   const navigation = useNavigation();
+  const userId = route.params.userId;
 
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [exercisesModalVisible, setExercisesModalVisible] = useState(false);
@@ -57,8 +58,6 @@ function AddWorkout({}) {
       return;
     }
 
-    console.log(exercises);
-
     const workout = {
       name: workoutName,
       notes: notes,
@@ -70,28 +69,28 @@ function AddWorkout({}) {
         })),
       })),
     };
+    try {
+      const response = await axios.post("http://localhost:8000/api/workout", {
+        userId: userId,
+        workoutName: workout.name,
+        notes: workout.notes,
+        exercises: workout.exercises,
+      });
 
+      if (response.data.error) {
+        throw new Error(response.data.error);
+      }
+
+      navigation.navigate("Workout", { newWorkout: workout });
+    } catch (error) {
+      console.error("Error creating workout:", error);
+      Alert.alert("Sorry", "Your workout is so trash we cant save it");
+    }
     setWorkoutName("");
     setNotes("");
     setExercises([]);
-    navigation.navigate("Workout", { newWorkout: workout });
   };
 
-  // try {
-  //   const response = await axios.post("/workout", {
-  //     workoutName: workout.name,
-  //     userId: state.auth.user._id,
-  //   });
-
-  //   if (response.data.error) {
-  //     throw new Error(response.data.error);
-  //   }
-
-  //   navigation.navigate("Workout", { newWorkout: workout });
-  // } catch (error) {
-  //   console.error("Error creating workout:", error);
-  //   Alert.alert("Sorry", "Your workout is so trash we cant save it");
-  // }
   const handleOpenCategoryModal = () => {
     setCategoryModalVisible(true);
   };

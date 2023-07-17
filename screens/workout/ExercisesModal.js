@@ -37,7 +37,9 @@ function ExercisesModal({ visible, onClose, selectedCategory, onAddExercise }) {
               },
             }
           );
-          allData = [...allData, ...response.data];
+          if (response && response.data) {
+            allData = [...allData, ...response.data];
+          }
         }
 
         setData(allData);

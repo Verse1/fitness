@@ -25,13 +25,14 @@ import axios from "axios";
 // 2. When User presses generate workout get all templates for user
 // 3. Get users workout split
 
-function Workout({ deleteBox, route }) {
+// Add route here when you uncomment
+function Workout({ deleteBox }) {
   const navigation = useNavigation();
-  const newWorkout = route.params?.newWorkout;
+  // const newWorkout = route.params?.newWorkout;
 
   const [state] = useContext(AuthContext);
   const workouts = state.user.workouts.map((workout) => workout.workoutName);
-  const workoutIds = state.user.workouts.map((workout) => workout._id);
+  // const workoutIds = state.user.workouts.map((workout) => workout._id);
 
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
@@ -59,17 +60,17 @@ function Workout({ deleteBox, route }) {
   };
 
   const handleGoToAddWorkout = () => {
-    navigation.navigate("AddWorkout");
+    navigation.navigate("AddWorkout", { userId: state.user._id });
   };
 
   const onDeleteHandler = (index) => {
     deleteBox(index);
   };
 
-  const handleAddWorkout = () => {
-    // Inside here add the new workout to the database
-    // and add it to the user's temporary workouts array
-  };
+  // const handleAddWorkout = () => {
+  //   // Inside here add the new workout to the database
+  //   // and add it to the user's temporary workouts array
+  // };
 
   return (
     <View style={styles.outerView}>

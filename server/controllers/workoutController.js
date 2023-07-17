@@ -3,7 +3,7 @@ import Workout from "../models/workoutSchema";
 
 exports.createWorkout = async (req, res) => {
   try {
-    const { workoutName, userId } = req.body;
+    const { workoutName, userId, notes, exercises } = req.body;
 
     const user = await User.findById(userId);
 
@@ -11,7 +11,11 @@ exports.createWorkout = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const workout = new Workout({ workoutName });
+    const workout = new Workout({
+      name: workoutName,
+      notes: notes,
+      exercises: exercises,
+    });
     await workout.save();
 
     user.workouts.push(workout.id);
@@ -25,27 +29,27 @@ exports.createWorkout = async (req, res) => {
   }
 };
 
-exports.deleteWorkout = async (req, res) => {
-  try {
-    const { workoutId, userId } = req.body;
+// exports.deleteWorkout = async (req, res) => {
+//   try {
+//     const { workoutId, userId } = req.body;
 
-    const user = await User.findById(userId);
+//     const user = await User.findById(userId);
 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+//     if (!user) {
+//       return res.status(404).json({ error: "User not found" });
+//     }
 
-    user.workouts = user.workouts.filter((workout) => workout.toString() !== workoutId);
+//     user.workouts = user.workouts.filter((workout) => workout.toString() !== workoutId);
 
-    // Save the updated user
-    await user.save();
+//     // Save the updated user
+//     await user.save();
 
-    // Delete the workout
-    await Workout.findByIdAndRemove(workoutId);
+//     // Delete the workout
+//     await Workout.findByIdAndRemove(workoutId);
 
-    res.status(200).json({ message: "Workout deleted" });
-  } catch (error) {
-    console.error("Error in deleteWorkout:", error);
-    res.status(500).send(error);
-  }
-};
+//     res.status(200).json({ message: "Workout deleted" });
+//   } catch (error) {
+//     console.error("Error in deleteWorkout:", error);
+//     res.status(500).send(error);
+//   }
+// };

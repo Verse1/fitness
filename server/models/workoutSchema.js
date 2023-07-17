@@ -1,17 +1,14 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
+import Exercise from "./exerciseSchema";
 
 const workoutSchema = new Schema({
-  workoutName: {
+  name: {
     type: String,
     required: true,
   },
-  exercises: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "exerciseSchema",
-    },
-  ],
+  notes: String,
+  exercises: [Exercise.schema],
 });
 
 export default mongoose.model("Workout", workoutSchema);

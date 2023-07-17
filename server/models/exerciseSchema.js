@@ -1,17 +1,13 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
+import Set from "./setSchema";
 
 const exerciseSchema = new Schema({
-  exerciseName: {
+  name: {
     type: String,
     required: true,
   },
-  sets: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "set",
-    },
-  ],
+  sets: [Set.schema],
 });
 
 export default mongoose.model("Exercise", exerciseSchema);

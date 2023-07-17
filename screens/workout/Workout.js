@@ -81,14 +81,21 @@ function Workout({ deleteBox, route }) {
     navigation.navigate("AddWorkout", { userId: state.user._id });
   };
 
-  const onDeleteHandler = (index) => {
-    deleteBox(index);
-  };
+  const onDeleteHandler = async (index) => {
+    try {
+      const workoutToDelete = localWorkouts[index];
 
-  // const handleAddWorkout = () => {
-  //   // Inside here add the new workout to the database
-  //   // and add it to the user's temporary workouts array
-  // };
+      await axios.delete(`http://localhost:8000/api/workout/${workoutToDelete._id}`, {
+        data: { userId: state.user._id },
+      });
+
+      setLocalWorkouts((prevWorkouts) =>
+        prevWorkouts.filter((workout) => workout._id !== workoutToDelete._id)
+      );
+    } catch (error) {
+      console.error("Error deleting workout:", error);
+    }
+  };
 
   return (
     <View style={styles.outerView}>

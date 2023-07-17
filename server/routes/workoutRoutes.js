@@ -1,8 +1,9 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const WorkoutController = require("../controllers/workoutController");
+import * as WorkoutController from "../controllers/workoutController";
 
-router.post("/workouts", WorkoutController.createWorkout);
-router.delete("/workouts", WorkoutController.deleteWorkout);
+router.get("/workout/:userId", WorkoutController.fetchWorkouts);
+router.post("/workout", WorkoutController.createWorkout);
+router.delete("/workout/:workoutId", WorkoutController.deleteWorkout);
 
-module.exports = router;
+export default router;

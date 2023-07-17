@@ -24,11 +24,9 @@ const screenWidth = Dimensions.get("window").width;
 import { ProgressChart } from "react-native-chart-kit";
 import DayLogged from "../components/DayLogged";
 
-
-
 const Nutrition = () => {
   const [state, setState] = useContext(AuthContext);
-
+  
   const [foodArray, setFoodArray] = useState([])
   const [weekArray, setWeekArray] = useState([])
 
@@ -40,9 +38,6 @@ const Nutrition = () => {
   function capitalizeFirstChar(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
-
-
-
 
 
   const navigation = useNavigation();
@@ -57,6 +52,7 @@ const Nutrition = () => {
       setDailyProtein(state.user.dailyProtein)
       setDailyCarbs(state.user.dailyCarbs)
       setDailyFats(state.user.dailyFats)
+
     }
   }, [state]);
 
@@ -80,25 +76,25 @@ const Nutrition = () => {
     data: [ proteinRatio],
     colors: ["red"],
   };
-  
+
   const dataC = {
     labels: ["Carbs"], // optional
     data: [carbsRatio],
     colors: ["green"],
   };
-  
+
   const dataF = {
     labels: ["Fats"], // optional
     data: [fatsRatio],
     colors: ["blue"],
   };
-  
+
   const dataCals = {
     labels: ["Cals"], // optional
     data: [calsRatio],
     colors: ["orange"],
   };
-  
+
   const chartConfig = {
     backgroundGradientFrom: "white",
     backgroundGradientFromOpacity: 0,
@@ -109,7 +105,7 @@ const Nutrition = () => {
     barPercentage: 0.35,
     useShadowColorFromDataset: false, // optional,
   };
-  
+
   const chartConfigCals = {
     backgroundGradientFrom: "white",
     backgroundGradientFromOpacity: 0,
@@ -120,7 +116,7 @@ const Nutrition = () => {
     barPercentage: 0.35,
     useShadowColorFromDataset: false, // optional,
   };
-  
+
   const chartConfigCarbs = {
     backgroundGradientFrom: "white",
     backgroundGradientFromOpacity: 0,
@@ -131,7 +127,7 @@ const Nutrition = () => {
     barPercentage: 0.35,
     useShadowColorFromDataset: false, // optional,
   };
-  
+
   const chartConfigFat = {
     backgroundGradientFrom: "white",
     backgroundGradientFromOpacity: 0,
@@ -144,16 +140,14 @@ const Nutrition = () => {
   };
 
   return (
-    
     <View style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }}>
-
-      <SafeAreaView>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>My Nutrition</Text>
-          <Image style={styles.pfp} source={require("../images/cole.jpeg")}></Image>
-        </View>
-      </SafeAreaView>
+        <SafeAreaView>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>My Nutrition</Text>
+            <Image style={styles.pfp} source={require("../images/cole.jpeg")}></Image>
+          </View>
+        </SafeAreaView>
         <View
           style={{
             flexDirection: "row",
@@ -287,14 +281,22 @@ const Nutrition = () => {
             Previous Food Logs
           </Text>
           <View>
-          <ScrollView
-            showsHorizontalScrollIndicator={false}
-            horizontal
-            style={styles.containerWeek}>
-              {weekArray && weekArray.map((item) => (
-                <DayLogged protein={item.protein} carbs={item.carbs} fats={item.fats} calories={item.calories} day={item.day} date={item.date} />
-              ))}
-          </ScrollView>
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              horizontal
+              style={styles.containerWeek}>
+              {weekArray &&
+                weekArray.map((item) => (
+                  <DayLogged
+                    protein={item.protein}
+                    carbs={item.carbs}
+                    fats={item.fats}
+                    calories={item.calories}
+                    day={item.day}
+                    date={item.date}
+                  />
+                ))}
+            </ScrollView>
           </View>
         </View>
       </ScrollView>
@@ -379,9 +381,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  containerWeek:{
+  containerWeek: {
     width: "100%",
-  }
+  },
 });
 
 export default Nutrition;

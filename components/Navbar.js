@@ -40,7 +40,7 @@ const Navbar = () => {
         {/* Workout button */}
         <TouchableOpacity
           style={styles.iconContainer}
-          onPress={() => navigateToPage("WorkoutManager")}>
+          onPress={() => navigateToPage("Workout")}>
           <Feather name="award" size={24} color="#FFF" />
           <Text style={styles.label}>Workout</Text>
         </TouchableOpacity>

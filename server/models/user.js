@@ -129,11 +129,12 @@ const userSchema = new Schema({
         type: Number,
         required: true
     },
-    workouts: [
-        {
-          type: String,
-        },
-      ], 
+     workouts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Workout",
+    },
+  ],
 })
 
 

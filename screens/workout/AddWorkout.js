@@ -12,11 +12,14 @@ import {
 import { Feather } from "@expo/vector-icons";
 import ExerciseCard from "../../components/ExerciseCard";
 import { useNavigation } from "@react-navigation/native";
+import { createUUID } from "../../utils/generateUUID";
 import ExerciseCategoryModal from "./ExerciseCategoryModal";
 import ExercisesModal from "./ExercisesModal";
+import axios from "axios";
 
-function AddWorkout({}) {
+function AddWorkout({ route }) {
   const navigation = useNavigation();
+  const userId = route.params.userId;
 
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [exercisesModalVisible, setExercisesModalVisible] = useState(false);
@@ -47,7 +50,7 @@ function AddWorkout({}) {
     navigation.goBack();
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (workoutName === "") {
       Alert.alert("Missing Workout Name", "Please enter a name for the workout", [
         { text: "OK" },
@@ -55,16 +58,44 @@ function AddWorkout({}) {
       return;
     }
 
-    console.log({
+    const workout = {
+      // Change here if you want to change names in schema
       name: workoutName,
       notes: notes,
-      exercises: exercises.map((exercise) => exercise.name),
-    });
+      exercises: exercises.map((exercise) => ({
+        name: exercise.name,
+        sets: exercise.sets.map((set) => ({
+          reps: set.reps === "" ? 0 : set.reps,
+          weight: set.weight === "" ? 0 : set.weight,
+        })),
+      })),
+    };
+    try {
+      const response = await axios.post("http://localhost:8000/api/workout", {
+        userId: userId,
+        workoutName: workout.name,
+        notes: workout.notes,
+        exercises: workout.exercises,
+      });
 
+      if (response.data.error) {
+        throw new Error(response.data.error);
+      }
+
+      // Give elon musk my number
+      const savedWorkout = {
+        ...workout,
+        _id: response.data._id,
+      };
+
+      navigation.navigate("Workout", { newWorkout: savedWorkout });
+    } catch (error) {
+      console.error("Error creating workout:", error);
+      Alert.alert("Sorry", "Your workout is so trash we cant save it");
+    }
     setWorkoutName("");
     setNotes("");
     setExercises([]);
-    navigation.goBack();
   };
 
   const handleOpenCategoryModal = () => {
@@ -76,11 +107,39 @@ function AddWorkout({}) {
   };
 
   const handleAddExercise = (exercise) => {
-    setExercises((prevExercises) => [...prevExercises, exercise]);
+    setExercises((prevExercises) => [
+      ...prevExercises,
+      {
+        id: createUUID(),
+        name: exercise.name,
+        sets: [],
+      },
+    ]);
   };
 
   const handleDeleteExercise = (exerciseId) => {
     setExercises(exercises.filter((exercise) => exercise.id !== exerciseId));
+  };
+
+  const handleAddSet = (exerciseId, sets) => {
+    setExercises((prevExercises) =>
+      prevExercises.map((exercise) =>
+        exercise.id === exerciseId ? { ...exercise, sets: sets } : exercise
+      )
+    );
+  };
+
+  const handleDeleteSet = (exerciseId, setId) => {
+    setExercises((prevExercises) =>
+      prevExercises.map((exercise) =>
+        exercise.id === exerciseId
+          ? {
+              ...exercise,
+              sets: exercise.sets.filter((set) => set.id !== setId),
+            }
+          : exercise
+      )
+    );
   };
 
   return (
@@ -110,8 +169,9 @@ function AddWorkout({}) {
       {exercises.map((exercise) => (
         <ExerciseCard
           key={exercise.id}
-          name={exercise.name}
-          onDelete={() => handleDeleteExercise(exercise.id)}
+          exercise={exercise}
+          handleAddSet={handleAddSet}
+          handleDeleteSet={handleDeleteSet}
         />
       ))}
       <TouchableOpacity style={styles.addButton} onPress={handleOpenCategoryModal}>
@@ -325,6 +385,29 @@ const styles = StyleSheet.create({
   },
   filterButton: {
     marginTop: 20,
+  },
+  card: {
+    backgroundColor: "#000",
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
+  },
+  cardTitle: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  addSetButton: {
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 5,
+    borderColor: "#fff",
+    borderWidth: 1,
+    marginTop: 10,
+  },
+  addSetText: {
+    color: "#fff",
   },
 });
 

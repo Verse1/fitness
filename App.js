@@ -25,9 +25,6 @@ import Loading from "./screens/Loading";
 import GeneratedWorkout from "./screens/workout/GeneratedWorkout";
 import Macros from "./screens/signupProcess/Macros";
 
-// Workout Manager
-import WorkoutManager from "./screens/workout/WorkoutManager";
-
 // New Changes
 import AddWorkout from "./screens/workout/AddWorkout";
 import Workout from "./screens/workout/Workout";
@@ -66,24 +63,22 @@ export default function App() {
                 <Stack.Screen name="Metrics" component={Metrics} />
                 <Stack.Screen name="Macros" component={Macros} />
                 <Stack.Screen name="Credentials" component={Credentials} />
+
+                {/* Workout Pages */}
+                <Stack.Screen name="Workout" component={withNavbar(Workout)} />
+                <Stack.Screen name="AddWorkout" component={AddWorkout} />
+                <Stack.Screen name="WorkoutView" component={WorkoutView} />
+                <Stack.Screen name="WorkoutSplit" component={WorkoutSplit} />
+
                 <Stack.Screen name="Dashboard" component={withNavbar(Dashboard)} />
-                <Stack.Screen name="WorkoutManager" component={WorkoutManager} />
                 <Stack.Screen name="Weight" component={withNavbar(Weight)} />
                 <Stack.Screen name="Nutrition" component={withNavbar(Nutrition)} />
-
-                {/* dont add navbar */}
                 <Stack.Screen name="InputWeight" component={InputWeight} />
                 <Stack.Screen name="Reco" component={Reco} />
                 <Stack.Screen name="LogMeal" component={LogMeal} />
                 <Stack.Screen name="GeneratedMeals" component={GeneratedMeals} />
                 <Stack.Screen name="Loading" component={Loading} />
                 <Stack.Screen name="GeneratedWorkout" component={GeneratedWorkout} />
-
-                {/* New CHanges */}
-                <Stack.Screen name="AddWorkout" component={AddWorkout} />
-                <Stack.Screen name="Workout" component={withNavbar(Workout)} />
-                <Stack.Screen name="WorkoutView" component={WorkoutView} />
-                <Stack.Screen name="WorkoutSplit" component={WorkoutSplit} />
               </>
             ) : (
               // User isn't signed in

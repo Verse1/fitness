@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,25 +10,59 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../context/auth";
 import CalendarModal from "./CalendarModal";
-import Navbar from "../../components/Navbar";
 import Boxes from "../../components/Box";
 import LogButton from "../../components/LogButton";
 import Calendar from "../../components/CalendarContainer";
+import axios from "axios";
 
-function Workout({ newBoxes, deleteBox }) {
+function Workout({ route }) {
   const navigation = useNavigation();
-  const boxes = useMemo(() => newBoxes, [newBoxes]);
+  const newWorkout = route.params?.newWorkout;
+
+  const [localWorkouts, setLocalWorkouts] = useState([]);
+  const [state] = useContext(AuthContext);
 
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
+
+  useEffect(() => {
+    if (newWorkout) {
+      setLocalWorkouts((prevWorkouts) => [...prevWorkouts, newWorkout]);
+    }
+  }, [newWorkout]);
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/workout/${state.user._id}`
+        );
+        setLocalWorkouts(response.data);
+      } catch (error) {
+        console.error("Error fetching workouts:", error);
+      }
+    };
+
+    fetchWorkouts();
+  }, []);
+
+  // useEffect(() => {
+  //   if (newWorkout && newWorkout._id) {
+  //     setLocalWorkouts((prevWorkouts) => [...prevWorkouts, newWorkout]);
+  //   }
+  // }, [newWorkout]);
 
   const handleGoToGeneratedWorkout = () => {
     navigation.navigate("Loading");
   };
 
-  const handleGoToWorkoutView = (workoutName) => {
-    navigation.navigate("WorkoutView", { workoutName });
+  const handleGoToWorkoutView = (workout) => {
+    navigation.navigate("WorkoutView", {
+      workoutName: workout.name,
+      workoutExercises: workout.exercises,
+    });
   };
 
   const handleGoToCalendar = (day) => {
@@ -46,11 +80,28 @@ function Workout({ newBoxes, deleteBox }) {
   };
 
   const handleGoToAddWorkout = () => {
-    navigation.navigate("AddWorkout");
+    navigation.navigate("AddWorkout", { userId: state.user._id });
   };
 
-  const onDeleteHandler = (index) => {
-    deleteBox(index);
+  const onDeleteHandler = async (index) => {
+    const workoutToDelete = localWorkouts[index];
+    console.log("Deleting workout with ID: ", workoutToDelete._id);
+
+    if (workoutToDelete._id) {
+      try {
+        await axios.delete(`http://localhost:8000/api/workout/${workoutToDelete._id}`, {
+          data: { userId: state.user._id },
+        });
+
+        setLocalWorkouts((prevWorkouts) =>
+          prevWorkouts.filter((workout) => workout._id !== workoutToDelete._id)
+        );
+      } catch (error) {
+        console.error("Error deleting workout:", error);
+      }
+    } else {
+      console.error("Cannot delete workout with undefined ID");
+    }
   };
 
   return (
@@ -68,17 +119,18 @@ function Workout({ newBoxes, deleteBox }) {
           </View>
           <Calendar handleGoToCalendar={handleGoToCalendar} selectedDay={selectedDay} />
           <View style={styles.listContainer}>
-            {boxes.length === 0 && (
+            {localWorkouts.length === 0 && (
               <Text style={styles.noWorkoutsText}>
                 You have no workouts, create a new template or generate one!
               </Text>
             )}
-
-            {boxes.map((workout, index) => (
+            {localWorkouts.map((workout, index) => (
               <Boxes
-                box={workout}
                 key={index}
-                isLastBox={boxes.length % 2 !== 0 && index === boxes.length - 1}
+                box={workout.name}
+                isLastBox={
+                  localWorkouts.length % 2 !== 0 && index === localWorkouts.length - 1
+                }
                 handleGoToWorkoutView={() => handleGoToWorkoutView(workout)}
                 onDeleteBox={() => onDeleteHandler(index)}
               />
@@ -93,7 +145,6 @@ function Workout({ newBoxes, deleteBox }) {
         </SafeAreaView>
       </ScrollView>
       <LogButton onPress={handleGoToAddWorkout} />
-      <Navbar />
       <CalendarModal
         visible={calendarModalVisible}
         onModalClose={closeCalendarModal}

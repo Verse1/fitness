@@ -1,11 +1,13 @@
 require("dotenv").config();
-import User from "./models/user.js";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 
-import authRoutes from "./routes/auth";
+import User from "./models/user";
+import Workout from "./models/workoutSchema";
+
 import workoutRoutes from "./routes/workoutRoutes";
+import authRoutes from "./routes/auth";
 
 const morgan = require("morgan");
 const cron = require("node-cron");
@@ -85,7 +87,8 @@ cron.schedule("43 23 * * *", async () => {
 // });
 
 //route middlewares
-app.use("/api", authRoutes);
+// aint no way bruh, you gotta import shit before the other because it needs to be defined when you call it
 app.use("/api", workoutRoutes);
+app.use("/api", authRoutes);
 
 app.listen(8000, () => console.log("Server Running on Port 8000"));

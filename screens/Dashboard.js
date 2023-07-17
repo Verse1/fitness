@@ -181,7 +181,12 @@ const Dashboard = (props) => {
       try {
         const storedVideos = await AsyncStorage.getItem("videos");
         if (storedVideos) {
-          setVideos(JSON.parse(storedVideos));
+          // Filter videos so that they are unique so there is no duplicate key warning
+          const videosFromStorage = JSON.parse(storedVideos);
+          const uniqueVideos = [
+            ...new Map(videosFromStorage.map((item) => [item.id.videoId, item])).values(),
+          ];
+          setVideos(uniqueVideos);
         } else {
           fetchVideos();
         }
@@ -309,7 +314,9 @@ const Dashboard = (props) => {
         showsHorizontalScrollIndicator={false}
         style={styles.videoSection}>
         {videos.map((video) => (
-          <View style={styles.videoCard}>
+          // I added a key to each video so the error is gone but now getting duplicate error cus the YoutubeAPi has duplicate videos
+          // To fix we need to filter out but later
+          <View key={video.id.videoId} style={styles.videoCard}>
             <Image
               source={{ uri: video.snippet.thumbnails.medium.url }}
               style={{

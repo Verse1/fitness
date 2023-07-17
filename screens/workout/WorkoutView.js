@@ -59,9 +59,9 @@ function WorkoutView({ route, navigation }) {
           <Feather name="download" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      {workoutExercises.map((exercise) => (
+      {workoutExercises.map((exercise, index) => (
         <ExerciseCard
-          key={exercise.id}
+          key={index}
           exercise={exercise}
           handleAddSet={handleAddSet}
           handleDeleteSet={handleDeleteSet}

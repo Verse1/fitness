@@ -59,14 +59,14 @@ function AddWorkout({ route }) {
     }
 
     const workout = {
-      // Change here if you want to change the name in schema
+      // Change here if you want to change names in schema
       name: workoutName,
       notes: notes,
       exercises: exercises.map((exercise) => ({
         name: exercise.name,
         sets: exercise.sets.map((set) => ({
-          reps: set.reps,
-          weight: set.weight,
+          reps: set.reps === "" ? 0 : set.reps,
+          weight: set.weight === "" ? 0 : set.weight,
         })),
       })),
     };
@@ -82,7 +82,13 @@ function AddWorkout({ route }) {
         throw new Error(response.data.error);
       }
 
-      navigation.navigate("Workout", { newWorkout: workout });
+      // Give elon musk my number
+      const savedWorkout = {
+        ...workout,
+        _id: response.data._id,
+      };
+
+      navigation.navigate("Workout", { newWorkout: savedWorkout });
     } catch (error) {
       console.error("Error creating workout:", error);
       Alert.alert("Sorry", "Your workout is so trash we cant save it");

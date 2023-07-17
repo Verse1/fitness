@@ -11,46 +11,72 @@ import {
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
 
-const categoryApiMapping = {
-  legs: ["upper%20legs", "lower%20legs"],
-  arms: ["upper%20arms", "lower%20arms"],
-  abs: ["waist"],
-  other: ["neck"],
-};
+// const categoryApiMapping = {
+//   legs: ["upper%20legs", "lower%20legs"],
+//   arms: ["upper%20arms", "lower%20arms"],
+//   abs: ["waist"],
+//   other: ["neck"],
+// };
 
-function ExercisesModal({ visible, onClose, selectedCategory, onAddExercise }) {
+// Removed selectedCategory from props
+function ExercisesModal({ visible, onClose, onAddExercise }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiCategories = ["biceps"];
-        let allData = [];
-
-        for (const apiCategory of apiCategories) {
-          const response = await axios.get(
-            `https://exercises-by-api-ninjas.p.rapidapi.com/v1/exercises`,
-            {
-              headers: {
-                "x-rapidapi-key": "3be595a465mshf6ee17a5dee2e17p159202jsn088a3d431df3",
-                "x-rapidapi-host": "exercises-by-api-ninjas.p.rapidapi.com",
-              },
-              params: { muscle: apiCategories },
-            }
-          );
-          if (response && response.data) {
-            allData = [...allData, ...response.data];
+        const response = await axios.get(
+          `https://exercises-by-api-ninjas.p.rapidapi.com/v1/exercises`,
+          {
+            headers: {
+              "x-rapidapi-key": "3be595a465mshf6ee17a5dee2e17p159202jsn088a3d431df3",
+              "x-rapidapi-host": "exercises-by-api-ninjas.p.rapidapi.com",
+            },
+            params: { muscle: "biceps" },
           }
-        }
+        );
 
-        setData(allData);
+        if (response && response.data) {
+          setData(response.data);
+        }
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchData();
-  }, [selectedCategory]);
+  }, []);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const apiCategories = ["biceps"];
+  //       let allData = [];
+
+  //       for (const apiCategory of apiCategories) {
+  //         const response = await axios.get(
+  //           `https://exercises-by-api-ninjas.p.rapidapi.com/v1/exercises`,
+  //           {
+  //             headers: {
+  //               "x-rapidapi-key": "3be595a465mshf6ee17a5dee2e17p159202jsn088a3d431df3",
+  //               "x-rapidapi-host": "exercises-by-api-ninjas.p.rapidapi.com",
+  //             },
+  //             params: { muscle: apiCategories },
+  //           }
+  //         );
+  //         if (response && response.data) {
+  //           allData = [...allData, ...response.data];
+  //         }
+  //       }
+
+  //       setData(allData);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [selectedCategory]);
 
   const handleExerciseSelect = (item) => {
     onAddExercise(item);
@@ -72,12 +98,12 @@ function ExercisesModal({ visible, onClose, selectedCategory, onAddExercise }) {
           </View>
           <FlatList
             data={data}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <TouchableOpacity onPress={() => handleExerciseSelect(item)}>
                 <Text style={styles.exerciseName}>{item.name}</Text>
               </TouchableOpacity>
             )}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item, index) => item.id || index.toString()}
           />
         </View>
       </SafeAreaView>

@@ -17,16 +17,12 @@ import LogButton from "../../components/LogButton";
 import Calendar from "../../components/CalendarContainer";
 import axios from "axios";
 
-function Workout({ deleteBox, route }) {
+function Workout({ route }) {
   const navigation = useNavigation();
   const newWorkout = route.params?.newWorkout;
 
   const [localWorkouts, setLocalWorkouts] = useState([]);
   const [state] = useContext(AuthContext);
-
-  // The WorkoutNames
-  const workouts = localWorkouts.map((workout) => workout.name);
-  const workoutIds = localWorkouts.map((workout) => workout._id);
 
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
@@ -51,6 +47,12 @@ function Workout({ deleteBox, route }) {
 
     fetchWorkouts();
   }, []);
+
+  // useEffect(() => {
+  //   if (newWorkout && newWorkout._id) {
+  //     setLocalWorkouts((prevWorkouts) => [...prevWorkouts, newWorkout]);
+  //   }
+  // }, [newWorkout]);
 
   const handleGoToGeneratedWorkout = () => {
     navigation.navigate("Loading");
@@ -82,18 +84,23 @@ function Workout({ deleteBox, route }) {
   };
 
   const onDeleteHandler = async (index) => {
-    try {
-      const workoutToDelete = localWorkouts[index];
+    const workoutToDelete = localWorkouts[index];
+    console.log("Deleting workout with ID: ", workoutToDelete._id);
 
-      await axios.delete(`http://localhost:8000/api/workout/${workoutToDelete._id}`, {
-        data: { userId: state.user._id },
-      });
+    if (workoutToDelete._id) {
+      try {
+        await axios.delete(`http://localhost:8000/api/workout/${workoutToDelete._id}`, {
+          data: { userId: state.user._id },
+        });
 
-      setLocalWorkouts((prevWorkouts) =>
-        prevWorkouts.filter((workout) => workout._id !== workoutToDelete._id)
-      );
-    } catch (error) {
-      console.error("Error deleting workout:", error);
+        setLocalWorkouts((prevWorkouts) =>
+          prevWorkouts.filter((workout) => workout._id !== workoutToDelete._id)
+        );
+      } catch (error) {
+        console.error("Error deleting workout:", error);
+      }
+    } else {
+      console.error("Cannot delete workout with undefined ID");
     }
   };
 

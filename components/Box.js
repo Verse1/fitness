@@ -74,9 +74,17 @@ const Box = ({ box, isLastBox, handleGoToWorkoutView, onDeleteBox }) => {
           transform: [{ translateX: shakeAnimation }],
           justifyContent: "center",
           alignItems: "center",
+          flex: 1,
         }}>
         <Text style={styles.boxText}>{box}</Text>
-        {longPress && <Feather name="trash-2" size={80} color="#fff" />}
+        {longPress && (
+          <Feather
+            name="trash-2"
+            size={80}
+            color="#fff"
+            style={{ position: "absolute", top: 10 }}
+          />
+        )}
       </Animated.View>
     </TouchableOpacity>
   );

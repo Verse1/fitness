@@ -261,24 +261,10 @@ const Nutrition = () => {
           <Text style={{ fontSize: 20, fontWeight: "700", paddingLeft: 5 }}>
             Logged Food
           </Text>
-<<<<<<< HEAD
           {foodArray && foodArray.length > 0 &&  foodArray.map((item, index) => (
             <FoodLogged  foodName={capitalizeFirstChar(item.foodName)} calories={Math.floor(item.calories)} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} maxCarbs={dailyCarbs} maxProtein={dailyProtein} maxFats={dailyFats} />
           ))}
-=======
-          {foodArray &&
-            foodArray.length > 0 &&
-            foodArray.map((item, index) => (
-              <FoodLogged
-                foodName={capitalizeFirstChar(item.foodName)}
-                calories={Math.floor(item.calories)}
-                serving={item.servingAmount}
-                protein={item.protein}
-                carbs={item.carbs}
-                fats={item.fats}
-              />
-            ))}
->>>>>>> 43ea0d85766497195148e787c883c74a741c8077
+
         </View>
 
         <View style={{ paddingTop: screenHeight * 0.05, paddingLeft: 10 }}>

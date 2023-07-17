@@ -40,7 +40,6 @@ const Credentials = () => {
     userFats,
   } = route.params;
 
-
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

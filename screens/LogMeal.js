@@ -141,11 +141,26 @@ const LogMeal = () => {
           onSubmitEditing={() => handleTextInputSubmit()}
         />
       </View>
-      <View style={{ paddingLeft: screenWidth * 0.055, paddingTop: screenHeight * 0.03, backgroundColor: "#00A3FF", height: "100%", marginTop: screenHeight * 0.05, borderTopRightRadius: "50%", borderTopLeftRadius: "50%"}}>
-        <Text style={{ fontSize: screenWidth * 0.06, fontWeight: "700", color: 'white', paddingLeft: screenWidth * 0.02 }}>
+      <View
+        style={{
+          paddingLeft: screenWidth * 0.055,
+          paddingTop: screenHeight * 0.03,
+          backgroundColor: "#00A3FF",
+          height: "100%",
+          marginTop: screenHeight * 0.05,
+          borderTopRightRadius: "50%",
+          borderTopLeftRadius: "50%",
+        }}>
+        <Text
+          style={{
+            fontSize: screenWidth * 0.06,
+            fontWeight: "700",
+            color: "white",
+            paddingLeft: screenWidth * 0.02,
+          }}>
           Search Results
         </Text>
-        <View style={{ paddingTop: screenHeight * 0.01, }}>
+        <View style={{ paddingTop: screenHeight * 0.01 }}>
           {foodArray.map((foodItem) => {
             const proteinNutrient = foodItem.nutrition.nutrients.find(
               (nutrient) => nutrient.name === "Protein"

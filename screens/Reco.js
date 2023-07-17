@@ -9,7 +9,7 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
-  Animated
+  Animated,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -31,56 +31,51 @@ const Reco = () => {
   const navigation = useNavigation();
   const [suggestions, setSuggestions] = useState([]);
   const [state, setState] = useContext(AuthContext);
-  const [foodArray, setFoodArray] = useState([])
-  const [weekArray, setWeekArray] = useState([])
+  const [foodArray, setFoodArray] = useState([]);
+  const [weekArray, setWeekArray] = useState([]);
 
-  const [dailyProtein, setDailyProtein] = useState(0)
-  const [dailyCarbs, setDailyCarbs] = useState(0)
-  const [dailyFats, setDailyFats] = useState(0)
-  const [dailyCalories, setDailyCalories] = useState(0)
+  const [dailyProtein, setDailyProtein] = useState(0);
+  const [dailyCarbs, setDailyCarbs] = useState(0);
+  const [dailyFats, setDailyFats] = useState(0);
+  const [dailyCalories, setDailyCalories] = useState(0);
 
-  const fadeAnim = useRef(new Animated.Value(0)).current
-  const [selectedItem, setSelectedItem] = useState(null)
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  const handleItemClick = (item) =>{
-    setSelectedItem(item)
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
     fadeAnim.setValue(0);
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 500, 
-      useNativeDriver: true
-    }).start()
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
   };
 
-  const isItemSelected = (item) =>{
-    return selectedItem === item 
-  }
-
+  const isItemSelected = (item) => {
+    return selectedItem === item;
+  };
 
   const [input, setInput] = useState("");
   const [text, setText] = useState("");
 
   useEffect(() => {
     if (state) {
-      setFoodArray(state.user.dailyFood)
-      setWeekArray(state.user.weeklyFood)
-      
-      setDailyCalories(state.user.dailyCalories)
-      setDailyProtein(state.user.dailyProtein)
-      setDailyCarbs(state.user.dailyCarbs)
-      setDailyFats(state.user.dailyFats)
+      setFoodArray(state.user.dailyFood);
+      setWeekArray(state.user.weeklyFood);
+
+      setDailyCalories(state.user.dailyCalories);
+      setDailyProtein(state.user.dailyProtein);
+      setDailyCarbs(state.user.dailyCarbs);
+      setDailyFats(state.user.dailyFats);
     }
   }, [state]);
-
-
-
 
 
   const totalProtein = foodArray.reduce((sum, item) => sum + item.protein, 0);
   const totalCarbs = foodArray.reduce((sum, item) => sum + item.carbs, 0);
   const totalFats = foodArray.reduce((sum, item) => sum + item.fats, 0);
   const totalCals = foodArray.reduce((sum, item) => sum + item.calories, 0);
-
 
   // Fetch data from Spoon API
   const fetchData = (value) => {
@@ -176,17 +171,23 @@ const Reco = () => {
       </Text>
       <View style={{ flexDirection: "row", paddingTop: screenHeight * 0.05 }}>
         <View style={{ paddingLeft: screenWidth * 0.1 }}>
-          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>{dailyCarbs - Math.floor(totalCarbs)}g</Text>
+          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>
+            {dailyCarbs - Math.floor(totalCarbs)}g
+          </Text>
           <Text style={{ fontSize: screenWidth * 0.045, fontWeight: "700" }}>Carbs</Text>
         </View>
 
         <View style={{ paddingLeft: screenWidth * 0.2 }}>
-          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>{dailyProtein - Math.floor(totalProtein)}g</Text>
+          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>
+            {dailyProtein - Math.floor(totalProtein)}g
+          </Text>
           <Text style={{ fontSize: screenWidth * 0.04, fontWeight: "700" }}>Protien</Text>
         </View>
 
         <View style={{ paddingLeft: screenWidth * 0.2 }}>
-          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>{dailyFats - Math.floor(totalFats)}g</Text>
+          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>
+            {dailyFats - Math.floor(totalFats)}g
+          </Text>
           <Text style={{ fontSize: screenWidth * 0.045, fontWeight: "700" }}>Fat</Text>
         </View>
       </View>
@@ -201,38 +202,43 @@ const Reco = () => {
         left...
       </Text>
 
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
         <View style={styles.barContainer}>
-          <TouchableOpacity 
-          style={[styles.item, isItemSelected(1) && styles.selectedItem, {
-            opacity: isItemSelected(1) ? fadeAnim : 1
-          }]}
-          onPress={() => handleItemClick(1)}
-          >
-            <Text style={{color: 'white', fontSize: 20, fontWeight: '700'}}>1</Text>
+          <TouchableOpacity
+            style={[
+              styles.item,
+              isItemSelected(1) && styles.selectedItem,
+              {
+                opacity: isItemSelected(1) ? fadeAnim : 1,
+              },
+            ]}
+            onPress={() => handleItemClick(1)}>
+            <Text style={{ color: "white", fontSize: 20, fontWeight: "700" }}>1</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-          style={[styles.item, isItemSelected(2) && styles.selectedItem, {
-            opacity: isItemSelected(2) ? fadeAnim : 2
-          }]}
-          onPress={() => handleItemClick(2)}
-          >
-            <Text style={{color: 'white', fontSize: 20, fontWeight: '700'}}>2</Text>
+          <TouchableOpacity
+            style={[
+              styles.item,
+              isItemSelected(2) && styles.selectedItem,
+              {
+                opacity: isItemSelected(2) ? fadeAnim : 2,
+              },
+            ]}
+            onPress={() => handleItemClick(2)}>
+            <Text style={{ color: "white", fontSize: 20, fontWeight: "700" }}>2</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-          style={[styles.item, isItemSelected(3) && styles.selectedItem, {
-            opacity: isItemSelected(3) ? fadeAnim : 3
-          }]}
-          onPress={() => handleItemClick(3)}
-          >
-            <Text style={{color: 'white', fontSize: 20, fontWeight: '700'}}>3</Text>
+          <TouchableOpacity
+            style={[
+              styles.item,
+              isItemSelected(3) && styles.selectedItem,
+              {
+                opacity: isItemSelected(3) ? fadeAnim : 3,
+              },
+            ]}
+            onPress={() => handleItemClick(3)}>
+            <Text style={{ color: "white", fontSize: 20, fontWeight: "700" }}>3</Text>
           </TouchableOpacity>
-          
-        
-          
-
         </View>
       </View>
 
@@ -311,24 +317,23 @@ const styles = StyleSheet.create({
     marginLeft: screenWidth * 0.2,
     marginTop: screenHeight * 0.05,
   },
-  barContainer:{
-    width: '80%',
+  barContainer: {
+    width: "80%",
     height: screenHeight * 0.05,
     backgroundColor: "#00A3FF",
     borderRadius: 25,
     marginTop: 40,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
-  item:{
+  item: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-
+    justifyContent: "center",
+    alignItems: "center",
   },
-  selectedItem:{
-    backgroundColor: 'green',
-    borderRadius: 25
-  }
+  selectedItem: {
+    backgroundColor: "green",
+    borderRadius: 25,
+  },
 });
 
 export default Reco;

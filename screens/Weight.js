@@ -47,7 +47,6 @@ const weightTracking = () => {
     const currentDate = today.toDateString();
     navigation.navigate("InputWeight");
 
-
     // if (
     //   weightArray.length > 0 &&
     //   weightArray[weightArray.length - 1].date ===
@@ -66,7 +65,6 @@ const weightTracking = () => {
       // console.log(weightArray)
     }
   }, [state]);
-
 
   let labels = [];
   let dataPoints = [];
@@ -130,15 +128,27 @@ const weightTracking = () => {
         <View style={styles.weightHistory}>
           <Text style={styles.historyTitle}>Weight History</Text>
           <View style={styles.weightBars}>
-          {weightArray
+            {weightArray
               .slice()
               .reverse()
               .map((item, index) => {
-                console.log(index)
+                console.log(index);
                 if (index === 0) {
-                  return <WeightBar date={item.date} weight={item.weight} change={item.changeWeight}/>;
+                  return (
+                    <WeightBar
+                      date={item.date}
+                      weight={item.weight}
+                      change={item.changeWeight}
+                    />
+                  );
                 } else {
-                  return <WeightBar date={item.date} weight={item.weight} change={item.changeWeight}  />;
+                  return (
+                    <WeightBar
+                      date={item.date}
+                      weight={item.weight}
+                      change={item.changeWeight}
+                    />
+                  );
                 }
               })}
           </View>

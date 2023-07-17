@@ -21,5 +21,4 @@ router.post("/addWeight", addWeight);
 router.post("/addFood", addFood);
 router.post("/macros", macros);
 
-
 export default router;

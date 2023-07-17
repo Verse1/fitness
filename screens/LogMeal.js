@@ -9,9 +9,10 @@ import {
   Pressable,
   Alert,
 } from "react-native";
-import React, { useLayoutEffect, useState, useEffect } from "react";
+import React, { useLayoutEffect, useState, useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import SearchLog from "../components/SearchLog";
+import { AuthContext } from "../context/auth";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -27,6 +28,14 @@ const LogMeal = () => {
   const [foodArray, setFoodArray] = useState([]);
   const [amount, setAmount] = useState("");
   const [fixedAmount, setFixedAmount] = useState("");
+
+
+  const [dailyProtein, setDailyProtein] = useState(0)
+  const [dailyCarbs, setDailyCarbs] = useState(0)
+  const [dailyFats, setDailyFats] = useState(0)
+  const [dailyCalories, setDailyCalories] = useState(0)
+
+  const [state, setState] = useContext(AuthContext);
 
   const showAlert = () => {
     Alert.alert(
@@ -80,6 +89,18 @@ const LogMeal = () => {
       headerShown: false,
     });
   }, [navigation]); // re-run effect if navigation object changes
+
+  useEffect(() => {
+    if (state) {
+
+      
+      setDailyCalories(state.user.dailyCalories)
+      setDailyProtein(state.user.dailyProtein)
+      setDailyCarbs(state.user.dailyCarbs)
+      setDailyFats(state.user.dailyFats)
+
+    }
+  }, [state]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -154,6 +175,9 @@ const LogMeal = () => {
                 // fat={200}
                 serving={fixedAmount}
                 calories={calories ? calories.amount : 0}
+                maxProtein={dailyProtein}
+                maxCarbs={dailyCarbs}
+                maxFats={dailyFats}
               />
             );
           })}

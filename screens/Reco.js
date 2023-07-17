@@ -75,6 +75,7 @@ const Reco = () => {
 
 
 
+
   const totalProtein = foodArray.reduce((sum, item) => sum + item.protein, 0);
   const totalCarbs = foodArray.reduce((sum, item) => sum + item.carbs, 0);
   const totalFats = foodArray.reduce((sum, item) => sum + item.fats, 0);
@@ -104,8 +105,11 @@ const Reco = () => {
     }
   };
 
-  const handleButtonPress = (item) => {
-    setSuggestions([...suggestions, item]);
+  
+
+  const handleButtonPress = () => {
+    // setSuggestions([...suggestions, item]);
+    navigation.navigate("GeneratedMeals")
   };
 
   useLayoutEffect(() => {
@@ -233,7 +237,7 @@ const Reco = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("GeneratedMeals")}
+        onPress={() => handleButtonPress()}
         style={styles.button}>
         <Text style={{ color: "white", fontSize: 22.5, fontWeight: "600" }}>
           Close your rings

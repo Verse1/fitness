@@ -59,7 +59,7 @@ const FoodLogged = (props) => {
   const [visible, setVisible] = useState(false);
   const data = {
     labels: ["Protien"], // optional
-    data: [props.protein / 250],
+    data: [Math.min(props.protein, props.maxProtein) / props.maxProtein],
     colors: ["red"],
   };
 
@@ -76,7 +76,7 @@ const FoodLogged = (props) => {
 
   const dataC = {
     labels: ["Carbs"], // optional
-    data: [props.carbs / 250],
+    data: [Math.min(props.carbs, props.maxCarbs) / props.maxCarbs],
     colors: ["green"],
   };
 
@@ -93,7 +93,7 @@ const FoodLogged = (props) => {
 
   const dataF = {
     labels: ["Fats"], // optional
-    data: [props.fats / 250],
+    data: [Math.min(props.fats, props.maxFats) / props.maxFats],
     colors: ["blue"],
   };
 
@@ -173,7 +173,7 @@ const FoodLogged = (props) => {
                   paddingLeft: 20,
                   fontSize: 12.5,
                 }}>
-                {props.protein}/290g
+                {Math.floor(props.protein)}/{props.maxProtein}g
               </Text>
             </View>
           </View>
@@ -201,7 +201,7 @@ const FoodLogged = (props) => {
                   paddingLeft: 20,
                   fontSize: 12.5,
                 }}>
-                {props.carbs}/290g
+                {Math.floor(props.carbs)}/{props.maxCarbs}g
               </Text>
             </View>
           </View>
@@ -226,10 +226,10 @@ const FoodLogged = (props) => {
                 style={{
                   color: "gray",
                   fontWeight: "bold",
-                  paddingLeft: 20,
+                  paddingLeft: 25,
                   fontSize: 12.5,
                 }}>
-                {props.fats}/290g
+                {Math.floor(props.fats)}/{props.maxFats}g
               </Text>
             </View>
           </View>

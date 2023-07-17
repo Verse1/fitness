@@ -59,11 +59,10 @@ const Nutrition = () => {
 
 
 
-  const totalProtein = foodArray.reduce((sum, item) => sum + item.protein, 0);
-  const totalCarbs = foodArray.reduce((sum, item) => sum + item.carbs, 0);
-  const totalFats = foodArray.reduce((sum, item) => sum + item.fats, 0);
-  const totalCals = foodArray.reduce((sum, item) => sum + item.calories, 0);
-
+  const totalProtein = Math.min(foodArray.reduce((sum, item) => sum + item.protein, 0), dailyProtein);
+  const totalCarbs = Math.min(foodArray.reduce((sum, item) => sum + item.carbs, 0), dailyCarbs);
+  const totalFats = Math.min(foodArray.reduce((sum, item) => sum + item.fats, 0), dailyFats);
+  const totalCals = Math.min(foodArray.reduce((sum, item) => sum + item.calories, 0), dailyCalories);
 
   const proteinRatio = dailyProtein !== 0 ? totalProtein / dailyProtein : 0;
   const carbsRatio = dailyCarbs !== 0 ? totalCarbs / dailyCarbs : 0;
@@ -179,7 +178,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "red", fontWeight: "bold" }}>Protein</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(totalProtein)}/{dailyProtein}g
+                {Math.floor(foodArray.reduce((sum, item) => sum + item.protein, 0))}/{dailyProtein}g
               </Text>
             </View>
           </View>
@@ -204,7 +203,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "green", fontWeight: "bold" }}>Carbs</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(totalCarbs)}/{dailyCarbs}g
+                {Math.floor(foodArray.reduce((sum, item) => sum + item.carbs, 0))}/{dailyCarbs}g
               </Text>
             </View>
           </View>
@@ -230,7 +229,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "blue", fontWeight: "bold" }}>Fat</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(totalFats)}/{dailyFats}g
+                {Math.floor(foodArray.reduce((sum, item) => sum + item.fats, 0))}/{dailyFats}g
               </Text>
             </View>
           </View>
@@ -255,7 +254,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "orange", fontWeight: "bold" }}>Calories</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(totalCals)}/{dailyCalories}
+                {Math.floor(foodArray.reduce((sum, item) => sum + item.calories, 0))}/{dailyCalories}
               </Text>
             </View>
           </View>
@@ -266,7 +265,7 @@ const Nutrition = () => {
             Logged Food
           </Text>
           {foodArray && foodArray.length > 0 &&  foodArray.map((item, index) => (
-            <FoodLogged  foodName={capitalizeFirstChar(item.foodName)} calories={Math.floor(item.calories)} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} />
+            <FoodLogged  foodName={capitalizeFirstChar(item.foodName)} calories={Math.floor(item.calories)} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} maxCarbs={dailyCarbs} maxProtein={dailyProtein} maxFats={dailyFats} />
           ))}
         </View>
 

@@ -255,7 +255,7 @@ const ExpandingButtons = (props) => {
       </Animated.View>
 
       <Animated.View style={[styles.circle, { bottom: icon_2 }]}>
-        <TouchableOpacity onPress={() => navigation.navigate("Reco")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Reco", {protein: props.protein, carbs: props.carbs, fats: props.fats})}>
           <Icon name="cloud-upload" size={25} color="white" />
         </TouchableOpacity>
       </Animated.View>

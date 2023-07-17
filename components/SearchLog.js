@@ -28,7 +28,7 @@ const SearchLog = (props) => {
 
   const data = {
     labels: ["Protien"], // optional
-    data: [props.protein / 250],
+    data: [props.protein / props.maxProtein],
     colors: ["red"],
   };
 
@@ -45,7 +45,7 @@ const SearchLog = (props) => {
 
   const dataC = {
     labels: ["Carbs"], // optional
-    data: [props.carbs / 250],
+    data: [props.carbs / props.maxCarbs],
     colors: ["green"],
   };
 
@@ -62,7 +62,7 @@ const SearchLog = (props) => {
 
   const dataF = {
     labels: ["Fats"], // optional
-    data: [props.fat / 250],
+    data: [props.fat / props.maxFats],
     colors: ["blue"],
   };
 
@@ -217,7 +217,7 @@ const SearchLog = (props) => {
                           fontSize: 12.5,
                         }}
                       >
-                        {Math.floor(props.protein)}/290g
+                        {Math.floor(props.protein)}/{props.maxProtein}g
                       </Text>
                     </View>
                   </View>
@@ -246,7 +246,7 @@ const SearchLog = (props) => {
                           fontSize: 12.5,
                         }}
                       >
-                        {Math.floor(props.carbs)}/290g
+                        {Math.floor(props.carbs)}/{props.maxCarbs}g
                       </Text>
                     </View>
                   </View>
@@ -271,11 +271,11 @@ const SearchLog = (props) => {
                         style={{
                           color: "gray",
                           fontWeight: "bold",
-                          paddingLeft: 10,
+                          paddingLeft: 15,
                           fontSize: 12.5,
                         }}
                       >
-                        {Math.floor(props.fat)}/290g
+                        {Math.floor(props.fat)}/{props.maxFats}g
                       </Text>
                     </View>
                   </View>

@@ -29,6 +29,27 @@ exports.createWorkout = async (req, res) => {
   }
 };
 
+exports.fetchWorkouts = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const workouts = await Workout.find({
+      _id: { $in: user.workouts },
+    });
+    console.log(JSON.stringify(workouts, null, 2));
+    res.status(200).json(workouts);
+  } catch (error) {
+    console.error("Error in fetchWorkouts:", error);
+    res.status(500).send(error);
+  }
+};
+
 // exports.deleteWorkout = async (req, res) => {
 //   try {
 //     const { workoutId, userId } = req.body;

@@ -1,61 +1,52 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import ExerciseCard from "../../components/ExerciseCard";
 import { createUUID } from "../../utils/generateUUID";
+import ExerciseCard from "../../components/ExerciseCard";
 
 function WorkoutView({ route, navigation }) {
-  const { workoutName } = route.params;
-
-  const [exercises, setExercises] = useState([
-    {
-      id: createUUID(),
-      name: "Exercise 1",
-      sets: [
-        { id: createUUID(), name: "Set 1" },
-        { id: createUUID(), name: "Set 2" },
-      ],
-    },
-    {
-      id: createUUID(),
-      name: "Exercise 2",
-      sets: [
-        { id: createUUID(), name: "Set 1" },
-        { id: createUUID(), name: "Set 2" },
-      ],
-    },
-  ]);
+  const { workoutName, workoutExercises } = route.params;
 
   const handleStartWorkout = () => {};
+
+  // const handleAddExercise = () => {};
 
   const handleGoBack = () => {
     navigation.goBack();
   };
 
-  const handleAddExercise = () => {};
+  const handleAddSet = (exerciseId) => {};
+  const handleDeleteSet = (exerciseId) => {};
 
-  const handleAddSet = (exerciseId) => {
-    setExercises(
-      exercises.map((exercise) => {
-        if (exercise.id === exerciseId) {
-          const newSet = { id: createUUID(), name: `Set ${exercise.sets.length + 1}` };
-          return { ...exercise, sets: [...exercise.sets, newSet] };
-        }
-        return exercise;
-      })
-    );
-  };
+  // const handleAddSet = (exerciseId) => {
+  //   setExercises(
+  //     exercises.map((exercise) => {
+  //       if (exercise._id === exerciseId) {
+  //         const newSet = {
+  //           _id: createUUID(),
+  //           reps: 0,
+  //           weight: 0,
+  //         };
+  //         return { ...exercise, sets: [...exercise.sets, newSet] };
+  //       }
+  //       return exercise;
+  //     })
+  //   );
+  // };
 
-  const handleDeleteSet = (exerciseId, setId) => {
-    setExercises(
-      exercises.map((exercise) => {
-        if (exercise.id === exerciseId) {
-          return { ...exercise, sets: exercise.sets.filter((set) => set.id !== setId) };
-        }
-        return exercise;
-      })
-    );
-  };
+  // const handleDeleteSet = (exerciseId, setId) => {
+  //   setExercises(
+  //     exercises.map((exercise) => {
+  //       if (exercise._id === exerciseId) {
+  //         return {
+  //           ...exercise,
+  //           sets: exercise.sets.filter((set) => set._id !== setId),
+  //         };
+  //       }
+  //       return exercise;
+  //     })
+  //   );
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -68,24 +59,16 @@ function WorkoutView({ route, navigation }) {
           <Feather name="download" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      {exercises.map((exercise) => (
-        <View key={exercise.id} style={styles.card}>
-          <Text style={styles.cardTitle}>{exercise.name}</Text>
-          {exercise.sets.map((set) => (
-            <ExerciseCard
-              key={set.id}
-              data={set.name}
-              onDelete={() => handleDeleteSet(exercise.id, set.id)}
-            />
-          ))}
-          <TouchableOpacity
-            style={styles.addSetButton}
-            onPress={() => handleAddSet(exercise.id)}>
-            <Text style={styles.addSetText}>Add Set</Text>
-          </TouchableOpacity>
-        </View>
+      {workoutExercises.map((exercise) => (
+        <ExerciseCard
+          key={exercise.id}
+          exercise={exercise}
+          handleAddSet={handleAddSet}
+          handleDeleteSet={handleDeleteSet}
+        />
       ))}
-      <TouchableOpacity style={styles.addExerciseButton} onPress={handleAddExercise}>
+      {/* Removed handleAddExercise from onPress */}
+      <TouchableOpacity style={styles.addExerciseButton}>
         <Text style={styles.buttonText}>Add Exercise</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.startWorkoutButton} onPress={handleStartWorkout}>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -17,32 +17,50 @@ import LogButton from "../../components/LogButton";
 import Calendar from "../../components/CalendarContainer";
 import axios from "axios";
 
-// Calls to Backend :
-// 1. When user signs in get all workouts for user
-// Inside all of these workouts there will be a list of exercises
-// Each exercise has a list of sets
-// Each list of sets has a weight recorded and a number of reps
-// 2. When User presses generate workout get all templates for user
-// 3. Get users workout split
-
-// Add route here when you uncomment
-function Workout({ deleteBox }) {
+function Workout({ deleteBox, route }) {
   const navigation = useNavigation();
-  // const newWorkout = route.params?.newWorkout;
+  const newWorkout = route.params?.newWorkout;
 
+  const [localWorkouts, setLocalWorkouts] = useState([]);
   const [state] = useContext(AuthContext);
-  const workouts = state.user.workouts.map((workout) => workout.workoutName);
-  // const workoutIds = state.user.workouts.map((workout) => workout._id);
+
+  // The WorkoutNames
+  const workouts = localWorkouts.map((workout) => workout.name);
+  const workoutIds = localWorkouts.map((workout) => workout._id);
 
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
+
+  useEffect(() => {
+    if (newWorkout) {
+      setLocalWorkouts((prevWorkouts) => [...prevWorkouts, newWorkout]);
+    }
+  }, [newWorkout]);
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/workout/${state.user._id}`
+        );
+        setLocalWorkouts(response.data);
+      } catch (error) {
+        console.error("Error fetching workouts:", error);
+      }
+    };
+
+    fetchWorkouts();
+  }, []);
 
   const handleGoToGeneratedWorkout = () => {
     navigation.navigate("Loading");
   };
 
-  const handleGoToWorkoutView = (workoutName) => {
-    navigation.navigate("WorkoutView", { workoutName });
+  const handleGoToWorkoutView = (workout) => {
+    navigation.navigate("WorkoutView", {
+      workoutName: workout.name,
+      workoutExercises: workout.exercises,
+    });
   };
 
   const handleGoToCalendar = (day) => {
@@ -87,17 +105,18 @@ function Workout({ deleteBox }) {
           </View>
           <Calendar handleGoToCalendar={handleGoToCalendar} selectedDay={selectedDay} />
           <View style={styles.listContainer}>
-            {workouts.length === 0 && (
+            {localWorkouts.length === 0 && (
               <Text style={styles.noWorkoutsText}>
                 You have no workouts, create a new template or generate one!
               </Text>
             )}
-
-            {workouts.map((workout, index) => (
+            {localWorkouts.map((workout, index) => (
               <Boxes
-                box={workout}
                 key={index}
-                isLastBox={workouts.length % 2 !== 0 && index === workouts.length - 1}
+                box={workout.name}
+                isLastBox={
+                  localWorkouts.length % 2 !== 0 && index === localWorkouts.length - 1
+                }
                 handleGoToWorkoutView={() => handleGoToWorkoutView(workout)}
                 onDeleteBox={() => onDeleteHandler(index)}
               />

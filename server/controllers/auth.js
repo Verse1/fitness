@@ -91,7 +91,7 @@ export const signin = async (req, res) => {
     // If the password matches, continue with further logic
 
     //Added this line
-    user = await User.findOne({ email }).populate("workouts", "workoutName");
+    user = await User.findOne({ email }).populate("workouts", "name");
 
     //create signed token
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {

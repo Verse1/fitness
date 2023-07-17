@@ -24,17 +24,18 @@ function ExercisesModal({ visible, onClose, selectedCategory, onAddExercise }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiCategories = categoryApiMapping[selectedCategory] || [selectedCategory];
+        const apiCategories = ["biceps"];
         let allData = [];
 
         for (const apiCategory of apiCategories) {
           const response = await axios.get(
-            `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${apiCategory}`,
+            `https://exercises-by-api-ninjas.p.rapidapi.com/v1/exercises`,
             {
               headers: {
-                "x-rapidapi-key": "da649500b0mshb1e7de48cddfd80p1378b5jsnb0aa765842fe",
-                "x-rapidapi-host": "exercisedb.p.rapidapi.com",
+                "x-rapidapi-key": "3be595a465mshf6ee17a5dee2e17p159202jsn088a3d431df3",
+                "x-rapidapi-host": "exercises-by-api-ninjas.p.rapidapi.com",
               },
+              params: { muscle: apiCategories },
             }
           );
           if (response && response.data) {

@@ -59,6 +59,7 @@ function AddWorkout({ route }) {
     }
 
     const workout = {
+      // Change here if you want to change the name in schema
       name: workoutName,
       notes: notes,
       exercises: exercises.map((exercise) => ({

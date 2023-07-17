@@ -26,47 +26,72 @@ import DayLogged from "../components/DayLogged";
 
 const Nutrition = () => {
   const [state, setState] = useContext(AuthContext);
+  
+  const [foodArray, setFoodArray] = useState([])
+  const [weekArray, setWeekArray] = useState([])
 
-  const [foodArray, setFoodArray] = useState([]);
-  const [weekArray, setWeekArray] = useState([]);
+  const [dailyProtein, setDailyProtein] = useState(0)
+  const [dailyCarbs, setDailyCarbs] = useState(0)
+  const [dailyFats, setDailyFats] = useState(0)
+  const [dailyCalories, setDailyCalories] = useState(0)
+
+  function capitalizeFirstChar(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
 
   const navigation = useNavigation();
 
-  console.log(foodArray);
 
   useEffect(() => {
     if (state) {
-      setFoodArray(state.user.dailyFood);
-      setWeekArray(state.user.weeklyFood);
+      setFoodArray(state.user.dailyFood)
+      setWeekArray(state.user.weeklyFood)
+      
+      setDailyCalories(state.user.dailyCalories)
+      setDailyProtein(state.user.dailyProtein)
+      setDailyCarbs(state.user.dailyCarbs)
+      setDailyFats(state.user.dailyFats)
+
     }
   }, [state]);
+
+
+
 
   const totalProtein = foodArray.reduce((sum, item) => sum + item.protein, 0);
   const totalCarbs = foodArray.reduce((sum, item) => sum + item.carbs, 0);
   const totalFats = foodArray.reduce((sum, item) => sum + item.fats, 0);
   const totalCals = foodArray.reduce((sum, item) => sum + item.calories, 0);
 
+
+  const proteinRatio = dailyProtein !== 0 ? totalProtein / dailyProtein : 0;
+  const carbsRatio = dailyCarbs !== 0 ? totalCarbs / dailyCarbs : 0;
+  const fatsRatio = dailyFats !== 0 ? totalFats / dailyFats : 0;
+  const calsRatio = dailyCalories !== 0 ? totalCals / dailyCalories : 0;
+
+
   const data = {
     labels: ["Protein"], // optional
-    data: [totalProtein / 250],
+    data: [ proteinRatio],
     colors: ["red"],
   };
 
   const dataC = {
     labels: ["Carbs"], // optional
-    data: [totalCarbs / 250],
+    data: [carbsRatio],
     colors: ["green"],
   };
 
   const dataF = {
     labels: ["Fats"], // optional
-    data: [totalFats / 250],
+    data: [fatsRatio],
     colors: ["blue"],
   };
 
   const dataCals = {
     labels: ["Cals"], // optional
-    data: [totalCals / 3000],
+    data: [calsRatio],
     colors: ["orange"],
   };
 
@@ -154,7 +179,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "red", fontWeight: "bold" }}>Protein</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(totalProtein)}/340g
+                {Math.floor(totalProtein)}/{dailyProtein}g
               </Text>
             </View>
           </View>
@@ -179,7 +204,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "green", fontWeight: "bold" }}>Carbs</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(totalCarbs)}/340g
+                {Math.floor(totalCarbs)}/{dailyCarbs}g
               </Text>
             </View>
           </View>
@@ -205,7 +230,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "blue", fontWeight: "bold" }}>Fat</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(totalFats)}/340g
+                {Math.floor(totalFats)}/{dailyFats}g
               </Text>
             </View>
           </View>
@@ -230,7 +255,7 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "orange", fontWeight: "bold" }}>Calories</Text>
               <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(totalCals)}/3000
+                {Math.floor(totalCals)}/{dailyCalories}
               </Text>
             </View>
           </View>
@@ -240,19 +265,9 @@ const Nutrition = () => {
           <Text style={{ fontSize: 20, fontWeight: "700", paddingLeft: 5 }}>
             Logged Food
           </Text>
-          {foodArray &&
-            foodArray.length > 0 &&
-            foodArray.map((item, index) => (
-              <FoodLogged
-                foodName={item.foodName}
-                calories={Math.floor(item.calories)}
-                serving={item.servingAmount}
-                protein={item.protein}
-                carbs={item.carbs}
-                fats={item.fats}
-                key={index}
-              />
-            ))}
+          {foodArray && foodArray.length > 0 &&  foodArray.map((item, index) => (
+            <FoodLogged  foodName={capitalizeFirstChar(item.foodName)} calories={Math.floor(item.calories)} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} />
+          ))}
         </View>
 
         <View style={{ paddingTop: screenHeight * 0.05, paddingLeft: 10 }}>
@@ -286,7 +301,7 @@ const Nutrition = () => {
         </View>
       </ScrollView>
       <View>
-        <ExpandingButtons />
+        <ExpandingButtons  />
       </View>
     </View>
   );

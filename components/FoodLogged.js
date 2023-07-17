@@ -112,7 +112,7 @@ const FoodLogged = (props) => {
     <View>
       <Modalpop protein={props.protein} visible={visible}>
         <View style={{ flexDirection: "row" }}>
-          <Text style={{ fontSize: 18, fontWeight: "700", width: "90%" }}>Food Name</Text>
+          <Text style={{ fontSize: 18, fontWeight: "700", width: "90%" }}>{props.foodName}</Text>
           <TouchableOpacity onPress={() => setVisible(false)}>
             <Image
               style={styles.tinyLogo}
@@ -236,7 +236,7 @@ const FoodLogged = (props) => {
         </View>
       </Modalpop>
       <TouchableOpacity onPress={() => setVisible(true)} style={styles.container}>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", paddingTop: 5}}>
           <Text
             style={{
               paddingLeft: 12,
@@ -250,7 +250,7 @@ const FoodLogged = (props) => {
           <Text
             style={{
               textAlign: "right",
-              paddingTop: 22.5,
+              paddingTop: 28,
               color: "#42a5f5",
               fontWeight: "bold",
             }}>
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     marginTop: 10,
-    height: screenHeight * 0.08,
+    height: screenHeight * 0.1,
   },
   modalBackground: {
     flex: 1,

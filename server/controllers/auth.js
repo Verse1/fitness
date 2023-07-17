@@ -5,7 +5,7 @@ require("dotenv").config();
 
 export const signup = async (req, res) => {
   try {
-    const { name, email, password, gender, weight, height, age, heightUnit, weightUnit } =
+    const { name, email, password, gender, weight, height, age, heightUnit, weightUnit, dailyCalories, dailyProtein, dailyCarbs, dailyFats } =
       req.body;
 
     if (!email) {
@@ -27,10 +27,14 @@ export const signup = async (req, res) => {
       });
     }
 
+  
+    const currentDate = new Date().toDateString();
+   const date = currentDate.slice(4, 10) + currentDate.slice(10)
+
+  
     // Hash password later
 
     const theHashedPassword = await hashedPassword(password);
-
     const user = await new User({
       name,
       email,
@@ -41,10 +45,14 @@ export const signup = async (req, res) => {
       age,
       heightUnit,
       weightUnit,
-      weightHistory: [],
+      weightHistory: [{weight, date, changeWeight: 0}],
       dailyFood: [],
       workouts: [],
       weeklyFood: [],
+      dailyCalories,
+       dailyProtein, 
+       dailyCarbs, 
+       dailyFats
     }).save();
 
     //creating signed token

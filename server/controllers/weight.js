@@ -15,7 +15,9 @@ export const addWeight = async (req, res) => {
     }
 
     // Push the weight and date object to the weightHistory array in the user document
-    const changeWeight = req.body.weightToday.weight -  user.weightHistory[user.weightHistory.length - 1].weight 
+    const changeWeight =
+      req.body.weightToday.weight -
+      user.weightHistory[user.weightHistory.length - 1].weight;
     user.weightHistory.push({ weight, date, changeWeight });
 
     await user.save();

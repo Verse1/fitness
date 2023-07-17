@@ -52,93 +52,90 @@ const userSchema = new Schema({
         type: String,
         required: true,
       },
-      changeWeight:{
-        type: Number, 
-        required: true
-      }
+      changeWeight: {
+        type: Number,
+        required: true,
+      },
     },
   ],
-
-
-    dailyFood: [{
-        servingAmount: {
-            type: Number,
-            required: true
-        },
-        protein:{
-            type: Number,
-            required: true
-        },
-        carbs:{
-            type: Number, 
-            required: true
-        },
-        fats:{
-            type: Number,
-            required: true
-        },
-        calories:{
-            type: Number,
-            required: true
-        },
-        foodName: {
-            type: String, 
-            required: true 
-        }
-           
-    }],
-    weeklyFood: [{
-        day: {
-            type: String,
-            required: true
-        },
-        date:{
-            type: String,
-            required: true
-        },
-        calories:{
-            type: Number,
-            required: true
-        },
-        protein:{
-            type: Number,
-            required: true
-        },
-        carbs:{
-            type: Number, 
-            required: true
-        },
-        fats:{
-            type: Number,
-            required: true
-        }
-    }],
-    dailyProtein: {
+  dailyFood: [
+    {
+      servingAmount: {
         type: Number,
-        required: true
-    },
-    dailyCarbs: {
+        required: true,
+      },
+      protein: {
         type: Number,
-        required: true
-    },
-    dailyFats: {
+        required: true,
+      },
+      carbs: {
         type: Number,
-        required: true
-    },
-    dailyCalories: {
+        required: true,
+      },
+      fats: {
         type: Number,
-        required: true
+        required: true,
+      },
+      calories: {
+        type: Number,
+        required: true,
+      },
+      foodName: {
+        type: String,
+        required: true,
+      },
     },
-     workouts: [
+  ],
+  weeklyFood: [
+    {
+      day: {
+        type: String,
+        required: true,
+      },
+      date: {
+        type: String,
+        required: true,
+      },
+      calories: {
+        type: Number,
+        required: true,
+      },
+      protein: {
+        type: Number,
+        required: true,
+      },
+      carbs: {
+        type: Number,
+        required: true,
+      },
+      fats: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
+  dailyProtein: {
+    type: Number,
+    required: true,
+  },
+  dailyCarbs: {
+    type: Number,
+    required: true,
+  },
+  dailyFats: {
+    type: Number,
+    required: true,
+  },
+  dailyCalories: {
+    type: Number,
+    required: true,
+  },
+  workouts: [
     {
       type: Schema.Types.ObjectId,
       ref: "Workout",
     },
   ],
-})
-
-
-  
-
+});
 
 export default mongoose.model("User", userSchema);

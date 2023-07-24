@@ -6,16 +6,23 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import React, { useLayoutEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useLayoutEffect, useContext, useEffect} from "react";
+import { useNavigation,  } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ProgressChart } from "react-native-chart-kit";
+import axios from "axios";
+import { AuthContext } from "../context/auth";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
 const FoodCard = (props) => {
   const navigation = useNavigation();
+  const [state, setState] = useContext(AuthContext);
+
+  const [dailyProtein, setDailyProtein] = useState(0);
+  const [dailyCarbs, setDailyCarbs] = useState(0);
+  const [dailyFats, setDailyFats] = useState(0);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -74,11 +81,50 @@ const FoodCard = (props) => {
     useShadowColorFromDataset: false, // optional,
   };
 
+  useEffect(() => {
+    if (state) {
+  
+
+      setDailyProtein(state.user.dailyProtein);
+      setDailyCarbs(state.user.dailyCarbs);
+      setDailyFats(state.user.dailyFats);
+    }
+  }, [state]);
+  
+ 
+  const handleAddMeal = async () => {
+    const foodObject = {
+      foodName: props.foodname,
+      protein: props.protein,
+      carbs: props.carbs,
+      fats: props.fats,
+      servingAmount: 0,
+      calories: props.cals,
+    };
+    try {
+      const resp = await axios.post(
+        "http://localhost:8000/api/addFood",
+        { foodObject, id: state.user._id }
+      );
+
+      if (resp.data.error) {
+        alert(resp.data.error);
+      } else {
+        setState(resp.data);
+        await AsyncStorage.setItem("auth-rn", JSON.stringify(resp.data));
+        setVisible(false);
+        navigation.navigate("Nutrition");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error.message);
+    }
+  };
+
   return (
     <View>
       <View style={styles.container}>
         {/* Custom TextInput with placeholder passed from props */}
-        <Text style={{ fontSize: 18, fontWeight: "700", width: "90%" }}>Food Name</Text>
+        <Text style={{ fontSize: 18, fontWeight: "700", width: "90%" }}>{props.foodname}</Text>
 
         <View style={{ flexDirection: "row", paddingTop: 10 }}>
           <Text style={{ fontSize: 18, fontWeight: "500", paddingTop: 20, width: "50%" }}>
@@ -92,7 +138,7 @@ const FoodCard = (props) => {
               width: "50%",
               textAlign: "right",
             }}>
-            300G
+            One Serving
           </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
@@ -107,7 +153,7 @@ const FoodCard = (props) => {
               width: "50%",
               textAlign: "right",
             }}>
-            1,500kcal
+            {props.cals} kcal
           </Text>
         </View>
         <View style={{ flexDirection: "row", paddingTop: 15 }}>
@@ -133,7 +179,7 @@ const FoodCard = (props) => {
                 paddingLeft: 15,
                 fontSize: 12,
               }}>
-              {props.protein}/290g
+              {props.protein}/{dailyProtein}g
             </Text>
           </View>
 
@@ -159,7 +205,7 @@ const FoodCard = (props) => {
                 paddingLeft: 11,
                 fontSize: 12,
               }}>
-              {props.carbs}/290g
+              {props.carbs}/{dailyCarbs}g
             </Text>
           </View>
           <View style={{ paddingLeft: screenWidth * 0.08 }}>
@@ -189,12 +235,12 @@ const FoodCard = (props) => {
                 paddingLeft: 13,
                 fontSize: 12,
               }}>
-              {props.fats}/290g
+              {props.fats}/{dailyFats}g
             </Text>
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.LogButton}>
+      <TouchableOpacity style={styles.LogButton} onPress={() => handleAddMeal()}>
         <Text style={{ color: "white", fontSize: 20, fontWeight: "700" }}>Log</Text>
       </TouchableOpacity>
     </View>

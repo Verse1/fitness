@@ -18,7 +18,7 @@ const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
 //Spoonacular API shit
-const APIKEY = "e1e9e17338544f5983922872c0475bd2";
+const APIKEY = "ca4056c513174da8bf675ceab7388293";
 const getIngredient = `https://api.spoonacular.com/food/ingredients/search?apiKey=${APIKEY}&number=5&query=`;
 
 const LogMeal = () => {

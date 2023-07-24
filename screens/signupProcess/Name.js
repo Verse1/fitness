@@ -14,6 +14,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
+import {LinearGradient} from 'expo-linear-gradient'
+import { Line } from "react-native-svg";
 
 // Screen dimensions
 const screenHeight = Dimensions.get("window").height;
@@ -35,44 +37,37 @@ const Name = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.container}>
             {/* Header */}
-            <View style={styles.header}>
+            <LinearGradient  colors={['#151919', '#253237']} start={{x:0}} end={{x:1}} style={styles.header}>
+
               {/* Progress bar */}
               <View style={styles.progressContainer}>
+              <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
+                  <AntDesign name="arrowleft" style={{ color: "white", fontSize: 20 }} />
+              </Pressable>
                 <View style={styles.progressBar}>
                   <View style={styles.progress} />
                 </View>
                 <Text style={styles.progressText}>1 of 6</Text>
+
               </View>
 
-              {/* Back button */}
-              <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-                <View
-                  style={{
-                    backgroundColor: "blue",
-                    width: screenWidth * 0.1,
-                    height: screenWidth * 0.1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: "50%",
-                  }}>
-                  <AntDesign name="arrowleft" style={{ color: "white", fontSize: 20 }} />
-                </View>
-              </Pressable>
 
-              {/* Prompt */}
+              {/* Back button */}
+             
+
               <View style={styles.Titles}>
                 <Text autoCorrect={false} style={styles.title}>
                   What's Your Name?
                 </Text>
               </View>
-            </View>
+            </LinearGradient>
 
             {/* Content */}
             <View style={styles.content}>
@@ -82,9 +77,10 @@ const Name = () => {
                   placeholder="Full Name"
                   style={styles.textbox}
                   onChangeText={setName}
-                  placeholderTextColor="black"
+                  placeholderTextColor="#D7F2F4"
                   autoFocus={true}
                 />
+
               </View>
             </View>
 
@@ -100,17 +96,19 @@ const Name = () => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#0F0E0E",
   },
   header: {
     flex: 1,
     justifyContent: "flex-start",
+    borderBottomRightRadius: 112,
   },
   content: {
     flex: 2,
@@ -122,47 +120,51 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "700",
-    fontSize: 30,
-    textAlign: "center",
-    paddingTop: 140,
+    fontSize: 40,
+    textAlign: "Left",
+    color: "#D7F2F4"
   },
   cont: {
-    backgroundColor: "blue",
+    backgroundColor: "#D7F2F4",
     width: "80%",
     padding: 10,
     borderRadius: 6,
     borderWidth: 0.7,
-    borderColor: "blue",
     marginVertical: 5,
   },
   textbox: {
-    backgroundColor: "rgb(220,220,220)",
+    backgroundColor: "#151919",
     width: "80%",
-    padding: 20,
+    padding: 15,
     borderColor: "gray",
     alignSelf: "center",
     marginVertical: 5,
-    borderRadius: "20%",
+    borderRadius: 8,
     fontSize: 15,
   },
   main: {
     width: "100%",
   },
   text: {
-    color: "white",
+    color: "#151919",
     textAlign: "center",
     fontWeight: "700",
   },
   Titles: {
     paddingBottom: 20,
+    paddingTop: 10,
+    width: '70%',
+    paddingLeft: 20,
   },
   buttonView: {
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 40,
+    
   },
   backButton: {
     alignSelf: "flex-start",
-    paddingLeft: 15,
+    paddingLeft: 5,
+    paddingRight: 10
   },
   backButtonText: {
     fontSize: 18,
@@ -173,13 +175,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 10,
     paddingVertical: 20,
+    paddingTop: 60,
   },
   progressBar: {
     backgroundColor: "lightgrey",
     height: 10,
-    width: Dimensions.get("window").width - 90,
+    width: Dimensions.get("window").width - 140,
     borderRadius: 5,
     marginRight: 10,
+    margingLeft: 5
   },
   progress: {
     height: "100%",
@@ -189,6 +193,7 @@ const styles = StyleSheet.create({
   },
   progressText: {
     marginRight: 10,
+    color:  "#D7F2F4"
   },
 });
 

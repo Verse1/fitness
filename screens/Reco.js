@@ -104,7 +104,11 @@ const Reco = () => {
 
   const handleButtonPress = () => {
     // setSuggestions([...suggestions, item]);
-    navigation.navigate("GeneratedMeals")
+    navigation.navigate("GeneratedMeals", {
+      numberOfMeals: selectedItem, 
+      protein: Math.max(dailyProtein - Math.floor(totalProtein)),
+      carbs: Math.max(dailyCarbs - Math.floor(totalCarbs),0) , 
+      fats:  Math.max(dailyFats - Math.floor(totalFats),0)})
   };
 
   useLayoutEffect(() => {
@@ -172,21 +176,21 @@ const Reco = () => {
       <View style={{ flexDirection: "row", paddingTop: screenHeight * 0.05 }}>
         <View style={{ paddingLeft: screenWidth * 0.1 }}>
           <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>
-            {dailyCarbs - Math.floor(totalCarbs)}g
+            {Math.max(dailyCarbs - Math.floor(totalCarbs),0)}g
           </Text>
           <Text style={{ fontSize: screenWidth * 0.045, fontWeight: "700" }}>Carbs</Text>
         </View>
 
         <View style={{ paddingLeft: screenWidth * 0.2 }}>
           <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>
-            {dailyProtein - Math.floor(totalProtein)}g
+            {Math.max(dailyProtein - Math.floor(totalProtein),0)}g
           </Text>
           <Text style={{ fontSize: screenWidth * 0.04, fontWeight: "700" }}>Protien</Text>
         </View>
 
         <View style={{ paddingLeft: screenWidth * 0.2 }}>
           <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>
-            {dailyFats - Math.floor(totalFats)}g
+            {Math.max(dailyFats - Math.floor(totalFats),0)}g
           </Text>
           <Text style={{ fontSize: screenWidth * 0.045, fontWeight: "700" }}>Fat</Text>
         </View>
@@ -318,7 +322,7 @@ const styles = StyleSheet.create({
     marginTop: screenHeight * 0.05,
   },
   barContainer: {
-    width: "80%",
+    width: "60%",
     height: screenHeight * 0.05,
     backgroundColor: "#00A3FF",
     borderRadius: 25,

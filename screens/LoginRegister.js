@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
+    fontFamily: 'SFPro-Regular'
   },
   loginText: {
     color: "#888",

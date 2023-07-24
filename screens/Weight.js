@@ -45,17 +45,16 @@ const weightTracking = () => {
   const handleInput = () => {
     const today = new Date();
     const currentDate = today.toDateString();
-    navigation.navigate("InputWeight");
 
-    // if (
-    //   weightArray.length > 0 &&
-    //   weightArray[weightArray.length - 1].date ===
-    //     currentDate.slice(4, 10) + currentDate.slice(10)
-    // ) {
-    //   alert("Already Entered Today's Date");
-    // } else {
-    //   navigation.navigate("InputWeight");
-    // }
+    if (
+      weightArray.length > 0 &&
+      weightArray[weightArray.length - 1].date ===
+        currentDate.slice(4, 10) + currentDate.slice(10)
+    ) {
+      alert("Already Entered Today's Date");
+    } else {
+      navigation.navigate("InputWeight");
+    }
   };
 
   useEffect(() => {

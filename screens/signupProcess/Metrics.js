@@ -20,6 +20,7 @@ const Metrics = () => {
   const { userName, userGender, userAge } = route.params;
 
   const navigation = useNavigation();
+
   const [weight, setWeight] = useState(null);
   const [height, setHeight] = useState(null);
   const [isMetricWeight, setIsMetricWeight] = useState(false);
@@ -44,7 +45,7 @@ const Metrics = () => {
   }, []);
 
   const handleMeasure = () => {
-    navigation.navigate("Macros", {
+    navigation.navigate('Macros', {
       userInfo: userName,
       userGender: userGender,
       userAge: userAge,
@@ -55,30 +56,26 @@ const Metrics = () => {
     });
   };
 
+  // const translateX = useRef(new Animated.Value(0)).current;
+
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       {/* Progress bar */}
+      
       <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View style={styles.progress} />
-        </View>
-        <Text style={styles.progressText}>4 of 6</Text>
+        <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>   
+          <AntDesign name="arrowleft" style={{ color: "#D7F2F4", fontSize: 25}} />
+        </Pressable>
+          <View style={styles.progressBar}>
+            <View style={styles.progress} />
+          </View>
+          <Text style={styles.progressText}>4 of 5</Text>
+         
       </View>
 
-      {/* Back button */}
-      <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-        <View
-          style={{
-            backgroundColor: "blue",
-            width: screenWidth * 0.1,
-            height: screenWidth * 0.1,
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "50%",
-          }}>
-          <AntDesign name="arrowleft" style={{ color: "white", fontSize: 20 }} />
-        </View>
-      </Pressable>
+
+   
       <View style={styles.content}>
         <View style={styles.measureContainer}>
           {/* Weight input */}
@@ -97,21 +94,10 @@ const Metrics = () => {
             </View>
           </View>
 
+          
+
           {/* Height input */}
-          <View style={styles.inputContainer}>
-            <View style={styles.input}>
-              <RNPickerSelect
-                style={pickerSelectStyles}
-                onValueChange={setHeight}
-                items={heightOptions}
-                placeholder={{ label: "Height", value: null }}
-              />
-            </View>
-            <View style={styles.switchContainer}>
-              <Switch onValueChange={toggleHeightSwitch} value={isMetricHeight} />
-              <Text>{isMetricHeight ? "cm" : "inches"}</Text>
-            </View>
-          </View>
+         
         </View>
 
         {/* Continue button */}
@@ -121,37 +107,44 @@ const Metrics = () => {
           </Pressable>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#0F0E0E",
   },
   progressContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    // alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    backgroundColor: '#151919',
+    height: screenHeight * 0.3,
+    borderBottomRightRadius: 120
   },
   progressBar: {
     backgroundColor: "lightgrey",
     height: 10,
-    width: Dimensions.get("window").width - 90,
+    width: Dimensions.get("window").width - 140,
     borderRadius: 5,
     marginRight: 10,
+        marginTop:  screenHeight * 0.08
+
   },
   progress: {
     height: "100%",
-    width: `${(4 / 6) * 100}%`,
+    width: `${(4 / 5) * 100}%`,
     borderRadius: 5,
     backgroundColor: "blue",
+    
   },
   backButton: {
-    alignSelf: "flex-start",
-    paddingLeft: 15,
+    paddingLeft: 10,
+    marginTop:  screenHeight * 0.07
+
   },
   backButtonText: {
     fontSize: 18,
@@ -199,6 +192,9 @@ const styles = StyleSheet.create({
   },
   progressText: {
     marginRight: 8,
+    color:  "#D7F2F4",
+    marginTop:  screenHeight * 0.08
+
   },
 });
 

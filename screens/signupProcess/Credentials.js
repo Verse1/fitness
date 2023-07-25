@@ -19,7 +19,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { json } from "d3";
 import { AuthContext } from "../../context/auth";
-
+import { LinearGradient } from "expo-linear-gradient";
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
@@ -83,7 +83,7 @@ const Credentials = () => {
     }
   };
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}>
@@ -92,33 +92,23 @@ const Credentials = () => {
             {/* Header */}
             <View style={styles.header}>
               {/* Progress bar */}
-              <View style={styles.progressContainer}>
-                <View style={styles.progressBar}>
-                  <View style={styles.progress} />
-                </View>
-                <Text style={styles.progressText}>6 of 6!</Text>
-              </View>
+              <LinearGradient  colors={['#151919', '#253237']} start={{x:0}} end={{x:1}} style={styles.progressContainer}>
+                <View style={{flexDirection: 'row'}}>
+                  <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
+              
+                      <AntDesign name="arrowleft" style={{ color: "#FFFAFA", fontSize: 20, paddingTop: 0, paddingRight: screenWidth * 0.01}} />
+                  </Pressable>
+                    <View style={styles.progressBar}>
+                      <View style={styles.progress} />
+                    </View>
+                    <Text style={styles.progressText}>6 of 6</Text>
+                  </View>
+                  <Text style={{color: '#D7F2F4', paddingBottom: screenHeight  *0.1, fontSize: 38, width: screenWidth * 1, fontWeight: '700', paddingLeft: screenWidth * .02}}>Almost Done!</Text>
 
-              {/* Back button */}
-              <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-                <View
-                  style={{
-                    backgroundColor: "blue",
-                    width: screenWidth * 0.1,
-                    height: screenWidth * 0.1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: "50%",
-                  }}>
-                  <AntDesign name="arrowleft" style={{ color: "white", fontSize: 20 }} />
-                </View>
-              </Pressable>
+              </LinearGradient>
 
               {/* Prompt */}
-              <View style={styles.Titles}>
-                <Text style={styles.title}>Almost There</Text>
-                <Text style={styles.title}>Some text over here</Text>
-              </View>
+            
             </View>
 
             {/* Content */}
@@ -127,6 +117,7 @@ const Credentials = () => {
               <View style={styles.main}>
                 <TextInput
                   placeholder="Email Address"
+                  placeholderTextColor={'#D7F2F4'}
                   style={styles.textbox}
                   onChangeText={setEmail}
                   autoFocus={true}
@@ -135,6 +126,7 @@ const Credentials = () => {
                 />
                 <TextInput
                   placeholder="Password"
+                  placeholderTextColor={'#D7F2F4'}
                   style={styles.textbox}
                   onChangeText={setPassword}
                   secureTextEntry={true}
@@ -147,20 +139,21 @@ const Credentials = () => {
               {/* Continue button */}
               <View style={styles.buttonView}>
                 <Pressable style={styles.cont} onPress={handleCredentials}>
-                  <Text style={styles.text}>Continue</Text>
+                  <Text style={styles.text}>Done</Text>
                 </Pressable>
               </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:  "#0F0E0E"
   },
   header: {
     flex: 1,
@@ -182,29 +175,29 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   cont: {
-    backgroundColor: "blue",
+    backgroundColor: "#D7F2F4",
     width: "80%",
     padding: 10,
     borderRadius: 6,
     borderWidth: 0.7,
     borderColor: "blue",
-    marginVertical: 5,
+    alignSelf: "center",
   },
   textbox: {
-    backgroundColor: "white",
+    backgroundColor: "#151919",
     width: "80%",
-    padding: 10,
-    borderRadius: 6,
-    borderWidth: 0.7,
+    padding: 15,
+    borderRadius: 8,
+
     borderColor: "gray",
     alignSelf: "center",
-    marginVertical: 5,
+    marginVertical: 10,
   },
   main: {
     width: "100%",
   },
   text: {
-    color: "white",
+    color: "#151919",
     textAlign: "center",
     fontWeight: "700",
   },
@@ -213,28 +206,31 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: screenHeight * 0.05,
   },
   backButton: {
-    alignSelf: "flex-start",
-    paddingLeft: 15,
+    paddingLeft: 8,
+    marginTop:  screenHeight * 0.073,
+    paddingRight: 10
   },
   backButtonText: {
     fontSize: 18,
   },
   progressContainer: {
-    flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    backgroundColor: '#151919',
+    height: screenHeight * 0.28,
+    borderBottomRightRadius: 120
+
   },
   progressBar: {
     backgroundColor: "lightgrey",
     height: 10,
-    width: Dimensions.get("window").width - 90,
+    width: Dimensions.get("window").width - 140,
     borderRadius: 5,
     marginRight: 10,
+    marginTop:  screenHeight * 0.08
   },
   progress: {
     height: "100%",
@@ -243,7 +239,11 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
   },
   progressText: {
-    marginRight: 7.5,
+    marginRight: 8,
+    color:  "#D7F2F4",
+    marginTop:  screenHeight * 0.075,
+    marginLeft: 8
+
   },
 });
 

@@ -64,14 +64,17 @@ const Metrics = () => {
       {/* Progress bar */}
       
       <View style={styles.progressContainer}>
-        <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>   
-          <AntDesign name="arrowleft" style={{ color: "#D7F2F4", fontSize: 25}} />
-        </Pressable>
-          <View style={styles.progressBar}>
-            <View style={styles.progress} />
+        <View style={{flexDirection: 'row'}}>
+                  <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>   
+            <AntDesign name="arrowleft" style={{ color: "#D7F2F4", fontSize: 20, paddingRight: screenWidth * 0.01}} />
+          </Pressable>
+            <View style={styles.progressBar}>
+              <View style={styles.progress} />
+            </View>
+            <Text style={styles.progressText}>4 of 5</Text>
           </View>
-          <Text style={styles.progressText}>4 of 5</Text>
-         
+          <Text style={{color: '#D7F2F4', paddingBottom: screenHeight  *0.04, fontSize: 42, width: screenWidth * 0.7, fontWeight: '700', paddingLeft: screenWidth * .02}}>How much do you weigh?</Text>
+
       </View>
 
 
@@ -117,12 +120,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#0F0E0E",
   },
   progressContainer: {
-    flexDirection: "row",
     // alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
     backgroundColor: '#151919',
-    height: screenHeight * 0.3,
+    height: screenHeight * 0.28,
     borderBottomRightRadius: 120
   },
   progressBar: {
@@ -142,8 +144,9 @@ const styles = StyleSheet.create({
     
   },
   backButton: {
-    paddingLeft: 10,
-    marginTop:  screenHeight * 0.07
+    paddingLeft: 8,
+    marginTop:  screenHeight * 0.073,
+    paddingRight: 10
 
   },
   backButtonText: {
@@ -173,7 +176,7 @@ const styles = StyleSheet.create({
     width: "25%",
   },
   cont: {
-    backgroundColor: "blue",
+    backgroundColor: "#D7F2F4",
     width: "80%",
     padding: 10,
     borderRadius: 6,
@@ -182,13 +185,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   text: {
-    color: "white",
+    color: "#151919",
     textAlign: "center",
     fontWeight: "700",
   },
   buttonView: {
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: screenHeight * 0.05,
   },
   progressText: {
     marginRight: 8,

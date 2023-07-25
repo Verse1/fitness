@@ -1,219 +1,299 @@
-import axios from "axios";
-import React, { useState, useLayoutEffect, useContext } from "react";
-import { StyleSheet, Text, View, Pressable, TextInput, Animated } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from "../context/auth";
+import React, { useRef, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ImageBackground,
+  Dimensions,
+  Image,
+  PanResponder,
+  Animated,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Feather } from "@expo/vector-icons";
+
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 const LoginRegister = ({ navigation }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const slideAnim = useState(new Animated.Value(300))[0]; // Initial value for right-to-left animation
+  const appleScale = useRef(new Animated.Value(1)).current;
+  const signInScale = useRef(new Animated.Value(1)).current;
+  const swipeButtonWidth = screenWidth * 0.9;
+  const circleRadius = 30;
 
-  const [state, setState] = useContext(AuthContext);
+  const pan = useRef(new Animated.ValueXY()).current;
 
-  const openModal = () => {
-    setModalVisible(true);
-    Animated.timing(slideAnim, {
+  const colorAnimation = useRef(new Animated.Value(0)).current;
+
+  const colorSequence = Animated.sequence([
+    Animated.timing(colorAnimation, {
+      toValue: 1,
+      duration: 2500,
+      useNativeDriver: false,
+    }),
+    Animated.timing(colorAnimation, {
       toValue: 0,
-      duration: 500,
+      duration: 800,
       useNativeDriver: false,
-    }).start();
-  };
+    }),
+  ]);
 
-  const closeModal = () => {
-    setModalVisible(false);
-    Animated.timing(slideAnim, {
-      toValue: 300,
-      duration: 500,
-      useNativeDriver: false,
-    }).start();
-  };
+  useEffect(() => {
+    Animated.loop(colorSequence).start();
+  }, []);
 
-  const handleLogin = async () => {
-    if (email === "frontend" && password === "frontend") {
-      navigation.navigate("Dashboard");
-    }
-    if (email === "" || password === "") {
-      alert("all fields are required");
+  const colorInterpolation = colorAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["#e0dfdf", "#151919"],
+  });
 
-      return;
-    }
-
-    try {
-      const resp = await axios.post("http://localhost:8000/api/signin", {
-        email,
-        password,
-      });
-      if (resp.data.error) {
-        alert(resp.data.error);
-      } else {
-        setState(resp.data);
-        console.log("This", resp.data);
-        await AsyncStorage.setItem("auth-rn", JSON.stringify(resp.data));
-        navigation.navigate("Dashboard");
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderMove: (e, gestureState) => {
+      if (
+        gestureState.dx >= 0 &&
+        gestureState.dx <= swipeButtonWidth - circleRadius * 2
+      ) {
+        pan.x.setValue(gestureState.dx);
       }
-    } catch (error) {
-      console.error("An error occurred:", error.message);
-    }
-  };
+    },
+    onPanResponderRelease: () => {
+      if (pan.x._value > swipeButtonWidth - circleRadius * 3) {
+        navigation.navigate("Name");
+      }
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, [navigation]);
+      Animated.spring(pan, {
+        toValue: { x: 0, y: 0 },
+        useNativeDriver: false,
+        friction: 500,
+        tension: 100,
+      }).start();
+    },
+  });
+
+  const animatePress = (animatedValue) => {
+    Animated.sequence([
+      Animated.timing(animatedValue, {
+        toValue: 0.9,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Spacer */}
-      <View style={styles.spacer} />
-      {/* Logo */}
-      {/* Welcome text */}
-      <Text style={styles.welcomeText}>Welcome to Fitness</Text>
-      {/* Subtext */}
-      <Text style={styles.subText}>Take your fitness journey to the next level</Text>
-      {/* Spacer */}
-      <View style={styles.spacer} />
-      {/* Sign up with Apple ID button */}
-      {/* Still not set up */}
-      <Pressable style={styles.appleButton}>
-        <Text style={styles.appleText}>Apple</Text>
-      </Pressable>
-      {/* Sign up button */}
-      <Pressable style={styles.button} onPress={() => navigation.navigate("Name")}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </Pressable>
-      {/* Log in text */}
-      <Text style={styles.loginText}>
-        Already have an account?{" "}
-        <Text style={styles.loginLink} onPress={openModal}>
-          Log in
-        </Text>
-      </Text>
-
-      {modalVisible && (
-        <Animated.View style={[styles.modal, { right: slideAnim }]}>
-          <Pressable style={styles.closeButton} onPress={closeModal}>
-            <Text style={styles.closeButtonText}>X</Text>
+    <View style={styles.container}>
+      <ImageBackground style={styles.image} source={require("../images/blackman.png")}>
+        <View style={styles.overlay} />
+        <View style={styles.topContainer}>
+          <View style={styles.spacer}></View>
+          <Text style={styles.mainText}>Welcome to Owzn</Text>
+          <Text style={styles.subText}>Measure your progress, Meet your potential</Text>
+          <View style={styles.spacer}></View>
+        </View>
+        <LinearGradient
+          locations={[0.15, 0.85]}
+          colors={["rgba(25,25,25,0.0)", "#151919"]}
+          style={styles.linearGradient}
+        />
+      </ImageBackground>
+      <View style={styles.bottomContainer}>
+        <View style={styles.buttonsContainer}>
+          <Pressable onPressIn={() => animatePress(appleScale)}>
+            <Animated.View
+              style={[
+                {
+                  transform: [{ scale: appleScale }],
+                },
+                styles.appleButton,
+              ]}>
+              <View style={styles.buttonContent}>
+                <Image
+                  source={require("../images/appleLogo.png")}
+                  style={{ width: 16, height: 16, marginTop: 2, marginRight: 5 }}
+                />
+                <Text style={styles.appleText}>Sign In with Apple</Text>
+              </View>
+            </Animated.View>
           </Pressable>
-          <TextInput
-            style={styles.input}
-            onChangeText={setEmail}
-            value={email}
-            autoCapitalize="none"
-            placeholder="Email"
-            keyboardType="email-address"
-            textContentType="oneTimeCode" //Changed this to oneTimeCode from email-address so the keychain bullshit doesnt appear
-          />
-          <TextInput
-            style={styles.input}
-            onChangeText={setPassword}
-            value={password}
-            placeholder="Password"
-            textContentType="oneTimeCode" //Changed this to oneTimeCode from password so the keychain bullshit doesnt appear
-            secureTextEntry
-          />
-
-          <Pressable style={styles.loginButton} onPress={() => handleLogin()}>
-            <Text style={styles.loginButtonText}>Log In</Text>
+          <Pressable style={[styles.swipeButton, { backgroundColor: "#253237" }]}>
+            <LinearGradient
+              colors={["#253237", "#131616"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                borderRadius: 20,
+              }}>
+              <Animated.View
+                {...panResponder.panHandlers}
+                style={[pan.getLayout(), styles.circle]}>
+                <LinearGradient
+                  colors={["#9FE0E5", "#D7F2F4"]}
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: circleRadius,
+                  }}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}>
+                  <Feather name="arrow-right" size={32} color="black" />
+                </LinearGradient>
+              </Animated.View>
+              <Animated.Text style={[styles.swipeText, { color: colorInterpolation }]}>
+                {" "}
+                Swipe to Start
+              </Animated.Text>
+            </LinearGradient>
           </Pressable>
-        </Animated.View>
-      )}
-    </SafeAreaView>
+        </View>
+        <View style={styles.signInContainer}>
+          <Text style={styles.smallText}> Already have an account?</Text>
+          <Pressable
+            onPressIn={() => animatePress(signInScale)}
+            onPressOut={() => navigation.navigate("Login")}>
+            <Animated.View
+              style={[
+                {
+                  transform: [{ scale: signInScale }],
+                },
+                styles.signIn,
+              ]}>
+              <Text style={styles.signInText}> Sign In</Text>
+            </Animated.View>
+          </Pressable>
+        </View>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  welcomeText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  subText: {
-    fontSize: 16,
-    color: "#888",
-    textAlign: "center",
-    marginBottom: 30,
-  },
-  spacer: {
-    flex: 1,
-  },
-  appleButton: {
-    backgroundColor: "#000",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginBottom: 20,
-    alignItems: "center",
-  },
-  appleText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  button: {
-    backgroundColor: "blue",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginBottom: 20,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontFamily: 'SFPro-Regular'
-  },
-  loginText: {
-    color: "#888",
-    fontSize: 14,
-    textAlign: "center",
-  },
-  loginLink: {
-    color: "blue",
-    textDecorationLine: "underline",
-  },
-  modal: {
+  linearGradient: {
     position: "absolute",
-    top: 0,
-    bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    padding: 50,
+    bottom: 0,
+    height: screenHeight * 0.17,
   },
-  closeButton: {
-    alignSelf: "flex-end",
+  buttonContent: {
+    flexDirection: "row",
   },
-  closeButtonText: {
-    fontSize: 24,
-    color: "#fff",
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "#151919",
+    opacity: 0.3,
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    color: "#fff",
-    borderColor: "#fff",
+  container: {
+    flex: 1,
+    backgroundColor: "#151919",
   },
-  loginButton: {
-    backgroundColor: "blue",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
+  image: {
+    width: "100%",
+    height: screenHeight * 0.7,
+  },
+  topContainer: {
+    justifyContent: "center",
     alignItems: "center",
-    marginTop: 12,
+    flex: 1,
   },
-  loginButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
+  bottomContainer: {
+    alignItems: "center",
+    flex: 1,
+  },
+  spacer: {
+    height: 20,
+  },
+  buttonsContainer: {},
+  appleButton: {
+    top: screenHeight * 0.03,
+    width: screenWidth * 0.9,
+    height: screenHeight * 0.06,
+    borderRadius: 20,
+    backgroundColor: "#0f0e0e",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  swipeButton: {
+    marginTop: screenHeight * 0.05,
+    backgroundColor: "#253237",
+    flexDirection: "row",
+    width: screenWidth * 0.9,
+    height: screenHeight * 0.06,
+    borderRadius: 20,
+    overflow: "hidden",
+    alignItems: "center",
+  },
+  circle: {
+    width: 44,
+    height: 44,
+    backgroundColor: "white",
+    borderRadius: 100,
+    marginLeft: 5,
+    marginTop: 3,
+    marginBottom: 3,
+    zIndex: 10,
+  },
+  signInContainer: {
+    flexDirection: "row",
+    marginTop: screenHeight * 0.04,
+  },
+  signIn: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: screenHeight * 0.03,
+    width: screenWidth * 0.15,
+    backgroundColor: "#D9D9D9",
+    borderRadius: 45,
+  },
+  signInText: {
+    color: "#151919",
+    fontSize: 12,
+    fontWeight: 500,
+  },
+  mainText: {
+    position: "absolute",
+    top: screenHeight * 0.48,
+    fontWeight: 800,
+    color: "#D7F2F4",
+    fontSize: 32,
+  },
+  subText: {
+    position: "absolute",
+    top: screenHeight * 0.52,
+    color: "#BFC1C2",
+    fontWeight: 500,
+    marginTop: 5,
+    color: "white",
+    fontSize: 14,
+  },
+  appleText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: 500,
+  },
+  swipeText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: 500,
+    marginLeft: "24%",
+  },
+  smallText: {
+    marginTop: 6,
+    marginRight: 10,
+    color: "white",
+    fontSize: 12,
+    fontWeight: 500,
   },
 });
 

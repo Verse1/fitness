@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/auth";
 
 // Screens
 import LoginRegister from "./screens/LoginRegister";
+import Login from "./screens/Login";
 import Dashboard from "./screens/Dashboard";
 import Navbar from "./components/Navbar";
 import Weight from "./screens/Weight";
@@ -56,6 +57,7 @@ export default function App() {
               // User is signed in
               <>
                 <Stack.Screen name="LoginRegister" component={LoginRegister} />
+                <Stack.Screen name="Login" component={Login} />
                 {/* Sign Up Process */}
                 <Stack.Screen name="Name" component={Name} />
                 <Stack.Screen name="Gender" component={Gender} />
@@ -84,6 +86,7 @@ export default function App() {
               // User isn't signed in
               <>
                 <Stack.Screen name="LoginRegister" component={LoginRegister} />
+                <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Name" component={Name} />
                 <Stack.Screen name="Gender" component={Gender} />
                 <Stack.Screen name="Age" component={Age} />

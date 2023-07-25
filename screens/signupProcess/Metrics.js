@@ -11,6 +11,7 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import RNPickerSelect from "react-native-picker-select";
 import { AntDesign } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -66,12 +67,12 @@ const Metrics = () => {
       <View style={styles.progressContainer}>
         <View style={{flexDirection: 'row'}}>
                   <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>   
-            <AntDesign name="arrowleft" style={{ color: "#D7F2F4", fontSize: 20, paddingRight: screenWidth * 0.01}} />
+                  <Feather name="chevron-left" size={24}  style={{ color: "#FFFAFA", paddingRight: screenWidth * 0.01}} />
           </Pressable>
             <View style={styles.progressBar}>
               <View style={styles.progress} />
             </View>
-            <Text style={styles.progressText}>4 of 5</Text>
+            <Text style={styles.progressText}>4 of 8</Text>
           </View>
           <Text style={{color: '#D7F2F4', paddingBottom: screenHeight  *0.04, fontSize: 42, width: screenWidth * 0.7, fontWeight: '700', paddingLeft: screenWidth * .02}}>How much do you weigh?</Text>
 
@@ -133,19 +134,19 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width - 140,
     borderRadius: 5,
     marginRight: 10,
-        marginTop:  screenHeight * 0.08
+    marginTop:  screenHeight * 0.08
 
   },
   progress: {
     height: "100%",
-    width: `${(4 / 5) * 100}%`,
+    width: `${(4 / 8) * 100}%`,
     borderRadius: 5,
-    backgroundColor: "blue",
+    backgroundColor: "#116CE4",
     
   },
   backButton: {
     paddingLeft: 8,
-    marginTop:  screenHeight * 0.073,
+    marginTop:  screenHeight * 0.07,
     paddingRight: 10
 
   },
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
   progressText: {
     marginRight: 8,
     color:  "#D7F2F4",
-    marginTop:  screenHeight * 0.08
+    marginTop:  screenHeight * 0.075
 
   },
 });

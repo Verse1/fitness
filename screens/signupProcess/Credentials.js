@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     width: "80%",
     padding: 15,
     borderRadius: 8,
+    color:'#D7F2F4',
 
     borderColor: "gray",
     alignSelf: "center",

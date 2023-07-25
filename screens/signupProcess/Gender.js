@@ -12,6 +12,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import {LinearGradient} from 'expo-linear-gradient'
 import Icon from 'react-native-ionicons'
+import { Feather } from "@expo/vector-icons";
 
 // Screen dimensions
 const screenHeight = Dimensions.get("window").height;
@@ -45,12 +46,12 @@ const Gender = () => {
         <View style={{flexDirection: 'row'}}>
           <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
       
-              <AntDesign name="arrowleft" style={{ color: "#FFFAFA", fontSize: 20, paddingTop: 0, paddingRight: screenWidth * 0.01}} />
+              <Feather name="chevron-left" style={{ color: "#FFFAFA", fontSize: 24, paddingTop: 0, paddingRight: screenWidth * 0.01}} />
           </Pressable>
             <View style={styles.progressBar}>
               <View style={styles.progress} />
             </View>
-            <Text style={styles.progressText}>5 of 6</Text>
+            <Text style={styles.progressText}>2 of 8</Text>
           </View>
           <Text style={{color: '#D7F2F4', paddingBottom: screenHeight  *0.035, fontSize: 42, width: screenWidth * 1, fontWeight: '700', paddingLeft: screenWidth * .02}}>What is your gender?</Text>
 
@@ -129,9 +130,9 @@ const styles = StyleSheet.create({
   },
   progress: {
     height: "100%",
-    width: `${(4 / 6) * 100}%`,
+    width: `${(2 / 8) * 100}%`,
     borderRadius: 5,
-    backgroundColor: "blue",
+    backgroundColor: "#116CE4",
   },
   backButton: {
     paddingLeft: 8,

@@ -51,19 +51,23 @@ const LoginRegister = ({ navigation }) => {
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (e, gestureState) => {
-      // prevent circle from going outside the swipeButton
-      if (gestureState.dx >= 0 && gestureState.dx <= swipeButtonWidth - circleRadius) {
+      if (
+        gestureState.dx >= 0 &&
+        gestureState.dx <= swipeButtonWidth - circleRadius * 2
+      ) {
         pan.x.setValue(gestureState.dx);
       }
     },
     onPanResponderRelease: () => {
-      if (pan.x._value > swipeButtonWidth - circleRadius * 2) {
+      if (pan.x._value > swipeButtonWidth - circleRadius * 3) {
         navigation.navigate("Name");
       }
-      // return circle to start position when let go
+
       Animated.spring(pan, {
         toValue: { x: 0, y: 0 },
         useNativeDriver: false,
+        friction: 500,
+        tension: 100,
       }).start();
     },
   });

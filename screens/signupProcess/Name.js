@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Keyboard,
+  Animated,
+  Easing,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
@@ -22,15 +24,33 @@ const Name = () => {
   const navigation = useNavigation();
   const [name, setName] = useState("");
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, []);
+  const progressAnim = useRef(new Animated.Value(0)).current;
+
+  const progressStyle = {
+    height: "100%",
+    width: progressAnim.interpolate({
+      inputRange: [0, 100],
+      outputRange: ["0%", "100%"],
+    }),
+    borderRadius: 5,
+    backgroundColor: "#116CE4",
+  };
 
   const handleContinue = () => {
     navigation.navigate("Gender", { userName: name });
   };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+    Animated.timing(progressAnim, {
+      toValue: (1 / 8) * 100,
+      duration: 1000,
+      useNativeDriver: false,
+      easing: Easing.elastic(1),
+    }).start();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -46,7 +66,7 @@ const Name = () => {
                 <Feather name="chevron-left" size={24} color="white" />
               </Pressable>
               <View style={styles.progressBar}>
-                <View style={styles.progress} />
+                <Animated.View style={progressStyle} />
               </View>
               <Text style={styles.progressText}>1 of 8</Text>
             </View>
@@ -225,12 +245,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight: 10,
     margingLeft: 5,
-  },
-  progress: {
-    height: "100%",
-    width: `${(1 / 8) * 100}%`,
-    borderRadius: 5,
-    backgroundColor: "#116CE4",
   },
   progressText: {
     marginRight: 10,

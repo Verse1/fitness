@@ -1,5 +1,13 @@
-import React, { useLayoutEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet, Pressable, Dimensions } from "react-native";
+import React, { useLayoutEffect, useState, useContext, useRef } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+  Animated,
+  Easing,
+} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -30,12 +38,6 @@ const Credentials = () => {
     userFats,
   } = route.params;
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, []);
-
   const handleCredentials = async () => {
     try {
       const resp = await axios.post("http://localhost:8000/api/signup", {
@@ -65,6 +67,30 @@ const Credentials = () => {
     }
   };
 
+  const progressAnim = useRef(new Animated.Value((6 / 8) * 100)).current;
+
+  const progressStyle = {
+    height: "100%",
+    width: progressAnim.interpolate({
+      inputRange: [0, 100],
+      outputRange: ["0%", "100%"],
+    }),
+    borderRadius: 5,
+    backgroundColor: "#116CE4",
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+    Animated.timing(progressAnim, {
+      toValue: (8 / 8) * 100,
+      duration: 1000,
+      useNativeDriver: false,
+      easing: Easing.elastic(1),
+    }).start();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -79,12 +105,12 @@ const Credentials = () => {
                 <Feather name="chevron-left" size={24} color="white" />
               </Pressable>
               <View style={styles.progressBar}>
-                <View style={styles.progress} />
+                <Animated.View style={progressStyle} />
               </View>
-              <Text style={styles.progressText}>7 of 8</Text>
+              <Text style={styles.progressText}>8 of 8</Text>
             </View>
             <View style={styles.Titles}>
-              <Text style={styles.title}>Almost Done!</Text>
+              <Text style={styles.title}>Create Your Login Details</Text>
             </View>
           </LinearGradient>
         </View>
@@ -153,7 +179,7 @@ const styles = StyleSheet.create({
   },
   progress: {
     height: "100%",
-    width: `${(7 / 8) * 100}%`,
+    width: `${(8 / 8) * 100}%`,
     borderRadius: 5,
     backgroundColor: "#116CE4",
   },
@@ -163,8 +189,8 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   Titles: {
-    top: screenHeight * 0.13,
-    width: "90%",
+    top: screenHeight * 0.1,
+    width: "70%",
     paddingLeft: 20,
   },
   title: {

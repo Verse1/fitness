@@ -1,5 +1,13 @@
-import React, { useLayoutEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Dimensions } from "react-native";
+import React, { useLayoutEffect, useState, useRef } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+  Animated,
+  Easing,
+} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -17,12 +25,6 @@ const MacroSelection = () => {
   const route = useRoute();
   const { userInfo, userGender, userAge, userWeight, userHeight } = route.params;
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, []);
-
   const handleContinue = () => {
     navigation.navigate("WorkoutSplitSelection", {
       userInfo: userInfo,
@@ -36,6 +38,30 @@ const MacroSelection = () => {
       userFats: fats,
     });
   };
+
+  const progressAnim = useRef(new Animated.Value((4 / 8) * 100)).current;
+
+  const progressStyle = {
+    height: "100%",
+    width: progressAnim.interpolate({
+      inputRange: [0, 100],
+      outputRange: ["0%", "100%"],
+    }),
+    borderRadius: 5,
+    backgroundColor: "#116CE4",
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+    Animated.timing(progressAnim, {
+      toValue: (6 / 8) * 100,
+      duration: 1000,
+      useNativeDriver: false,
+      easing: Easing.elastic(1),
+    }).start();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -51,7 +77,7 @@ const MacroSelection = () => {
                 <Feather name="chevron-left" size={24} color="white" />
               </Pressable>
               <View style={styles.progressBar}>
-                <View style={styles.progress} />
+                <Animated.View style={progressStyle} />
               </View>
               <Text style={styles.progressText}>6 of 8</Text>
             </View>

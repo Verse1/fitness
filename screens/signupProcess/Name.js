@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 4,
+    backgroundColor: "#151919",
   },
   main: {
     width: "100%",
@@ -241,10 +242,10 @@ const styles = StyleSheet.create({
   progressBar: {
     backgroundColor: "#FFFAFA",
     height: 10,
-    width: Dimensions.get("window").width - 140,
+    width: screenWidth - 140,
     borderRadius: 5,
     marginRight: 10,
-    margingLeft: 5,
+    marginLeft: 5,
   },
   progressText: {
     marginRight: 10,

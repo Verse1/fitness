@@ -8,10 +8,13 @@ import {
   Animated,
   Easing,
   TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -26,7 +29,28 @@ const MacroSelection = () => {
   const route = useRoute();
   const { userInfo, userGender, userAge, userWeight, userHeight } = route.params;
 
+  const scrollViewRef = useRef(null);
+  const inputRefs = useRef([
+    React.createRef(),
+    React.createRef(),
+    React.createRef(),
+    React.createRef(),
+  ]).current;
+  const offsets = useRef([0, 0, 0, 0]).current;
+
   const handleContinue = () => {
+    const inputs = [calories, protein, carbs, fats];
+    for (let i = 0; i < inputs.length; i++) {
+      if (!inputs[i]) {
+        scrollViewRef.current.scrollTo({
+          x: 0,
+          y: offsets.current[i] - 200,
+          animated: true,
+        });
+        inputRefs[i].current.focus();
+        return;
+      }
+    }
     navigation.navigate("WorkoutSplitSelection", {
       userInfo: userInfo,
       userGender: userGender,
@@ -65,77 +89,95 @@ const MacroSelection = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={styles.shadow}>
-          <LinearGradient
-            colors={["#151919", "#1D2528"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.header}>
-            <View style={styles.progressContainer}>
-              <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-                <Feather name="chevron-left" size={24} color="white" />
-              </Pressable>
-              <View style={styles.progressBar}>
-                <Animated.View style={progressStyle} />
-              </View>
-              <Text style={styles.progressText}>6 of 8</Text>
-            </View>
-            <View style={styles.Titles}>
-              <Text style={styles.title}>What is your daily macro intake?</Text>
-            </View>
-          </LinearGradient>
-        </View>
-      </View>
-      <View style={styles.fullScreen}>
-        <View style={styles.content}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.quantityText}>Quantity Per Day</Text>
-            {[
-              { name: "Calories", setFunction: setCalories, unit: "kCal" },
-              { name: "Protein", setFunction: setProtein, unit: "g" },
-              { name: "Carbs", setFunction: setCarbs, unit: "g" },
-              { name: "Fats", setFunction: setFats, unit: "g" },
-            ].map((item, index) => (
-              <View key={index} style={styles.inputRow}>
-                <Text style={styles.inputLabel}>{item.name}</Text>
-                <View style={styles.inputAndUnit}>
-                  <LinearGradient
-                    colors={["#151919", "#253237"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.inputBackground}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    onChangeText={item.setFunction}
-                    placeholderTextColor="#D7F2F4"
-                    keyboardType="numeric"
-                    maxLength={4}
-                    keyboardAppearance="dark"
-                  />
-                  <Text style={styles.inputUnit}>{item.unit}</Text>
+    <KeyboardAwareScrollView
+      style={styles.container}
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      ref={scrollViewRef}
+      contentContainerStyle={styles.containerContent}
+      getTextInputRefs={() => inputRefs}>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <View style={styles.shadow}>
+            <LinearGradient
+              colors={["#151919", "#1D2528"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.header}>
+              <View style={styles.progressContainer}>
+                <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
+                  <Feather name="chevron-left" size={24} color="white" />
+                </Pressable>
+                <View style={styles.progressBar}>
+                  <Animated.View style={progressStyle} />
                 </View>
+                <Text style={styles.progressText}>6 of 8</Text>
               </View>
-            ))}
+              <View style={styles.Titles}>
+                <Text style={styles.title}>What is your daily macro intake?</Text>
+              </View>
+            </LinearGradient>
           </View>
         </View>
-        <View style={styles.footer}>
-          <View style={styles.buttonView}>
-            <Pressable style={styles.continue} onPress={handleContinue}>
-              <Text style={styles.text}>Continue</Text>
-            </Pressable>
+        <View style={styles.fullScreen}>
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.quantityText}>Quantity Per Day</Text>
+              {[
+                { name: "Calories", setFunction: setCalories, unit: "kCal" },
+                { name: "Protein", setFunction: setProtein, unit: "g" },
+                { name: "Carbs", setFunction: setCarbs, unit: "g" },
+                { name: "Fats", setFunction: setFats, unit: "g" },
+              ].map((item, index) => (
+                <View
+                  key={index}
+                  style={styles.inputRow}
+                  onLayout={(event) => {
+                    offsets.current[index] = event.nativeEvent.layout.y;
+                  }}>
+                  <Text style={styles.inputLabel}>{item.name}</Text>
+                  <View style={styles.inputAndUnit}>
+                    <LinearGradient
+                      colors={["#151919", "#253237"]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      style={styles.inputBackground}
+                    />
+                    <TextInput
+                      ref={inputRefs[index]}
+                      style={styles.input}
+                      onChangeText={item.setFunction}
+                      placeholderTextColor="#D7F2F4"
+                      keyboardType="numeric"
+                      maxLength={4}
+                      keyboardAppearance="dark"
+                    />
+                    <Text style={styles.inputUnit}>{item.unit}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+
+            <View style={styles.footer}>
+              <View style={styles.buttonView}>
+                <Pressable style={styles.continue} onPress={handleContinue}>
+                  <Text style={styles.text}>Continue</Text>
+                </Pressable>
+              </View>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#0F0E0E",
+  },
+  containerContent: {
+    flexGrow: 1,
     backgroundColor: "#0F0E0E",
   },
   headerContainer: {
@@ -201,6 +243,7 @@ const styles = StyleSheet.create({
     marginTop: screenHeight * 0.28,
     backgroundColor: "#0F0E0E",
     justifyContent: "space-between",
+    paddingBottom: 10,
   },
   content: {
     flex: 2,
@@ -209,6 +252,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     alignItems: "flex-start",
     paddingLeft: screenWidth * 0.165,
+    paddingTop: screenHeight * 0.12,
   },
   quantityText: {
     fontSize: 24,
@@ -260,6 +304,7 @@ const styles = StyleSheet.create({
   footer: {
     flex: 1,
     justifyContent: "flex-end",
+    marginBottom: 10,
   },
   buttonView: {
     alignItems: "center",
@@ -271,9 +316,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 6,
     borderWidth: 0.7,
-    marginVertical: 5,
-    position: "absolute",
-    bottom: 10,
+    height: screenHeight * 0.045,
   },
   text: {
     color: "#151919",

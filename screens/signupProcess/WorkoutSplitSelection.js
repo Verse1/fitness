@@ -1,21 +1,14 @@
-import React, { useLayoutEffect, useState, useContext } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable, Dimensions } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { AuthContext } from "../../context/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
-const Credentials = () => {
+const SplitSelection = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [state, setState] = useContext(AuthContext);
 
   const route = useRoute();
   const {
@@ -36,33 +29,18 @@ const Credentials = () => {
     });
   }, []);
 
-  const handleCredentials = async () => {
-    try {
-      const resp = await axios.post("http://localhost:8000/api/signup", {
-        name: userInfo,
-        email,
-        password,
-        gender: userGender,
-        weight: userWeight,
-        height: userHeight,
-        age: userAge,
-        dailyCalories: userCalories,
-        dailyProtein: userProtein,
-        dailyCarbs: userCarbs,
-        dailyFats: userFats,
-      });
-      console.log(resp.data.error);
-      if (resp.data.error) {
-        alert(resp.data.error);
-      } else {
-        setState(resp.data);
-        await AsyncStorage.setItem("auth-rn", JSON.stringify(resp.data));
-        alert("Nice");
-        navigation.navigate("Dashboard");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error.message);
-    }
+  const handleContinue = () => {
+    navigation.navigate("Credentials", {
+      userName: userInfo,
+      userGender: userGender,
+      userAge: userAge,
+      userWeight: userWeight,
+      userHeight: userHeight,
+      userCalories: userCalories,
+      userProtein: userProtein,
+      userCarbs: userCarbs,
+      userFats: userFats,
+    });
   };
 
   return (
@@ -84,7 +62,7 @@ const Credentials = () => {
               <Text style={styles.progressText}>7 of 8</Text>
             </View>
             <View style={styles.Titles}>
-              <Text style={styles.title}>Almost Done!</Text>
+              <Text style={styles.title}>What is your workout split?</Text>
             </View>
           </LinearGradient>
         </View>
@@ -94,8 +72,8 @@ const Credentials = () => {
 
         <View style={styles.footer}>
           <View style={styles.buttonView}>
-            <Pressable style={styles.continue} onPress={handleCredentials}>
-              <Text style={styles.text}>Done</Text>
+            <Pressable style={styles.continue} onPress={handleContinue}>
+              <Text style={styles.text}>Continue</Text>
             </Pressable>
           </View>
         </View>
@@ -163,7 +141,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   Titles: {
-    top: screenHeight * 0.13,
+    top: screenHeight * 0.1,
     width: "90%",
     paddingLeft: 20,
   },
@@ -208,26 +186,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Credentials;
-
-// {/* <View style={styles.content}>
-//   {/* Email input */}
-//   <View style={styles.main}>
-//     <TextInput
-//       placeholder="Email Address"
-//       placeholderTextColor={"#D7F2F4"}
-//       style={styles.textbox}
-//       onChangeText={setEmail}
-//       autoFocus={true}
-//       autoCorrect={false}
-//       autoCapitalize="none"
-//     />
-//     <TextInput
-//       placeholder="Password"
-//       placeholderTextColor={"#D7F2F4"}
-//       style={styles.textbox}
-//       onChangeText={setPassword}
-//       secureTextEntry={true}
-//     />
-//   </View>
-// </View>; */}
+export default SplitSelection;

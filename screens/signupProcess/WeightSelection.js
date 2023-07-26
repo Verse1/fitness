@@ -1,34 +1,20 @@
-import React, { useLayoutEffect, useState, useContext } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable, Dimensions } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { AuthContext } from "../../context/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import { getWeightOptions } from "../../utils/weightOptions";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
-const Credentials = () => {
+const WeightSelection = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [state, setState] = useContext(AuthContext);
+  const [selectedWeight, setSelectedWeight] = useState(null);
+  const weightOptions = getWeightOptions();
 
   const route = useRoute();
-  const {
-    userInfo,
-    userGender,
-    userAge,
-    userWeight,
-    userHeight,
-    userCalories,
-    userProtein,
-    userCarbs,
-    userFats,
-  } = route.params;
+  const { userInfo, userGender, userAge } = route.params;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -36,33 +22,17 @@ const Credentials = () => {
     });
   }, []);
 
-  const handleCredentials = async () => {
-    try {
-      const resp = await axios.post("http://localhost:8000/api/signup", {
-        name: userInfo,
-        email,
-        password,
-        gender: userGender,
-        weight: userWeight,
-        height: userHeight,
-        age: userAge,
-        dailyCalories: userCalories,
-        dailyProtein: userProtein,
-        dailyCarbs: userCarbs,
-        dailyFats: userFats,
-      });
-      console.log(resp.data.error);
-      if (resp.data.error) {
-        alert(resp.data.error);
-      } else {
-        setState(resp.data);
-        await AsyncStorage.setItem("auth-rn", JSON.stringify(resp.data));
-        alert("Nice");
-        navigation.navigate("Dashboard");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error.message);
-    }
+  const handleWeightSelection = (weight) => {
+    setSelectedWeight(weight);
+  };
+
+  const handleContinue = () => {
+    navigation.navigate("HeightSelection", {
+      userName: userInfo,
+      userGender: userGender,
+      userAge: userAge,
+      userWeight: selectedWeight,
+    });
   };
 
   return (
@@ -81,10 +51,12 @@ const Credentials = () => {
               <View style={styles.progressBar}>
                 <View style={styles.progress} />
               </View>
-              <Text style={styles.progressText}>7 of 8</Text>
+              <Text style={styles.progressText}>4 of 8</Text>
             </View>
             <View style={styles.Titles}>
-              <Text style={styles.title}>Almost Done!</Text>
+              <Text autoCorrect={false} style={styles.title}>
+                How fat are you?
+              </Text>
             </View>
           </LinearGradient>
         </View>
@@ -94,8 +66,8 @@ const Credentials = () => {
 
         <View style={styles.footer}>
           <View style={styles.buttonView}>
-            <Pressable style={styles.continue} onPress={handleCredentials}>
-              <Text style={styles.text}>Done</Text>
+            <Pressable style={styles.continue} onPress={handleContinue}>
+              <Text style={styles.text}>Continue</Text>
             </Pressable>
           </View>
         </View>
@@ -153,7 +125,7 @@ const styles = StyleSheet.create({
   },
   progress: {
     height: "100%",
-    width: `${(7 / 8) * 100}%`,
+    width: `${(4 / 8) * 100}%`,
     borderRadius: 5,
     backgroundColor: "#116CE4",
   },
@@ -163,8 +135,8 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   Titles: {
-    top: screenHeight * 0.13,
-    width: "90%",
+    top: screenHeight * 0.1,
+    width: "70%",
     paddingLeft: 20,
   },
   title: {
@@ -208,26 +180,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Credentials;
-
-// {/* <View style={styles.content}>
-//   {/* Email input */}
-//   <View style={styles.main}>
-//     <TextInput
-//       placeholder="Email Address"
-//       placeholderTextColor={"#D7F2F4"}
-//       style={styles.textbox}
-//       onChangeText={setEmail}
-//       autoFocus={true}
-//       autoCorrect={false}
-//       autoCapitalize="none"
-//     />
-//     <TextInput
-//       placeholder="Password"
-//       placeholderTextColor={"#D7F2F4"}
-//       style={styles.textbox}
-//       onChangeText={setPassword}
-//       secureTextEntry={true}
-//     />
-//   </View>
-// </View>; */}
+export default WeightSelection;

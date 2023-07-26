@@ -2,28 +2,25 @@ import React, { useLayoutEffect, useState } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   StyleSheet,
   Pressable,
+  Platform,
   Dimensions,
-  Image
+  Image,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { AntDesign } from "@expo/vector-icons";
-import {LinearGradient} from 'expo-linear-gradient'
-import Icon from 'react-native-ionicons'
 import { Feather } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
-// Screen dimensions
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
 const Gender = () => {
-  const route = useRoute();
-  const { userName } = route.params;
-
   const navigation = useNavigation();
   const [selectedGender, setSelectedGender] = useState(null);
+
+  const route = useRoute();
+  const { userName } = route.params;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -41,67 +38,39 @@ const Gender = () => {
 
   return (
     <View style={styles.container}>
-      {/* Progress bar */}
-      <LinearGradient  colors={['#151919', '#253237']} start={{x:0}} end={{x:1}} style={styles.progressContainer}>
-        <View style={{flexDirection: 'row'}}>
-          <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-      
-              <Feather name="chevron-left" style={{ color: "#FFFAFA", fontSize: 24, paddingTop: 0, paddingRight: screenWidth * 0.01}} />
-          </Pressable>
-            <View style={styles.progressBar}>
-              <View style={styles.progress} />
+      <View style={styles.headerContainer}>
+        <View style={styles.shadow}>
+          <LinearGradient
+            colors={["#151919", "#1D2528"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.header}>
+            <View style={styles.progressContainer}>
+              <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
+                <Feather name="chevron-left" size={24} color="white" />
+              </Pressable>
+              <View style={styles.progressBar}>
+                <View style={styles.progress} />
+              </View>
+              <Text style={styles.progressText}>2 of 8</Text>
             </View>
-            <Text style={styles.progressText}>2 of 8</Text>
+            <View style={styles.Titles}>
+              <Text autoCorrect={false} style={styles.title}>
+                What is your gender?
+              </Text>
+            </View>
+          </LinearGradient>
+        </View>
+      </View>
+      <View style={styles.fullScreen}>
+        <View style={styles.content}></View>
+
+        <View style={styles.footer}>
+          <View style={styles.buttonView}>
+            <Pressable style={styles.continue} onPress={handleContinue}>
+              <Text style={styles.text}>Continue</Text>
+            </Pressable>
           </View>
-          <Text style={{color: '#D7F2F4', paddingBottom: screenHeight  *0.035, fontSize: 42, width: screenWidth * 1, fontWeight: '700', paddingLeft: screenWidth * .02}}>What is your gender?</Text>
-
-      </LinearGradient>
-
-      {/* Back button */}
-      {/* <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-        <View
-          style={{
-            backgroundColor: "blue",
-            width: screenWidth * 0.1,
-            height: screenWidth * 0.1,
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "50%",
-          }}>
-          <AntDesign name="arrowleft" style={{ color: "white", fontSize: 20 }} />
-        </View>
-      </Pressable> */}
-
-      <View style={styles.content}>
-        {/* Gender buttons */}
-        <View style={styles.buttonContainer}>
-        
-        <LinearGradient  colors={['#151919', '#253237']} start={{x:0}} end={{x:1}}
-
-            style={[
-              styles.genderButton,
-              selectedGender === "female" && styles.selectedGenderButton,
-            ]}
-            onPress={() => handleGenderSelection("female")}>
-              <Text style={styles.genderButtonText}>Female</Text>
-          </LinearGradient>
-
-          <LinearGradient  colors={['#151919', '#253237']} start={{x:0}} end={{x:1}}
-            style={[
-              styles.genderButton,
-              selectedGender === "male" && styles.selectedGenderButton,
-            ]}
-            onPress={() => handleGenderSelection("male")}>
-            {/* <Text style={styles.genderButtonText}>♂</Text> */}
-            <Icon name="male-outline"  color="white"/>
-          </LinearGradient>
-        </View>
-
-        {/* Continue button */}
-        <View style={styles.buttonView}>
-          <Pressable style={styles.cont} onPress={handleContinue}>
-            <Text style={styles.text}>Continue</Text>
-          </Pressable>
         </View>
       </View>
     </View>
@@ -111,22 +80,49 @@ const Gender = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:  "#0F0E0E"
+    backgroundColor: "#0F0E0E",
+  },
+  headerContainer: {
+    paddingBottom: 10,
+    overflow: "visible",
+    position: "absolute",
+    zIndex: 2,
+    width: "100%",
+  },
+  shadow: {
+    backgroundColor: "transparent",
+    shadowColor: "rgb(0, 0, 0)",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 15,
+  },
+  header: {
+    justifyContent: "flex-start",
+    borderBottomRightRadius: 117,
+    height: screenHeight * 0.28,
   },
   progressContainer: {
+    top: screenHeight * 0.07,
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    backgroundColor: '#151919',
-    height: screenHeight * 0.28,
-    borderBottomRightRadius: 120
+  },
+  backButton: {
+    alignSelf: "flex-start",
+    paddingLeft: 5,
+    paddingRight: 10,
   },
   progressBar: {
-    backgroundColor: "lightgrey",
+    backgroundColor: "#FFFAFA",
     height: 10,
     width: Dimensions.get("window").width - 140,
     borderRadius: 5,
     marginRight: 10,
-    marginTop:  screenHeight * 0.08
+    margingLeft: 5,
   },
   progress: {
     height: "100%",
@@ -134,70 +130,109 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#116CE4",
   },
-  backButton: {
-    paddingLeft: 8,
-    marginTop:  screenHeight * 0.073,
-    paddingRight: 10
+  progressText: {
+    marginRight: 10,
+    color: "#FFFAFA",
+    fontWeight: "500",
   },
-  backButtonText: {
-    fontSize: 18,
+  Titles: {
+    top: screenHeight * 0.1,
+    width: "70%",
+    paddingLeft: 20,
   },
-  content: {
+  title: {
+    fontWeight: "700",
+    fontSize: 40,
+    textAlign: "left",
+    color: "#D7F2F4",
+  },
+  fullScreen: {
     flex: 1,
+    marginTop: screenHeight * 0.28,
+    backgroundColor: "#0F0E0E",
     justifyContent: "space-between",
   },
-  buttonContainer: {
-    flexDirection: "row",
+  content: {
+    flex: 2,
     justifyContent: "center",
-    alignItems: "center",
+  },
+  footer: {
     flex: 1,
-    
+    justifyContent: "flex-end",
   },
-  genderButton: {
-    backgroundColor: "#ccc",
-    borderRadius: 10,
-    width: 150,
-    height: 150,
-    borderColor: "#ccc",
-    // justifyContent: "center",
-    // alignItems: "center",
-    marginBottom: 70,
-    marginHorizontal: 10
+  buttonView: {
+    alignItems: "center",
+    marginBottom: 40,
   },
-  selectedGenderButton: {
-    backgroundColor: "blue",
-    borderColor: "blue",
-  },
-  genderButtonText: {
-    fontWeight: "700",
-    color: "#fff",
-    fontSize: 150,
-    right: '30%'
-  },
-  cont: {
+  continue: {
     backgroundColor: "#D7F2F4",
     width: "80%",
     padding: 10,
     borderRadius: 6,
     borderWidth: 0.7,
-    borderColor: "blue",
-    alignSelf: "center",
+    marginVertical: 5,
+    position: "absolute",
+    bottom: 10,
   },
   text: {
     color: "#151919",
     textAlign: "center",
     fontWeight: "700",
   },
-  buttonView: {
-    alignItems: "center",
-    marginBottom: screenHeight * 0.05,
-  },
-  progressText: {
-    marginRight: 8,
-    color:  "#D7F2F4",
-    marginTop:  screenHeight * 0.075,
-    marginLeft: 8
-  },
 });
 
 export default Gender;
+
+{
+  /* <View style={styles.buttonContainer}>
+          <LinearGradient
+            colors={["#151919", "#253237"]}
+            start={{ x: 0 }}
+            end={{ x: 1 }}
+            style={[
+              styles.genderButton,
+              selectedGender === "female" && styles.selectedGenderButton,
+            ]}
+            onPress={() => handleGenderSelection("female")}>
+            <Text style={styles.genderButtonText}>Female</Text>
+          </LinearGradient>
+
+          <LinearGradient
+            colors={["#151919", "#253237"]}
+            start={{ x: 0 }}
+            end={{ x: 1 }}
+            style={[
+              styles.genderButton,
+              selectedGender === "male" && styles.selectedGenderButton,
+            ]}
+            onPress={() => handleGenderSelection("male")}>
+            <Text style={styles.genderButtonText}>Male</Text>
+          </LinearGradient>
+        </View> */
+}
+
+// buttonContainer: {
+//   flexDirection: "row",
+//   justifyContent: "center",
+//   alignItems: "center",
+//   flex: 1,
+// },
+// genderButton: {
+//   backgroundColor: "#ccc",
+//   borderRadius: 10,
+//   width: 150,
+//   height: 150,
+//   borderColor: "#ccc",
+//   marginBottom: 70,
+//   marginHorizontal: 10,
+// },
+// selectedGenderButton: {
+//   backgroundColor: "blue",
+//   borderColor: "blue",
+// },
+// genderButtonText: {
+//   fontWeight: "700",
+//   color: "#fff",
+//   fontSize: 150,
+//   right: "30%",
+// },

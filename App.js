@@ -19,7 +19,9 @@ import GeneratedMeals from "./screens/GeneratedMeals";
 // Sign Up Process
 import Name from "./screens/signupProcess/Name";
 import Credentials from "./screens/signupProcess/Credentials";
-import Metrics from "./screens/signupProcess/Metrics";
+import WorkoutSplitSelection from "./screens/signupProcess/WorkoutSplitSelection";
+import HeightSelection from "./screens/signupProcess/HeightSelection";
+import WeightSelection from "./screens/signupProcess/WeightSelection";
 import Gender from "./screens/signupProcess/Gender";
 import Age from "./screens/signupProcess/Age";
 import Loading from "./screens/Loading";
@@ -62,8 +64,13 @@ export default function App() {
                 <Stack.Screen name="Name" component={Name} />
                 <Stack.Screen name="Gender" component={Gender} />
                 <Stack.Screen name="Age" component={Age} />
-                <Stack.Screen name="Metrics" component={Metrics} />
+                <Stack.Screen name="WeightSelection" component={WeightSelection} />
+                <Stack.Screen name="HeightSelection" component={HeightSelection} />
                 <Stack.Screen name="Macros" component={Macros} />
+                <Stack.Screen
+                  name="WorkoutSplitSelection"
+                  component={WorkoutSplitSelection}
+                />
                 <Stack.Screen name="Credentials" component={Credentials} />
 
                 {/* Workout Pages */}
@@ -90,7 +97,12 @@ export default function App() {
                 <Stack.Screen name="Name" component={Name} />
                 <Stack.Screen name="Gender" component={Gender} />
                 <Stack.Screen name="Age" component={Age} />
-                <Stack.Screen name="Metrics" component={Metrics} />
+                <Stack.Screen name="WeightSelection" component={WeightSelection} />
+                <Stack.Screen name="HeightSelection" component={HeightSelection} />
+                <Stack.Screen
+                  name="WorkoutSplitSelection"
+                  component={WorkoutSplitSelection}
+                />
                 <Stack.Screen name="Credentials" component={Credentials} />
                 <Stack.Screen name="Macros" component={Macros} />
               </>

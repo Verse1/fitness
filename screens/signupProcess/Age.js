@@ -2,24 +2,27 @@ import React, { useLayoutEffect, useState } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   StyleSheet,
   Pressable,
+  Platform,
   Dimensions,
+  Image,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import RNPickerSelect from "react-native-picker-select";
-import { AntDesign } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import { getAgeOptions } from "../../utils/ageOptions";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
-const AgeSelection = () => {
-  const route = useRoute();
-  const { userInfo, userGender } = route.params;
 
-  console.log(userInfo);
+const AgeSelection = () => {
   const navigation = useNavigation();
   const [selectedAge, setSelectedAge] = useState(null);
+  const ageOptions = getAgeOptions();
+
+  const route = useRoute();
+  const { userInfo, userGender } = route.params;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -27,18 +30,13 @@ const AgeSelection = () => {
     });
   }, []);
 
-  // Age options
-  const ageOptions = Array.from({ length: 82 }, (_, i) => {
-    const age = i + 18;
-    return { label: age.toString(), value: age };
-  });
-
   const handleAgeSelection = (age) => {
     setSelectedAge(age);
   };
 
   const handleContinue = () => {
-    navigation.navigate("Metrics", {
+    // Change this to weight later because metrics gonna be split up into 2 pages
+    navigation.navigate("WeightSelection", {
       userName: userInfo,
       userGender: userGender,
       userAge: selectedAge,
@@ -46,127 +44,179 @@ const AgeSelection = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Progress bar */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View style={styles.progress} />
-        </View>
-        <Text style={styles.progressText}>3 of 6</Text>
-      </View>
-
-      {/* Back button */}
-      <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-        <View
-          style={{
-            backgroundColor: "blue",
-            width: screenWidth * 0.1,
-            height: screenWidth * 0.1,
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 50,
-          }}>
-          <AntDesign name="arrowleft" style={{ color: "white", fontSize: 20 }} />
-        </View>
-      </Pressable>
-
-      <View style={styles.content}>
-        {/* Age selector */}
-        <View style={styles.ageSelectorContainer}>
-          <RNPickerSelect
-            onValueChange={handleAgeSelection}
-            items={ageOptions}
-            style={pickerSelectStyles}
-            value={selectedAge}
-            placeholder={{ label: "Select your age...", value: null }}
-          />
-        </View>
-
-        {/* Continue button */}
-        <View style={styles.buttonView}>
-          <Pressable style={styles.cont} onPress={handleContinue}>
-            <Text style={styles.text}>Continue</Text>
-          </Pressable>
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <View style={styles.shadow}>
+          <LinearGradient
+            colors={["#151919", "#1D2528"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.header}>
+            <View style={styles.progressContainer}>
+              <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
+                <Feather name="chevron-left" size={24} color="white" />
+              </Pressable>
+              <View style={styles.progressBar}>
+                <View style={styles.progress} />
+              </View>
+              <Text style={styles.progressText}>3 of 8</Text>
+            </View>
+            <View style={styles.Titles}>
+              <Text autoCorrect={false} style={styles.title}>
+                How old are you?
+              </Text>
+            </View>
+          </LinearGradient>
         </View>
       </View>
-    </SafeAreaView>
+      <View style={styles.fullScreen}>
+        <View style={styles.content}></View>
+
+        <View style={styles.footer}>
+          <View style={styles.buttonView}>
+            <Pressable style={styles.continue} onPress={handleContinue}>
+              <Text style={styles.text}>Continue</Text>
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#0F0E0E",
+  },
+  headerContainer: {
+    paddingBottom: 10,
+    overflow: "visible",
+    position: "absolute",
+    zIndex: 2,
+    width: "100%",
+  },
+  shadow: {
+    backgroundColor: "transparent",
+    shadowColor: "rgb(0, 0, 0)",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 15,
+  },
+  header: {
+    justifyContent: "flex-start",
+    borderBottomRightRadius: 117,
+    height: screenHeight * 0.28,
   },
   progressContainer: {
+    top: screenHeight * 0.07,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    paddingVertical: 20,
-  },
-  progressBar: {
-    backgroundColor: "lightgrey",
-    height: 10,
-    width: Dimensions.get("window").width - 90,
-    borderRadius: 5,
-    marginRight: 10,
-  },
-  progress: {
-    height: "100%",
-    width: `${(3 / 6) * 100}%`,
-    borderRadius: 5,
-    backgroundColor: "blue",
   },
   backButton: {
     alignSelf: "flex-start",
-    paddingLeft: 15,
+    paddingLeft: 5,
+    paddingRight: 10,
   },
-  backButtonText: {
-    fontSize: 18,
+  progressBar: {
+    backgroundColor: "#FFFAFA",
+    height: 10,
+    width: Dimensions.get("window").width - 140,
+    borderRadius: 5,
+    marginRight: 10,
+    margingLeft: 5,
   },
-  content: {
+  progress: {
+    height: "100%",
+    width: `${(3 / 8) * 100}%`,
+    borderRadius: 5,
+    backgroundColor: "#116CE4",
+  },
+  progressText: {
+    marginRight: 10,
+    color: "#FFFAFA",
+    fontWeight: "500",
+  },
+  Titles: {
+    top: screenHeight * 0.1,
+    width: "70%",
+    paddingLeft: 20,
+  },
+  title: {
+    fontWeight: "700",
+    fontSize: 40,
+    textAlign: "left",
+    color: "#D7F2F4",
+  },
+  fullScreen: {
     flex: 1,
+    marginTop: screenHeight * 0.28,
+    backgroundColor: "#0F0E0E",
     justifyContent: "space-between",
   },
-  ageSelectorContainer: {
+  content: {
+    flex: 2,
     justifyContent: "center",
-    alignItems: "center",
+  },
+  footer: {
     flex: 1,
-  },
-  cont: {
-    backgroundColor: "blue",
-    width: "80%",
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 0.7,
-    borderColor: "blue",
-    alignSelf: "center",
-  },
-  text: {
-    color: "white",
-    textAlign: "center",
-    fontWeight: "700",
+    justifyContent: "flex-end",
   },
   buttonView: {
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 40,
   },
-  progressText: {
-    marginRight: 8,
-  },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    backgroundColor: "rgb(225,225,225)",
-    width: 200,
-    padding: 20,
-    borderColor: "gray",
-    alignSelf: "center",
+  continue: {
+    backgroundColor: "#D7F2F4",
+    width: "80%",
+    padding: 10,
+    borderRadius: 6,
+    borderWidth: 0.7,
     marginVertical: 5,
-    borderRadius: 20,
-    fontSize: 15,
+    position: "absolute",
+    bottom: 10,
+  },
+  text: {
+    color: "#151919",
+    textAlign: "center",
+    fontWeight: "700",
   },
 });
 
 export default AgeSelection;
+
+{
+  /* <View style={styles.ageSelectorContainer}>
+  <RNPickerSelect
+    onValueChange={handleAgeSelection}
+    items={ageOptions}
+    style={pickerSelectStyles}
+    value={selectedAge}
+    placeholder={{ label: "Select your age...", value: null }}
+  />
+</View>; */
+}
+
+//  ageSelectorContainer: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     flex: 1,
+//   },
+
+// const pickerSelectStyles = StyleSheet.create({
+//   inputIOS: {
+//     backgroundColor: "rgb(225,225,225)",
+//     width: 200,
+//     padding: 20,
+//     borderColor: "gray",
+//     alignSelf: "center",
+//     marginVertical: 5,
+//     borderRadius: 20,
+//     fontSize: 15,
+//   },
+// });

@@ -28,7 +28,7 @@ const Name = () => {
     });
   }, []);
 
-  const handleName = () => {
+  const handleContinue = () => {
     navigation.navigate("Gender", { userName: name });
   };
 
@@ -85,7 +85,7 @@ const Name = () => {
           </TouchableWithoutFeedback>
           <View style={styles.footer}>
             <View style={styles.buttonView}>
-              <Pressable style={styles.cont} onPress={handleName}>
+              <Pressable style={styles.continue} onPress={handleContinue}>
                 <Text style={styles.text}>Continue</Text>
               </Pressable>
             </View>
@@ -140,10 +140,10 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "700",
     fontSize: 40,
-    textAlign: "Left",
+    textAlign: "left",
     color: "#D7F2F4",
   },
-  cont: {
+  continue: {
     backgroundColor: "#D7F2F4",
     width: "80%",
     padding: 10,
@@ -211,9 +211,6 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 10,
   },
-  backButtonText: {
-    fontSize: 18,
-  },
   progressContainer: {
     top: screenHeight * 0.07,
     flexDirection: "row",
@@ -231,7 +228,7 @@ const styles = StyleSheet.create({
   },
   progress: {
     height: "100%",
-    width: `${(1 / 6) * 100}%`,
+    width: `${(1 / 8) * 100}%`,
     borderRadius: 5,
     backgroundColor: "#116CE4",
   },

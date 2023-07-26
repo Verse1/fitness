@@ -7,10 +7,16 @@ import {
   Dimensions,
   Animated,
   Easing,
+  TouchableOpacity,
+  Image,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import FemaleInactive from "../../assets/femaleInactive.svg";
+import FemaleActive from "../../assets/femaleActive.png";
+import MaleInactive from "../../assets/maleInactive.svg";
+import MaleActive from "../../assets/maleActive.png";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -18,12 +24,30 @@ const screenWidth = Dimensions.get("window").width;
 const Gender = () => {
   const navigation = useNavigation();
   const [selectedGender, setSelectedGender] = useState(null);
+  const scaleValue1 = useRef(new Animated.Value(1)).current;
+  const scaleValue2 = useRef(new Animated.Value(1)).current;
 
   const route = useRoute();
   const { userName } = route.params;
 
   const handleGenderSelection = (gender) => {
     setSelectedGender(gender);
+  };
+
+  const handlePressIn = (buttonNumber) => {
+    Animated.spring(buttonNumber === 1 ? scaleValue1 : scaleValue2, {
+      toValue: 0.95,
+      friction: 3,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = (buttonNumber) => {
+    Animated.spring(buttonNumber === 1 ? scaleValue1 : scaleValue2, {
+      toValue: 1,
+      friction: 3,
+      useNativeDriver: true,
+    }).start();
   };
 
   const handleContinue = () => {
@@ -81,7 +105,50 @@ const Gender = () => {
         </View>
       </View>
       <View style={styles.fullScreen}>
-        <View style={styles.content}></View>
+        <View style={styles.content}>
+          <View style={styles.buttonContainer}>
+            <Animated.View
+              style={[
+                styles.buttonStyle,
+                {
+                  marginRight: 12.5,
+                  transform: [{ scale: scaleValue1 }],
+                },
+              ]}>
+              <TouchableOpacity
+                style={styles.buttonInner}
+                onPressIn={() => handlePressIn(1)}
+                onPressOut={() => handlePressOut(1)}
+                onPress={() => handleGenderSelection("female")}>
+                {selectedGender === "female" ? (
+                  <Image source={FemaleActive} style={styles.buttonSvg} />
+                ) : (
+                  <FemaleInactive style={styles.buttonSvg} />
+                )}
+              </TouchableOpacity>
+            </Animated.View>
+            <Animated.View
+              style={[
+                styles.buttonStyle,
+                {
+                  marginLeft: 12.5,
+                  transform: [{ scale: scaleValue2 }],
+                },
+              ]}>
+              <TouchableOpacity
+                style={styles.buttonInner}
+                onPressIn={() => handlePressIn(2)}
+                onPressOut={() => handlePressOut(2)}
+                onPress={() => handleGenderSelection("male")}>
+                {selectedGender === "male" ? (
+                  <Image source={MaleActive} style={styles.buttonSvg} />
+                ) : (
+                  <MaleInactive style={styles.buttonSvg} />
+                )}
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
+        </View>
 
         <View style={styles.footer}>
           <View style={styles.buttonView}>
@@ -173,6 +240,40 @@ const styles = StyleSheet.create({
   content: {
     flex: 2,
     justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "80%",
+  },
+  buttonStyle: {
+    width: 150,
+    height: 175,
+    backgroundColor: "#151919",
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  buttonInner: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  buttonSvg: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
   },
   footer: {
     flex: 1,
@@ -200,57 +301,3 @@ const styles = StyleSheet.create({
 });
 
 export default Gender;
-
-{
-  /* <View style={styles.buttonContainer}>
-          <LinearGradient
-            colors={["#151919", "#253237"]}
-            start={{ x: 0 }}
-            end={{ x: 1 }}
-            style={[
-              styles.genderButton,
-              selectedGender === "female" && styles.selectedGenderButton,
-            ]}
-            onPress={() => handleGenderSelection("female")}>
-            <Text style={styles.genderButtonText}>Female</Text>
-          </LinearGradient>
-
-          <LinearGradient
-            colors={["#151919", "#253237"]}
-            start={{ x: 0 }}
-            end={{ x: 1 }}
-            style={[
-              styles.genderButton,
-              selectedGender === "male" && styles.selectedGenderButton,
-            ]}
-            onPress={() => handleGenderSelection("male")}>
-            <Text style={styles.genderButtonText}>Male</Text>
-          </LinearGradient>
-        </View> */
-}
-
-// buttonContainer: {
-//   flexDirection: "row",
-//   justifyContent: "center",
-//   alignItems: "center",
-//   flex: 1,
-// },
-// genderButton: {
-//   backgroundColor: "#ccc",
-//   borderRadius: 10,
-//   width: 150,
-//   height: 150,
-//   borderColor: "#ccc",
-//   marginBottom: 70,
-//   marginHorizontal: 10,
-// },
-// selectedGenderButton: {
-//   backgroundColor: "blue",
-//   borderColor: "blue",
-// },
-// genderButtonText: {
-//   fontWeight: "700",
-//   color: "#fff",
-//   fontSize: 150,
-//   right: "30%",
-// },

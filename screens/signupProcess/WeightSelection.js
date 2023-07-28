@@ -46,11 +46,12 @@ const WeightSelection = () => {
 
   const handleContinue = () => {
     navigation.navigate("HeightSelection", {
-      userName: userInfo,
+      userInfo: userInfo,
       userGender: userGender,
       userAge: userAge,
       userWeight: selectedWeight,
     });
+    console.log("Weight", userInfo, userGender, userAge, selectedWeight, "\n");
   };
 
   const progressAnim = useRef(new Animated.Value((2 / 8) * 100)).current;
@@ -120,8 +121,6 @@ const WeightSelection = () => {
             showsHorizontalScrollIndicator={false}
             onSelected={({ item, index }) => {
               setSelected(index);
-            }}
-            onScrollToIndexFailed={({ index }) => {
               handleWeightSelection(data[index]);
             }}
             magnet

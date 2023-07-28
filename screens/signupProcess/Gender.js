@@ -52,6 +52,7 @@ const Gender = () => {
 
   const handleContinue = () => {
     navigation.navigate("Age", { userInfo: userName, userGender: selectedGender });
+    console.log("Gender", userName, selectedGender, "\n");
   };
 
   const progressAnim = useRef(new Animated.Value(0)).current;

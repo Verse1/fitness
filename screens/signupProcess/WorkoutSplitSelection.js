@@ -33,7 +33,7 @@ const SplitSelection = () => {
 
   const handleContinue = () => {
     navigation.navigate("Credentials", {
-      userName: userInfo,
+      userInfo: userInfo,
       userGender: userGender,
       userAge: userAge,
       userWeight: userWeight,
@@ -43,6 +43,19 @@ const SplitSelection = () => {
       userCarbs: userCarbs,
       userFats: userFats,
     });
+    console.log(
+      "Credentials:",
+      userInfo,
+      userGender,
+      userAge,
+      userWeight,
+      userHeight,
+      userCalories,
+      userProtein,
+      userCarbs,
+      userFats,
+      "\n"
+    );
   };
 
   const progressAnim = useRef(new Animated.Value((5 / 8) * 100)).current;

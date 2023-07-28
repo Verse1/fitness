@@ -38,6 +38,19 @@ const MacroSelection = () => {
       userCarbs: carbs,
       userFats: fats,
     });
+    console.log(
+      "Macros:",
+      userInfo,
+      userGender,
+      userAge,
+      userWeight,
+      userHeight,
+      calories,
+      protein,
+      carbs,
+      fats,
+      "\n"
+    );
   };
 
   const progressAnim = useRef(new Animated.Value((4 / 8) * 100)).current;

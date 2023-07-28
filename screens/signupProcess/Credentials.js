@@ -7,6 +7,9 @@ import {
   Dimensions,
   Animated,
   Easing,
+  TextInput,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
@@ -22,7 +25,6 @@ const Credentials = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [state, setState] = useContext(AuthContext);
 
   const route = useRoute();
@@ -115,17 +117,57 @@ const Credentials = () => {
           </LinearGradient>
         </View>
       </View>
-      <View style={styles.fullScreen}>
-        <View style={styles.content}></View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.fullScreen}>
+          <View style={styles.content}>
+            <View style={styles.main}>
+              <View style={styles.textboxShadow}>
+                <LinearGradient
+                  colors={["#151919", "#253237"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.textboxBackground}>
+                  <TextInput
+                    placeholder="Email Address"
+                    placeholderTextColor={"#D7F2F4"}
+                    style={styles.textbox}
+                    onChangeText={setEmail}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    keyboardAppearance="dark"
+                  />
+                </LinearGradient>
+              </View>
+            </View>
+            <View style={styles.main}>
+              <View style={styles.textboxShadow}>
+                <LinearGradient
+                  colors={["#151919", "#253237"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.textboxBackground}>
+                  <TextInput
+                    placeholder="Password"
+                    placeholderTextColor={"#D7F2F4"}
+                    style={styles.textbox}
+                    onChangeText={setPassword}
+                    secureTextEntry={true}
+                    keyboardAppearance="dark"
+                  />
+                </LinearGradient>
+              </View>
+            </View>
+          </View>
 
-        <View style={styles.footer}>
-          <View style={styles.buttonView}>
-            <Pressable style={styles.continue} onPress={handleCredentials}>
-              <Text style={styles.text}>Done</Text>
-            </Pressable>
+          <View style={styles.footer}>
+            <View style={styles.buttonView}>
+              <Pressable style={styles.continue} onPress={handleCredentials}>
+                <Text style={styles.text}>Done</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };
@@ -202,6 +244,52 @@ const styles = StyleSheet.create({
   content: {
     flex: 2,
     justifyContent: "center",
+  },
+  textbox: {
+    backgroundColor: "transparent",
+    width: screenWidth * 0.9,
+    height: screenHeight * 0.05,
+    alignSelf: "center",
+    borderRadius: 8,
+    position: "absolute",
+    zIndex: 1,
+    fontWeight: "500",
+    fontSize: 14,
+    paddingLeft: 20,
+    color: "#D7F2F4",
+  },
+  textboxBackground: {
+    backgroundColor: "#151919",
+    width: screenWidth * 0.9,
+    height: screenHeight * 0.05,
+    padding: 15,
+    alignSelf: "center",
+    borderRadius: 8,
+    justifyContent: "center",
+    fontSize: 15,
+  },
+  textboxShadow: {
+    width: screenWidth * 0.9,
+    height: screenHeight * 0.05,
+    alignSelf: "center",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    backgroundColor: "#151919",
+  },
+  main: {
+    width: "100%",
+    marginVertical: 10,
+  },
+  text: {
+    color: "#151919",
+    textAlign: "center",
+    fontWeight: "700",
   },
   footer: {
     flex: 1,

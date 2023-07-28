@@ -45,12 +45,21 @@ const HeightSelection = () => {
 
   const handleContinue = () => {
     navigation.navigate("Macros", {
-      userName: userInfo,
+      userInfo: userInfo,
       userGender: userGender,
       userAge: userAge,
       userWeight: userWeight,
       userHeight: selectedHeight,
     });
+    console.log(
+      "Height",
+      userInfo,
+      userGender,
+      userAge,
+      userWeight,
+      selectedHeight,
+      "\n"
+    );
   };
 
   const progressAnim = useRef(new Animated.Value((3 / 8) * 100)).current;
@@ -120,9 +129,7 @@ const HeightSelection = () => {
               showsVerticalScrollIndicator={false}
               onSelected={({ item, index }) => {
                 setSelected(index);
-              }}
-              onScrollToIndexFailed={({ index }) => {
-                handleWeightSelection(data[index]);
+                handleHeightSelection(data[index]);
               }}
               magnet
               renderItem={({ item, index }) => (

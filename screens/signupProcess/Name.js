@@ -38,6 +38,7 @@ const Name = () => {
 
   const handleContinue = () => {
     navigation.navigate("Gender", { userName: name });
+    console.log("Name", name, "\n");
   };
 
   useLayoutEffect(() => {

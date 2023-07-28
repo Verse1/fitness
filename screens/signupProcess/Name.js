@@ -79,38 +79,35 @@ const Name = () => {
         </View>
       </View>
       <View style={styles.fullScreen}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.content}>
-              <View style={styles.main}>
-                <View style={styles.textboxShadow}>
-                  <LinearGradient
-                    colors={["#151919", "#253237"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.textboxBackground}>
-                    <TextInput
-                      placeholder="Full Name"
-                      style={styles.textbox}
-                      onChangeText={setName}
-                      placeholderTextColor="#D7F2F4"
-                      keyboardAppearance="dark"
-                    />
-                  </LinearGradient>
-                </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.content}>
+            <View style={styles.main}>
+              <View style={styles.textboxShadow}>
+                <LinearGradient
+                  colors={["#151919", "#253237"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.textboxBackground}>
+                  <TextInput
+                    placeholder="Full Name"
+                    style={styles.textbox}
+                    onChangeText={setName}
+                    placeholderTextColor="#D7F2F4"
+                    keyboardAppearance="dark"
+                    autoCorrect={false}
+                  />
+                </LinearGradient>
               </View>
             </View>
-          </TouchableWithoutFeedback>
-          <View style={styles.footer}>
-            <View style={styles.buttonView}>
-              <Pressable style={styles.continue} onPress={handleContinue}>
-                <Text style={styles.text}>Continue</Text>
-              </Pressable>
-            </View>
           </View>
-        </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+        <View style={styles.footer}>
+          <View style={styles.buttonView}>
+            <Pressable style={styles.continue} onPress={handleContinue}>
+              <Text style={styles.text}>Continue</Text>
+            </Pressable>
+          </View>
+        </View>
       </View>
     </View>
   );

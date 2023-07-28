@@ -7,19 +7,35 @@ import {
   Dimensions,
   Animated,
   Easing,
+  Image,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { getWeightOptions } from "../../utils/weightOptions";
+import SmoothPicker from "react-native-smooth-picker";
+// import { getWeightOptions } from "../../utils/weightOptions";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
+const data = Array.from({ length: 200 }, (v, k) => k + 1).map(String);
+//  const weightOptions = getWeightOptions();
+
+const ItemToRender = ({ item, index, indexSelected }) => {
+  const isSelected = indexSelected === index;
+  const style = isSelected ? styles.selectedText : styles.normalText;
+
+  return (
+    <View style={styles.OptionWrapper}>
+      <Text style={style}>{item}</Text>
+    </View>
+  );
+};
+
 const WeightSelection = () => {
   const navigation = useNavigation();
   const [selectedWeight, setSelectedWeight] = useState(null);
-  const weightOptions = getWeightOptions();
+  const [selected, setSelected] = useState(0);
 
   const route = useRoute();
   const { userInfo, userGender, userAge } = route.params;
@@ -61,6 +77,13 @@ const WeightSelection = () => {
     }).start();
   }, []);
 
+  const renderItem = React.useCallback(
+    ({ item, index }, indexSelected) => (
+      <ItemToRender item={item} index={index} indexSelected={indexSelected} />
+    ),
+    []
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -81,15 +104,42 @@ const WeightSelection = () => {
             </View>
             <View style={styles.Titles}>
               <Text autoCorrect={false} style={styles.title}>
-                How fat are you?
+                How much do you weigh?
               </Text>
             </View>
           </LinearGradient>
         </View>
       </View>
       <View style={styles.fullScreen}>
-        <View style={styles.content}></View>
-
+        <View style={styles.smoothPickerContainer}>
+          <SmoothPicker
+            initialScrollToIndex={selected}
+            data={data}
+            scrollAnimation
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            onSelected={({ item, index }) => {
+              setSelected(index);
+            }}
+            onScrollToIndexFailed={({ index }) => {
+              handleWeightSelection(data[index]);
+            }}
+            magnet
+            renderItem={({ item, index }) => (
+              <ItemToRender item={item} index={index} indexSelected={selected} />
+            )}
+            selectedItem={selected}
+            offsetSelection={2}
+          />
+        </View>
+        <View style={styles.content}>
+          <Image
+            source={require("../../assets/weightPicker.png")}
+            style={styles.image}
+            resizeMode="contain"
+          />
+          <Text style={styles.kgText}>kg</Text>
+        </View>
         <View style={styles.footer}>
           <View style={styles.buttonView}>
             <Pressable style={styles.continue} onPress={handleContinue}>
@@ -171,9 +221,43 @@ const styles = StyleSheet.create({
     backgroundColor: "#0F0E0E",
     justifyContent: "space-between",
   },
-  content: {
-    flex: 2,
+  OptionWrapper: {
+    height: 70,
     justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  selectedText: {
+    fontSize: 42,
+    fontWeight: "700",
+    color: "#1B77EE",
+    marginHorizontal: 10,
+  },
+  normalText: {
+    fontSize: 36,
+    fontWeight: "400",
+    color: "#FFFAFA",
+    marginHorizontal: 10,
+  },
+  smoothPickerContainer: {
+    top: screenHeight * 0.14,
+    flex: 1,
+    justifyContent: "center",
+  },
+  content: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  image: {
+    width: screenWidth * 0.98,
+    height: screenHeight * 0.2,
+  },
+  kgText: {
+    fontSize: 25,
+    fontWeight: "700",
+    color: "#1B77EE",
+    textAlign: "center",
   },
   footer: {
     flex: 1,

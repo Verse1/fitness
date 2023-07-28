@@ -205,10 +205,10 @@ const styles = StyleSheet.create({
   content: {
     flex: 2,
     justifyContent: "center",
+    alignItems: "center",
   },
   inputContainer: {
-    alignItems: "flex-start",
-    paddingLeft: screenWidth * 0.165,
+    marginTop: 80,
   },
   quantityText: {
     fontSize: 24,
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   inputLabel: {
-    color: "#D7F2F4",
+    color: "#FFFAFA",
     width: screenWidth * 0.3,
     fontSize: 16,
     fontWeight: "700",
@@ -232,9 +232,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 8,
-    width: 140,
+    width: screenWidth * 0.25,
     height: 40,
-    marginLeft: 10,
+    marginLeft: 15,
   },
   inputBackground: {
     position: "absolute",
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   },
   inputUnit: {
     color: "#D7F2F4",
-    marginLeft: 5,
+    marginRight: 10,
     fontWeight: "100",
   },
   footer: {

@@ -7,19 +7,34 @@ import {
   Dimensions,
   Animated,
   Easing,
+  Image,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { getHeightOptions } from "../../utils/heightOptions";
+import SmoothPicker from "react-native-smooth-picker";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
+const data = Array.from({ length: 200 }, (v, k) => k + 1).map(String);
+
+const ItemToRender = ({ item, index, indexSelected }) => {
+  const isSelected = indexSelected === index;
+  const style = isSelected ? styles.selectedText : styles.normalText;
+
+  return (
+    <View style={styles.OptionWrapper}>
+      <Text style={style}>{item}</Text>
+    </View>
+  );
+};
+
 const HeightSelection = () => {
   const navigation = useNavigation();
   const [selectedHeight, setSelectedHeight] = useState(null);
-  const heightOptions = getHeightOptions();
+  const [selected, setSelected] = useState(0);
 
   const route = useRoute();
   const { userInfo, userGender, userAge, userWeight } = route.params;
@@ -62,6 +77,13 @@ const HeightSelection = () => {
     }).start();
   }, []);
 
+  const renderItem = React.useCallback(
+    ({ item, index }, indexSelected) => (
+      <ItemToRender item={item} index={index} indexSelected={indexSelected} />
+    ),
+    []
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -87,7 +109,35 @@ const HeightSelection = () => {
         </View>
       </View>
       <View style={styles.fullScreen}>
-        <View style={styles.content}></View>
+        <View style={styles.content}>
+          <Text style={styles.kgText}>cm</Text>
+          <View style={styles.smoothPickerContainer}>
+            <SmoothPicker
+              initialScrollToIndex={selected}
+              data={data}
+              scrollAnimation
+              vertical
+              showsVerticalScrollIndicator={false}
+              onSelected={({ item, index }) => {
+                setSelected(index);
+              }}
+              onScrollToIndexFailed={({ index }) => {
+                handleWeightSelection(data[index]);
+              }}
+              magnet
+              renderItem={({ item, index }) => (
+                <ItemToRender item={item} index={index} indexSelected={selected} />
+              )}
+              selectedItem={selected}
+              offsetSelection={2}
+            />
+          </View>
+          <Image
+            source={require("../../assets/heightPicker.png")}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        </View>
 
         <View style={styles.footer}>
           <View style={styles.buttonView}>
@@ -165,17 +215,56 @@ const styles = StyleSheet.create({
     color: "#D7F2F4",
   },
   fullScreen: {
-    flex: 1,
-    marginTop: screenHeight * 0.28,
+    flex: 2,
+    marginTop: screenHeight * 0.45,
     backgroundColor: "#0F0E0E",
     justifyContent: "space-between",
   },
   content: {
-    flex: 2,
+    flexDirection: "row",
+    flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+  },
+  OptionWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  selectedText: {
+    fontSize: 42,
+    fontWeight: "700",
+    color: "#1B77EE",
+    marginHorizontal: 10,
+  },
+  normalText: {
+    fontSize: 36,
+    fontWeight: "400",
+    color: "#FFFAFA",
+    marginHorizontal: 10,
+  },
+  smoothPickerContainer: {
+    marginLeft: 50,
+    flex: 1,
+    justifyContent: "center",
+  },
+  image: {
+    marginRight: 20,
+    width: screenWidth * 0.3,
+  },
+  kgText: {
+    marginLeft: 40,
+    fontSize: 25,
+    fontWeight: "700",
+    color: "#1B77EE",
+    textAlign: "center",
   },
   footer: {
     flex: 1,
+    justifyContent: "flex-end",
+  },
+  footer: {
+    height: screenHeight * 0.15,
     justifyContent: "flex-end",
   },
   buttonView: {

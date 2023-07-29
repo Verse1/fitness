@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, useEffect, useRef } from "react";
+import React, { useLayoutEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -7,83 +7,64 @@ import {
   Dimensions,
   Animated,
   Easing,
+  Image,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { getHeightOptions } from "../../utils/heightOptions";
 import SmoothPicker from "react-native-smooth-picker";
 import * as Haptics from "expo-haptics";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
-const ageOptions = Array.from({ length: 33 }, (_, i) => i + 12);
+const data = Array.from({ length: 200 }, (v, k) => k + 1).map(String);
 
-const opacities = {
-  0: 1,
-  1: 1,
-  2: 0.6,
-  3: 0.3,
-  4: 0.1,
-};
-
-const Item = React.memo(({ opacity, selected, name }) => {
-  const textStyle = selected ? styles.selectedText : styles.normalText;
-  const itemStyle = selected ? styles.selectedItemContainer : styles.itemContainer;
+const ItemToRender = ({ item, index, indexSelected }) => {
+  const isSelected = indexSelected === index;
+  const style = isSelected ? styles.selectedText : styles.normalText;
 
   return (
-    <View style={[itemStyle, { opacity }]}>
-      {!selected && <Text style={textStyle}>{name}</Text>}
+    <View style={styles.OptionWrapper}>
+      <Text style={style}>{item}</Text>
     </View>
   );
-});
-
-const ItemToRender = ({ item, index }, indexSelected) => {
-  const selected = index === indexSelected;
-  const gap = Math.abs(index - indexSelected);
-
-  let opacity = 1 - gap * 0.2;
-  if (opacity < 0.1) {
-    opacity = 0.1;
-  }
-
-  return <Item opacity={opacity} selected={selected} name={item} />;
 };
 
-const AgeSelection = () => {
+const HeightSelection = () => {
   const navigation = useNavigation();
-  const [selectedAge, setSelectedAge] = useState(22);
-  const [selected, setSelected] = useState(4);
-  const ageOptions = Array.from({ length: 82 }, (_, i) => i + 18);
-
-  const scrollX = useRef(new Animated.Value(0)).current;
+  const [selectedHeight, setSelectedHeight] = useState(null);
+  const [selected, setSelected] = useState(0);
 
   const route = useRoute();
-  const { userInfo, userGender } = route.params;
+  const { userInfo, userGender, userAge, userWeight } = route.params;
 
-  const handleChange = (index) => {
-    setSelected(index);
-  };
-
-  useEffect(() => {
-    setSelected(4);
-  }, []);
-
-  const handleAgeSelection = (age) => {
-    setSelectedAge(age);
+  const handleHeightSelection = (height) => {
+    setSelectedHeight(height);
   };
 
   const handleContinue = async () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-    navigation.navigate("WeightSelection", {
+    navigation.navigate("Macros", {
       userInfo: userInfo,
       userGender: userGender,
-      userAge: selectedAge,
+      userAge: userAge,
+      userWeight: userWeight,
+      userHeight: selectedHeight,
     });
-    console.log("Age", userInfo, userGender, selectedAge, "\n");
+    console.log(
+      "Height",
+      userInfo,
+      userGender,
+      userAge,
+      userWeight,
+      selectedHeight,
+      "\n"
+    );
   };
 
-  const progressAnim = useRef(new Animated.Value((1 / 8) * 100)).current;
+  const progressAnim = useRef(new Animated.Value((3 / 8) * 100)).current;
 
   const progressStyle = {
     height: "100%",
@@ -100,26 +81,19 @@ const AgeSelection = () => {
       headerShown: false,
     });
     Animated.timing(progressAnim, {
-      toValue: (3 / 8) * 100,
+      toValue: (5 / 8) * 100,
       duration: 1000,
       useNativeDriver: false,
       easing: Easing.elastic(1),
     }).start();
   }, []);
 
-  const handleSelected = (index) => {
-    setSelectedAge(ageOptions[index]);
-  };
-
-  const renderOption = (option, index, isSelected) => {
-    return (
-      <View style={styles.itemContainer}>
-        <Text style={isSelected ? styles.itemTextSelected : styles.itemText}>
-          {option.label}
-        </Text>
-      </View>
-    );
-  };
+  const renderItem = React.useCallback(
+    ({ item, index }, indexSelected) => (
+      <ItemToRender item={item} index={index} indexSelected={indexSelected} />
+    ),
+    []
+  );
 
   return (
     <View style={styles.container}>
@@ -137,41 +111,41 @@ const AgeSelection = () => {
               <View style={styles.progressBar}>
                 <Animated.View style={progressStyle} />
               </View>
-              <Text style={styles.progressText}>3 of 8</Text>
+              <Text style={styles.progressText}>5 of 8</Text>
             </View>
             <View style={styles.Titles}>
-              <Text autoCorrect={false} style={styles.title}>
-                How old are you?
-              </Text>
+              <Text style={styles.title}>How tall are you?</Text>
             </View>
           </LinearGradient>
         </View>
       </View>
       <View style={styles.fullScreen}>
         <View style={styles.content}>
-          <View style={styles.scrollContainer}>
+          <Text style={styles.kgText}>cm</Text>
+          <View style={styles.smoothPickerContainer}>
             <SmoothPicker
               initialScrollToIndex={selected}
-              onScrollToIndexFailed={() => {}}
-              keyExtractor={(_, index) => index.toString()}
-              onSelected={({ index }) => handleChange(index)}
-              data={ageOptions}
-              horizontal
+              data={data}
               scrollAnimation
-              showsHorizontalScrollIndicator={false}
-              renderItem={(option) => ItemToRender(option, selected)}
+              vertical
+              showsVerticalScrollIndicator={false}
+              onSelected={({ item, index }) => {
+                setSelected(index);
+                handleHeightSelection(data[index]);
+              }}
               magnet
-              offsetSelection={0}
+              renderItem={({ item, index }) => (
+                <ItemToRender item={item} index={index} indexSelected={selected} />
+              )}
+              selectedItem={selected}
+              offsetSelection={2}
             />
           </View>
-          <LinearGradient
-            colors={["#151919", "#253237"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.gradientContainer}></LinearGradient>
-          <View style={styles.circle}>
-            <Text style={styles.selectedText}>{ageOptions[selected]}</Text>
-          </View>
+          <Image
+            source={require("../../assets/heightPicker.png")}
+            style={styles.image}
+            resizeMode="contain"
+          />
         </View>
 
         <View style={styles.footer}>
@@ -250,66 +224,56 @@ const styles = StyleSheet.create({
     color: "#D7F2F4",
   },
   fullScreen: {
-    flex: 1,
-    marginTop: screenHeight * 0.28,
+    flex: 2,
+    marginTop: screenHeight * 0.45,
     backgroundColor: "#0F0E0E",
     justifyContent: "space-between",
   },
   content: {
+    flexDirection: "row",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  scrollContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  gradientContainer: {
-    width: screenWidth * 0.9,
-    height: screenHeight * 0.05,
-    borderRadius: 45,
-    position: "absolute",
-    zIndex: -1,
-  },
-  itemContainer: {
-    marginTop: screenHeight * 0.158,
+  OptionWrapper: {
     justifyContent: "center",
     alignItems: "center",
-    padding: 5,
-    borderWidth: 0,
-  },
-  selectedItemContainer: {
-    marginTop: screenHeight * 0.146,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    borderWidth: 0,
-  },
-  normalText: {
-    color: "#FFFAFA",
-    fontWeight: "500",
-    fontSize: 20,
+    marginVertical: 10,
   },
   selectedText: {
-    color: "#151919",
+    fontSize: 42,
     fontWeight: "700",
-    fontSize: 32,
+    color: "#1B77EE",
+    marginHorizontal: 10,
   },
-  circle: {
-    width: 70,
-    height: 70,
-    borderRadius: 100,
-    borderColor: "#151919",
-    borderWidth: 5,
-    position: "absolute",
-    zIndex: 2,
+  normalText: {
+    fontSize: 36,
+    fontWeight: "400",
+    color: "#FFFAFA",
+    marginHorizontal: 10,
+  },
+  smoothPickerContainer: {
+    marginLeft: 50,
+    flex: 1,
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#D7F2F4",
-    zIndex: 0,
+  },
+  image: {
+    marginRight: 20,
+    width: screenWidth * 0.3,
+  },
+  kgText: {
+    marginLeft: 40,
+    fontSize: 25,
+    fontWeight: "700",
+    color: "#1B77EE",
+    textAlign: "center",
   },
   footer: {
     flex: 1,
+    justifyContent: "flex-end",
+  },
+  footer: {
+    height: screenHeight * 0.15,
     justifyContent: "flex-end",
   },
   buttonView: {
@@ -333,4 +297,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AgeSelection;
+export default HeightSelection;

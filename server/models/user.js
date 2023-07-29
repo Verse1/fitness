@@ -34,14 +34,6 @@ const userSchema = new Schema({
     type: Number,
     required: true,
   },
-  heightUnit: {
-    type: Boolean,
-    required: true,
-  },
-  weightUnit: {
-    type: Boolean,
-    required: true,
-  },
   weightHistory: [
     {
       weight: {

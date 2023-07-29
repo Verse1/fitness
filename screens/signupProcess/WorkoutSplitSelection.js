@@ -14,51 +14,60 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import DraggableFlatList from "react-native-draggable-flatlist";
 import * as Haptics from "expo-haptics";
 
-const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
+const screenWidth = Dimensions.get("window").width;
 
-const MacroSelection = () => {
+const SplitSelection = () => {
   const navigation = useNavigation();
-  const [calories, setCalories] = useState("");
-  const [protein, setProtein] = useState("");
-  const [carbs, setCarbs] = useState("");
-  const [fats, setFats] = useState("");
 
   const route = useRoute();
-  const { userInfo, userGender, userAge, userWeight, userHeight } = route.params;
+  const {
+    userInfo,
+    userGender,
+    userAge,
+    userWeight,
+    userHeight,
+    userCalories,
+    userProtein,
+    userCarbs,
+    userFats,
+  } = route.params;
 
   const handleContinue = async () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-    navigation.navigate("WorkoutSplitSelection", {
+    const userSplit = draggableData.map((item) => item.label);
+    navigation.navigate("Credentials", {
       userInfo: userInfo,
       userGender: userGender,
       userAge: userAge,
       userWeight: userWeight,
       userHeight: userHeight,
-      userCalories: calories,
-      userProtein: protein,
-      userCarbs: carbs,
-      userFats: fats,
+      userCalories: userCalories,
+      userProtein: userProtein,
+      userCarbs: userCarbs,
+      userFats: userFats,
+      userSplit: userSplit,
     });
     console.log(
-      "Macros:",
+      "Split:",
       userInfo,
       userGender,
       userAge,
       userWeight,
       userHeight,
-      calories,
-      protein,
-      carbs,
-      fats,
+      userCalories,
+      userProtein,
+      userCarbs,
+      userFats,
+      userSplit,
       "\n"
     );
   };
 
-  const progressAnim = useRef(new Animated.Value((4 / 8) * 100)).current;
+  const progressAnim = useRef(new Animated.Value((5 / 8) * 100)).current;
 
   const progressStyle = {
     height: "100%",
@@ -75,12 +84,33 @@ const MacroSelection = () => {
       headerShown: false,
     });
     Animated.timing(progressAnim, {
-      toValue: (6 / 8) * 100,
+      toValue: (7 / 8) * 100,
       duration: 1000,
       useNativeDriver: false,
       easing: Easing.elastic(1),
     }).start();
   }, []);
+
+  const DAYS = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const DRAGGABLE_DATA = [
+    { key: "0", label: "Rest" },
+    { key: "1", label: "Rest" },
+    { key: "2", label: "Rest" },
+    { key: "3", label: "Rest" },
+    { key: "4", label: "Rest" },
+    { key: "5", label: "Rest" },
+    { key: "6", label: "Rest" },
+  ];
+
+  const [draggableData, setDraggableData] = useState(DRAGGABLE_DATA);
 
   return (
     <View style={styles.container}>
@@ -98,60 +128,65 @@ const MacroSelection = () => {
               <View style={styles.progressBar}>
                 <Animated.View style={progressStyle} />
               </View>
-              <Text style={styles.progressText}>6 of 8</Text>
+              <Text style={styles.progressText}>7 of 8</Text>
             </View>
             <View style={styles.Titles}>
-              <Text style={styles.title}>What is your daily macro intake?</Text>
+              <Text style={styles.title}>What is your workout split?</Text>
             </View>
           </LinearGradient>
         </View>
       </View>
-
-      <View style={styles.fullScreen}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <KeyboardAwareScrollView style={styles.container}>
-            <View style={styles.content}>
-              <View style={styles.inputContainer}>
-                <Text style={styles.quantityText}>Quantity Per Day</Text>
-                {[
-                  { name: "Calories", setFunction: setCalories, unit: "kCal" },
-                  { name: "Protein", setFunction: setProtein, unit: "g" },
-                  { name: "Carbs", setFunction: setCarbs, unit: "g" },
-                  { name: "Fats", setFunction: setFats, unit: "g" },
-                ].map((item, index) => (
-                  <View key={index} style={styles.inputRow}>
-                    <Text style={styles.inputLabel}>{item.name}</Text>
-                    <View style={styles.inputAndUnit}>
-                      <LinearGradient
-                        colors={["#151919", "#253237"]}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 0 }}
-                        style={styles.inputBackground}
-                      />
-                      <TextInput
-                        style={styles.input}
-                        onChangeText={item.setFunction}
-                        placeholderTextColor="#D7F2F4"
-                        keyboardType="numeric"
-                        maxLength={4}
-                        keyboardAppearance="dark"
-                      />
-                      <Text style={styles.inputUnit}>{item.unit}</Text>
-                    </View>
-                  </View>
-                ))}
-              </View>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.fullScreen}>
+          <View style={styles.content}>
+            <View style={styles.dayListContainer}>
+              {DAYS.map((day, index) => (
+                <View key={index} style={styles.dayItem}>
+                  <Text style={styles.cardText}>{day}</Text>
+                </View>
+              ))}
             </View>
-          </KeyboardAwareScrollView>
-        </TouchableWithoutFeedback>
-        <View style={styles.footer}>
-          <View style={styles.buttonView}>
-            <Pressable style={styles.continue} onPress={handleContinue}>
-              <Text style={styles.text}>Continue</Text>
-            </Pressable>
+            <View style={styles.draggableListContainer}>
+              <DraggableFlatList
+                data={draggableData}
+                scrollEnabled={false}
+                onDragBegin={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
+                onDragEnd={({ data }) => setDraggableData(data)}
+                renderItem={({ item, index, drag, isActive }) => (
+                  <Pressable
+                    style={[styles.card, isActive && styles.activeCard]}
+                    onLongPress={drag}>
+                    <TextInput
+                      style={styles.cardText}
+                      value={item.label}
+                      onChangeText={(text) => {
+                        let newData = [...draggableData];
+                        let itemIndex = newData.findIndex(
+                          (dataItem) => dataItem.key === item.key
+                        );
+                        if (itemIndex !== -1) {
+                          newData[itemIndex].label = text;
+                          setDraggableData(newData);
+                        }
+                      }}
+                      keyboardAppearance="dark"
+                    />
+                  </Pressable>
+                )}
+                keyExtractor={(item) => item.key}
+              />
+            </View>
+          </View>
+
+          <View style={styles.footer}>
+            <View style={styles.buttonView}>
+              <Pressable style={styles.continue} onPress={handleContinue}>
+                <Text style={styles.text}>Continue</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };
@@ -226,63 +261,52 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   content: {
-    flex: 2,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  inputContainer: {
-    marginTop: 80,
-  },
-  quantityText: {
-    fontSize: 24,
-    color: "#FFFAFA",
-    fontWeight: "700",
-    paddingBottom: screenHeight * 0.03,
-    alignSelf: "flex-start",
-  },
-  inputRow: {
+    flex: 1,
     flexDirection: "row",
-    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 55,
+  },
+  dayListContainer: {
+    flex: 0.4,
+    height: "100%",
+    width: "100%",
     marginBottom: 10,
   },
-  inputLabel: {
-    color: "#FFFAFA",
-    width: screenWidth * 0.3,
-    fontSize: 16,
-    fontWeight: "700",
+  draggableListContainer: {
+    flex: 0.6,
+    height: "100%",
+    width: "100%",
+    marginBottom: 10,
   },
-  inputAndUnit: {
-    flexDirection: "row",
+  dayItem: {
+    justifyContent: "center",
     alignItems: "center",
-    borderRadius: 8,
-    width: screenWidth * 0.25,
-    height: 40,
-    marginLeft: 15,
+    height: screenHeight * 0.05,
+    marginTop: 15,
   },
-  inputBackground: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+  card: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#1B77EE",
+    height: screenHeight * 0.05,
+    width: screenWidth * 0.46,
     borderRadius: 8,
+    marginBottom: 15,
   },
-  input: {
-    flex: 1,
-    color: "#D7F2F4",
-    backgroundColor: "transparent",
-    fontWeight: "500",
+  activeCard: {
+    backgroundColor: "lightgrey",
+  },
+  cardText: {
+    color: "#FFFAFA",
+    fontWeight: "700",
     fontSize: 16,
-    padding: 10,
-  },
-  inputUnit: {
-    color: "#D7F2F4",
-    marginRight: 10,
-    fontWeight: "100",
+    textAlign: "center",
+    flex: 1,
+    paddingHorizontal: 20,
   },
   footer: {
+    height: screenHeight * 0.15,
     justifyContent: "flex-end",
-    height: screenHeight * 0.1,
   },
   buttonView: {
     alignItems: "center",
@@ -305,4 +329,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MacroSelection;
+export default SplitSelection;

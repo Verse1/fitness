@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -10,10 +10,13 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Keyboard,
+  Animated,
+  Easing,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import * as Haptics from "expo-haptics";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -22,15 +25,35 @@ const Name = () => {
   const navigation = useNavigation();
   const [name, setName] = useState("");
 
+  const progressAnim = useRef(new Animated.Value(0)).current;
+
+  const progressStyle = {
+    height: "100%",
+    width: progressAnim.interpolate({
+      inputRange: [0, 100],
+      outputRange: ["0%", "100%"],
+    }),
+    borderRadius: 5,
+    backgroundColor: "#116CE4",
+  };
+
+  const handleContinue = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    navigation.navigate("Gender", { userName: name });
+    console.log("Name", name, "\n");
+  };
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
+    Animated.timing(progressAnim, {
+      toValue: (1 / 8) * 100,
+      duration: 1000,
+      useNativeDriver: false,
+      easing: Easing.elastic(1),
+    }).start();
   }, []);
-
-  const handleName = () => {
-    navigation.navigate("Gender", { userName: name });
-  };
 
   return (
     <View style={styles.container}>
@@ -46,7 +69,7 @@ const Name = () => {
                 <Feather name="chevron-left" size={24} color="white" />
               </Pressable>
               <View style={styles.progressBar}>
-                <View style={styles.progress} />
+                <Animated.View style={progressStyle} />
               </View>
               <Text style={styles.progressText}>1 of 8</Text>
             </View>
@@ -59,38 +82,35 @@ const Name = () => {
         </View>
       </View>
       <View style={styles.fullScreen}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.content}>
-              <View style={styles.main}>
-                <View style={styles.textboxShadow}>
-                  <LinearGradient
-                    colors={["#151919", "#253237"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.textboxBackground}>
-                    <TextInput
-                      placeholder="Full Name"
-                      style={styles.textbox}
-                      onChangeText={setName}
-                      placeholderTextColor="#D7F2F4"
-                      keyboardAppearance="dark"
-                    />
-                  </LinearGradient>
-                </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.content}>
+            <View style={styles.main}>
+              <View style={styles.textboxShadow}>
+                <LinearGradient
+                  colors={["#151919", "#253237"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.textboxBackground}>
+                  <TextInput
+                    placeholder="Full Name"
+                    style={styles.textbox}
+                    onChangeText={setName}
+                    placeholderTextColor="#D7F2F4"
+                    keyboardAppearance="dark"
+                    autoCorrect={false}
+                  />
+                </LinearGradient>
               </View>
             </View>
-          </TouchableWithoutFeedback>
-          <View style={styles.footer}>
-            <View style={styles.buttonView}>
-              <Pressable style={styles.cont} onPress={handleName}>
-                <Text style={styles.text}>Continue</Text>
-              </Pressable>
-            </View>
           </View>
-        </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+        <View style={styles.footer}>
+          <View style={styles.buttonView}>
+            <Pressable style={styles.continue} onPress={handleContinue}>
+              <Text style={styles.text}>Continue</Text>
+            </Pressable>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -140,10 +160,10 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "700",
     fontSize: 40,
-    textAlign: "Left",
+    textAlign: "left",
     color: "#D7F2F4",
   },
-  cont: {
+  continue: {
     backgroundColor: "#D7F2F4",
     width: "80%",
     padding: 10,
@@ -188,6 +208,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 4,
+    backgroundColor: "#151919",
   },
   main: {
     width: "100%",
@@ -211,9 +232,6 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 10,
   },
-  backButtonText: {
-    fontSize: 18,
-  },
   progressContainer: {
     top: screenHeight * 0.07,
     flexDirection: "row",
@@ -224,16 +242,10 @@ const styles = StyleSheet.create({
   progressBar: {
     backgroundColor: "#FFFAFA",
     height: 10,
-    width: Dimensions.get("window").width - 140,
+    width: screenWidth - 140,
     borderRadius: 5,
     marginRight: 10,
-    margingLeft: 5,
-  },
-  progress: {
-    height: "100%",
-    width: `${(1 / 6) * 100}%`,
-    borderRadius: 5,
-    backgroundColor: "#116CE4",
+    marginLeft: 5,
   },
   progressText: {
     marginRight: 10,

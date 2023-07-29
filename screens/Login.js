@@ -14,6 +14,7 @@ import { Feather } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../context/auth";
+import * as Haptics from "expo-haptics";
 import axios from "axios";
 
 const screenWidth = Dimensions.get("window").width;
@@ -52,7 +53,9 @@ const Login = ({ navigation }) => {
         duration: 100,
         useNativeDriver: true,
       }),
-    ]).start();
+    ]).start(async () => {
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    });
   };
 
   const [email, setEmail] = useState("");

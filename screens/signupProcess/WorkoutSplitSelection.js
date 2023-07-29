@@ -7,10 +7,14 @@ import {
   Dimensions,
   Animated,
   Easing,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import DraggableFlatList from "react-native-draggable-flatlist";
 import * as Haptics from "expo-haptics";
 
 const screenHeight = Dimensions.get("window").height;
@@ -84,6 +88,27 @@ const SplitSelection = () => {
     }).start();
   }, []);
 
+  const DAYS = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const DRAGGABLE_DATA = [
+    { key: "0", label: "Rest" },
+    { key: "1", label: "Rest" },
+    { key: "2", label: "Rest" },
+    { key: "3", label: "Rest" },
+    { key: "4", label: "Rest" },
+    { key: "5", label: "Rest" },
+    { key: "6", label: "Rest" },
+  ];
+
+  const [draggableData, setDraggableData] = useState(DRAGGABLE_DATA);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -108,17 +133,57 @@ const SplitSelection = () => {
           </LinearGradient>
         </View>
       </View>
-      <View style={styles.fullScreen}>
-        <View style={styles.content}></View>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.fullScreen}>
+          <View style={styles.content}>
+            <View style={styles.dayListContainer}>
+              {DAYS.map((day, index) => (
+                <View key={index} style={styles.dayItem}>
+                  <Text style={styles.cardText}>{day}</Text>
+                </View>
+              ))}
+            </View>
+            <View style={styles.draggableListContainer}>
+              <DraggableFlatList
+                data={draggableData}
+                scrollEnabled={false}
+                onDragBegin={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
+                onDragEnd={({ data }) => setDraggableData(data)}
+                renderItem={({ item, index, drag, isActive }) => (
+                  <Pressable
+                    style={[styles.card, isActive && styles.activeCard]}
+                    onLongPress={drag}>
+                    <TextInput
+                      style={styles.cardText}
+                      value={item.label}
+                      onChangeText={(text) => {
+                        let newData = [...draggableData];
+                        let itemIndex = newData.findIndex(
+                          (dataItem) => dataItem.key === item.key
+                        );
+                        if (itemIndex !== -1) {
+                          newData[itemIndex].label = text;
+                          setDraggableData(newData);
+                        }
+                      }}
+                      keyboardAppearance="dark"
+                    />
+                  </Pressable>
+                )}
+                keyExtractor={(item) => item.key}
+              />
+            </View>
+          </View>
 
-        <View style={styles.footer}>
-          <View style={styles.buttonView}>
-            <Pressable style={styles.continue} onPress={handleContinue}>
-              <Text style={styles.text}>Continue</Text>
-            </Pressable>
+          <View style={styles.footer}>
+            <View style={styles.buttonView}>
+              <Pressable style={styles.continue} onPress={handleContinue}>
+                <Text style={styles.text}>Continue</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };
@@ -193,11 +258,51 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   content: {
-    flex: 2,
+    flex: 1,
+    flexDirection: "row",
     justifyContent: "center",
+    marginTop: 55,
+  },
+  dayListContainer: {
+    flex: 0.4,
+    height: "100%",
+    width: "100%",
+    marginBottom: 10,
+  },
+  draggableListContainer: {
+    flex: 0.6,
+    height: "100%",
+    width: "100%",
+    marginBottom: 10,
+  },
+  dayItem: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: screenHeight * 0.05,
+    marginTop: 15,
+  },
+  card: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#1B77EE",
+    height: screenHeight * 0.05,
+    width: screenWidth * 0.46,
+    borderRadius: 8,
+    marginBottom: 15,
+  },
+  activeCard: {
+    backgroundColor: "lightgrey",
+  },
+  cardText: {
+    color: "#FFFAFA",
+    fontWeight: "700",
+    fontSize: 16,
+    textAlign: "center",
+    flex: 1,
+    paddingHorizontal: 20,
   },
   footer: {
-    flex: 1,
+    height: screenHeight * 0.15,
     justifyContent: "flex-end",
   },
   buttonView: {

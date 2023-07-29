@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   activeCard: {
-    backgroundColor: "lightgrey",
+    backgroundColor: "#151919",
   },
   cardText: {
     color: "#FFFAFA",

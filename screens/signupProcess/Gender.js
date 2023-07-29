@@ -13,9 +13,9 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import FemaleInactive from "../../assets/femaleInactive.png";
+import FemaleInactive from "../../assets/femaleInactive.svg";
 import FemaleActive from "../../assets/femaleActive.png";
-import MaleInactive from "../../assets/maleInactive.png";
+import MaleInactive from "../../assets/maleInactive.svg";
 import MaleActive from "../../assets/maleActive.png";
 import * as Haptics from "expo-haptics";
 
@@ -128,7 +128,7 @@ const Gender = () => {
                 {selectedGender === "female" ? (
                   <Image source={FemaleActive} style={styles.buttonSvg} />
                 ) : (
-                  <Image source={FemaleInactive} style={styles.buttonSvg} />
+                  <FemaleInactive style={styles.buttonSvg} />
                 )}
               </TouchableOpacity>
             </Animated.View>
@@ -148,7 +148,7 @@ const Gender = () => {
                 {selectedGender === "male" ? (
                   <Image source={MaleActive} style={styles.buttonSvg} />
                 ) : (
-                  <Image source={MaleInactive} style={styles.buttonSvg} />
+                  <MaleInactive style={styles.buttonSvg} />
                 )}
               </TouchableOpacity>
             </Animated.View>

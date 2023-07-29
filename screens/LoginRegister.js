@@ -89,6 +89,11 @@ const LoginRegister = ({ navigation }) => {
     ]).start();
   };
 
+  const handleSignIn = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    navigation.navigate("Login");
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground style={styles.image} source={require("../images/blackman.png")}>
@@ -107,23 +112,7 @@ const LoginRegister = ({ navigation }) => {
       </ImageBackground>
       <View style={styles.bottomContainer}>
         <View style={styles.buttonsContainer}>
-          <Pressable onPressIn={() => animatePress(appleScale)}>
-            <Animated.View
-              style={[
-                {
-                  transform: [{ scale: appleScale }],
-                },
-                styles.appleButton,
-              ]}>
-              <View style={styles.buttonContent}>
-                <Image
-                  source={require("../images/appleLogo.png")}
-                  style={{ width: 16, height: 16, marginTop: 2, marginRight: 5 }}
-                />
-                <Text style={styles.appleText}>Sign In with Apple</Text>
-              </View>
-            </Animated.View>
-          </Pressable>
+          <View style={styles.spacer}></View>
           <Pressable style={[styles.swipeButton, { backgroundColor: "#253237" }]}>
             <LinearGradient
               colors={["#253237", "#131616"]}
@@ -163,7 +152,7 @@ const LoginRegister = ({ navigation }) => {
           <Text style={styles.smallText}> Already have an account?</Text>
           <Pressable
             onPressIn={() => animatePress(signInScale)}
-            onPressOut={() => navigation.navigate("Login")}>
+            onPressOut={handleSignIn}>
             <Animated.View
               style={[
                 {
@@ -214,7 +203,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   spacer: {
-    height: 20,
+    height: 50,
   },
   buttonsContainer: {},
   appleButton: {

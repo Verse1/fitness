@@ -39,9 +39,11 @@ const Credentials = () => {
     userProtein,
     userCarbs,
     userFats,
+    // userSplit,
   } = route.params;
 
   const handleCredentials = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     try {
       const resp = await axios.post("http://localhost:8000/api/signup", {
         name: userInfo,

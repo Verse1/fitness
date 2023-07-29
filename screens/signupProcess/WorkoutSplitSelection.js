@@ -38,6 +38,7 @@ const SplitSelection = () => {
 
   const handleContinue = async () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    const userSplit = draggableData.map((item) => item.label);
     navigation.navigate("Credentials", {
       userInfo: userInfo,
       userGender: userGender,
@@ -48,9 +49,10 @@ const SplitSelection = () => {
       userProtein: userProtein,
       userCarbs: userCarbs,
       userFats: userFats,
+      userSplit: userSplit,
     });
     console.log(
-      "Credentials:",
+      "Split:",
       userInfo,
       userGender,
       userAge,
@@ -60,6 +62,7 @@ const SplitSelection = () => {
       userProtein,
       userCarbs,
       userFats,
+      userSplit,
       "\n"
     );
   };

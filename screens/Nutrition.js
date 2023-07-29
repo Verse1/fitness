@@ -18,6 +18,7 @@ import WeekLogged from "../components/WeekLogged";
 import ExpandingButtons from "../components/ExpandingButtons";
 import FoodLogged from "../components/FoodLogged";
 import { StatusBar } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -136,7 +137,7 @@ const Nutrition = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#0F0E0E'}}>
       <ScrollView style={{ flex: 1 }}>
         <SafeAreaView>
           <View style={styles.header}>
@@ -144,7 +145,10 @@ const Nutrition = () => {
             <Image style={styles.pfp} source={require("../images/cole.jpeg")}></Image>
           </View>
         </SafeAreaView>
-        <View
+        <LinearGradient
+            colors={["#151919", "#1D2528"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
           style={{
             flexDirection: "row",
             backgroundColor: "white",
@@ -174,7 +178,7 @@ const Nutrition = () => {
                 marginBottom: 20,
               }}>
               <Text style={{ color: "red", fontWeight: "bold" }}>Protein</Text>
-              <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
+              <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
                 {Math.floor(foodArray.reduce((sum, item) => sum + item.protein, 0))}/{dailyProtein}g
               </Text>
             </View>
@@ -199,7 +203,7 @@ const Nutrition = () => {
                 marginBottom: 20,
               }}>
               <Text style={{ color: "green", fontWeight: "bold" }}>Carbs</Text>
-              <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
+              <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
                 {Math.floor(foodArray.reduce((sum, item) => sum + item.carbs, 0))}/{dailyCarbs}g
               </Text>
             </View>
@@ -225,7 +229,7 @@ const Nutrition = () => {
                 marginBottom: 20,
               }}>
               <Text style={{ color: "blue", fontWeight: "bold" }}>Fat</Text>
-              <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
+              <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
                 {Math.floor(foodArray.reduce((sum, item) => sum + item.fats, 0))}/{dailyFats}g
               </Text>
             </View>
@@ -250,15 +254,15 @@ const Nutrition = () => {
                 marginBottom: 20,
               }}>
               <Text style={{ color: "orange", fontWeight: "bold" }}>Calories</Text>
-              <Text style={{ color: "gray", fontWeight: "700", fontSize: 12.5 }}>
+              <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
                 {Math.floor(foodArray.reduce((sum, item) => sum + item.calories, 0))}/{dailyCalories}
               </Text>
             </View>
           </View>
-        </View>
+        </LinearGradient>
 
         <View style={{ paddingLeft: 20, paddingTop: 10 }}>
-          <Text style={{ fontSize: 20, fontWeight: "700", paddingLeft: 5 }}>
+          <Text style={{ fontSize: 20, fontWeight: "700", paddingLeft: 5, color: "#D7F2F4" }}>
             Logged Food
           </Text>
           {foodArray && foodArray.length > 0 &&  foodArray.map((item, index) => (
@@ -274,6 +278,7 @@ const Nutrition = () => {
               fontWeight: "700",
               paddingLeft: 15,
               paddingBottom: 10,
+              color: "#D7F2F4"
             }}>
             Previous Food Logs
           </Text>
@@ -313,6 +318,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     fontSize: screenWidth * 0.08,
     fontWeight: "bold",
+    color: "#D7F2F4"
   },
   pfp: {
     width: 60,

@@ -10,7 +10,7 @@ const screenWidth = Dimensions.get("window").width;
 
 const WeightBar = (props) => {
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={["#151919", "#1D2528"]} start={{ x: 0, y: 0 }}  end={{ x: 1, y: 0 }} style={styles.container}>
       <View style={{ flexDirection: "row", paddingTop: 10, paddingLeft: 17.5 }}>
         <Text style={styles.dateText}>{props.date}</Text>
         <Text style={styles.actualWeight}>{props.weight}</Text>
@@ -27,7 +27,7 @@ const WeightBar = (props) => {
       <Text style={[styles.weightChange]}>{props.change} kg</Text>
 
     )}
-    </View> 
+    </LinearGradient> 
   );
 };
 
@@ -42,16 +42,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 2,
     borderRadius: 20,
-    backgroundColor: "white",
+   
   },
   dateText: {
     fontSize: 18,
     fontWeight: "500",
+    color: "#D7F2F4"
+
   },
   weightChange: {
-    fontSize: 15,
-    fontWeight: "300",
-
+    fontSize: 17,
+    fontWeight: "400",
+    color: "#D7F2F4",
     paddingLeft: 18,
   },
   actualWeight: {
@@ -59,6 +61,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 18,
     fontWeight: "500",
+    color: "#D7F2F4"
+
   },
 });
 

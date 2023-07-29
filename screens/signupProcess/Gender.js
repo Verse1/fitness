@@ -36,7 +36,7 @@ const Gender = () => {
   };
 
   const handleContinue = () => {
-    navigation.navigate("Age", { userInfo: userName, userGender: selectedGender });
+    navigation.navigate("Age", { userInfo: userName, userGender: 'male' });
   };
 
   return (

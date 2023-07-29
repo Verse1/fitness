@@ -50,7 +50,7 @@ const Metrics = () => {
       userInfo: userName,
       userGender: userGender,
       userAge: userAge,
-      userHeight: height,
+      userHeight: 30,
       userWeight: weight,
       heightUnit: isMetricHeight,
       weightUnit: isMetricWeight,

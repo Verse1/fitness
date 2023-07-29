@@ -16,7 +16,7 @@ import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import { AuthContext } from "../context/auth";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { LinearGradient } from "expo-linear-gradient";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -210,33 +210,41 @@ const ExpandingButtons = (props) => {
     <View style={{ flex: 1 }}>
     <ModalPop visible={visible}>
         <View style={{width: '100%', flexDirection: "row", paddingBottom: 20}}>
-          <Text style={{fontSize: 18, fontWeight: '700', width: '88%', paddingTop: 3}}>Customize your macros!</Text>
-          <TouchableOpacity style={{backgroundColor: '#00A3FF',  justifyContent: 'center', alignItems: 'center', width: 30, height: 30, borderRadius: 15}} onPress={ () =>  setVisible(false)}>
-            <EvilIcon name="close" size={20} color="white" />
+          <Text style={{fontSize: 18, fontWeight: '700', width: '88%', paddingTop: 3, color: '#D7F2F4'}}>Customize your macros!</Text>
+          <TouchableOpacity style={{backgroundColor: '#D7F2F4',  justifyContent: 'center', alignItems: 'center', width: 30, height: 30, borderRadius: 15}} onPress={ () =>  setVisible(false)}>
+            <EvilIcon name="close" size={20} color="#151919" />
           </TouchableOpacity>
         </View>
 
         <View style={styles.macroContainer}>
           <View style={styles.oneMacro}>
-          <Text style={{fontSize: 15, fontWeight: '500', width: '95%'}}>Calories</Text>
-          <TextInput style={styles.input}  onChangeText={setDailyCalories}  value={dailyCalories.toString()}    caretHidden={true} />
-          </View>
-          <View style={styles.oneMacro}>
-          <Text style={{fontSize: 15, fontWeight: '500', width: '95%'}}>Protein</Text>
-          <TextInput style={styles.input}  onChangeText={setDailyProtein}   value={dailyProtein.toString()}  caretHidden={true} />
-          </View>
-          <View style={styles.oneMacro}>
-          <Text style={{fontSize: 15, fontWeight: '500', width: '95%'}}>Carbs</Text>
-          <TextInput style={styles.input}   onChangeText={setDailyCarbs}  value={dailyCarbs.toString()}   caretHidden={true} />
-          </View>
-          <View style={styles.oneMacro}>
-          <Text style={{fontSize: 15, fontWeight: '500', width: '95%'}}>Fats</Text>
-          <TextInput style={styles.input}   onChangeText={setDailyFats} value={dailyFats.toString()} caretHidden={true} />
+          <Text style={{fontSize: 15, fontWeight: '500', width: '70%', color: '#D7F2F4', paddingLeft: "30%"}}>Calories</Text>
+          <TextInput style={styles.input}  onChangeText={setDailyCalories}  placeholderTextColor="#D7F2F4" value={dailyCalories.toString()}    caretHidden={true} />
+          {/* <TextInput  style={styles.input} onChangeText={setCalories}  /> */}
+          <Text style={{color: "#D7F2F4", position: 'absolute', right: '-4%', top: '77%', fontSize: 11, fontWeight: '700'}}>kCal</Text>
+
 
           </View>
-          <View style={{ marginTop: 10}}>
-          <TouchableOpacity onPress={() => handleMacroSet()} style={{backgroundColor: "#00A3FF", width: '120%', height: "50%", justifyContent: 'center', alignItems: 'center', borderRadius: 50,}} >
-            <Text style={{color: 'white', fontSize: 20}}>Set Macros</Text>
+          <View style={styles.oneMacro}>
+          <Text style={{fontSize: 15, fontWeight: '500', width: '70%', color: '#D7F2F4', paddingLeft: "30%"}}>Protein</Text>
+          <TextInput style={styles.input}  onChangeText={setDailyProtein}   value={dailyProtein.toString()}  caretHidden={true} />
+          <Text style={{color: "#D7F2F4", position: 'absolute', right: '0%', top: '65%', fontSize: 15, fontWeight: '700'}}>g</Text>
+
+          </View>
+          <View style={styles.oneMacro}>
+          <Text style={{fontSize: 15, fontWeight: '500', width: '70%', color: '#D7F2F4', paddingLeft: "30%"}}>Carbs</Text>
+          <TextInput style={styles.input}   onChangeText={setDailyCarbs}  value={dailyCarbs.toString()}   caretHidden={true} />
+          <Text style={{color: "#D7F2F4", position: 'absolute', right: '0%', top: '65%', fontSize: 15, fontWeight: '700'}}>g</Text>
+          </View>          
+
+          <View style={styles.oneMacro}>
+          <Text style={{fontSize: 15, fontWeight: '500', width: '70%', color: '#D7F2F4', paddingLeft: "30%"}}>Fats</Text>
+          <TextInput style={styles.input}   onChangeText={setDailyFats} value={dailyFats.toString()} caretHidden={true} />
+          <Text style={{color: "#D7F2F4", position: 'absolute', right: '0%', top: '65%', fontSize: 15, fontWeight: '700'}}>g</Text>
+          </View>
+          <View style={{ marginTop: 12.5}}>
+          <TouchableOpacity onPress={() => handleMacroSet()} style={{backgroundColor: "#D7F2F4", width: '120%', height: "42.5%", justifyContent: 'center', alignItems: 'center', borderRadius: 10,}} >
+            <Text style={{color: '#151919', fontSize: 18, fontWeight: '700'}}>Set Macros</Text>
 
           </TouchableOpacity>
           </View>
@@ -303,9 +311,9 @@ const styles = StyleSheet.create({
 
   },
   modalContainer:{
-    backgroundColor: 'white',
+    backgroundColor: '#151919',
     width: '80%',
-    height: '40%',
+    height: '50%',
     paddingHorizontal: 20,
     paddingVertical: 20,
     borderRadius: 20,
@@ -317,16 +325,29 @@ const styles = StyleSheet.create({
   },
   oneMacro:{
     flexDirection: 'row',
-    paddingVertical: 15
+    paddingVertical: 15,
+    textAlign: 'right',
+    alignItems: 'center',
   },
   input:{
-    backgroundColor: "rgb(220,220,220)",
-    width: "25%",
-    borderColor: "gray",
-    fontSize: 12,
-    textAlign: 'center',
-    borderRadius: "10",
-    height: 20
+    // backgroundColor: "rgb(220,220,220)",
+    // width: "25%",
+    // borderColor: "gray",
+    // fontSize: 12,
+    // textAlign: 'center',
+    // borderRadius: "10",
+    // height: 20
+    backgroundColor: "#253237",
+    width: screenWidth * 0.2,
+    height: 40,
+    borderRadius: 10,
+    borderColor: "#ccc",
+    // justifyContent: "center",
+    // alignItems: "center",
+    // marginBottom: 20,
+    // marginLeft: screenWidth * 0.05, 
+    paddingLeft: 10,
+    color: '#D7F2F4',
   }
 });
 

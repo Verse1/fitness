@@ -80,7 +80,7 @@ const weightTracking = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#0F0E0E'}}>
       <ScrollView>
         <View style={styles.header}>
           <Text style={styles.headerText}>My Weight</Text>
@@ -88,6 +88,8 @@ const weightTracking = () => {
         </View>
 
         <LineChart
+
+    withInnerLines={false}
           data={{
             labels: labels,
             datasets: [
@@ -101,9 +103,12 @@ const weightTracking = () => {
           yAxisSuffix="kg"
           yAxisInterval={1} // optional, defaults to 1
           chartConfig={{
-            backgroundColor: "#e26a00",
-            backgroundGradientFrom: "#1e88e5",
-            backgroundGradientTo: "#42a5f5",
+            propsForBackgroundLines: {
+    strokeDasharray: '', // solid background lines with no dashes
+  },
+            backgroundColor: "#151919",
+            backgroundGradientFrom: "#151919",
+            backgroundGradientTo: "#1D2528",
             decimalPlaces: 1, // optional, defaults to 2dp
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -112,8 +117,8 @@ const weightTracking = () => {
             },
             propsForDots: {
               r: "6",
-              strokeWidth: "2",
-              stroke: "#1e88e5",
+              strokeWidth: "5",
+              stroke: "#D7F2F4",
             },
           }}
           bezier
@@ -190,6 +195,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     fontSize: screenWidth * 0.08,
     fontWeight: "bold",
+    color: "#D7F2F4"
   },
   pfp: {
     width: 60,
@@ -273,6 +279,8 @@ const styles = StyleSheet.create({
   historyTitle: {
     fontSize: 25,
     fontWeight: "bold",
+    color: "#D7F2F4"
+
   },
   weightBars: {
     paddingVertical: 10,

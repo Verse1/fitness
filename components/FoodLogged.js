@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { ProgressChart } from "react-native-chart-kit";
-
+import { LinearGradient } from "expo-linear-gradient";
 const Modalpop = (props) => {
   const [showModal, setShowModal] = React.useState(props.visible);
 
@@ -44,6 +44,7 @@ const Modalpop = (props) => {
   return (
     <Modal transparent visible={showModal}>
       <View style={styles.modalBackground}>
+    
         <Animated.View
           style={[styles.modalContainer, { transform: [{ scale: scaleValue }] }]}>
           {props.children}
@@ -60,7 +61,7 @@ const FoodLogged = (props) => {
   const data = {
     labels: ["Protien"], // optional
     data: [Math.min(props.protein, props.maxProtein) / props.maxProtein],
-    colors: ["red"],
+    colors: ["#CE2029"],
   };
 
   const chartConfig = {
@@ -77,7 +78,7 @@ const FoodLogged = (props) => {
   const dataC = {
     labels: ["Carbs"], // optional
     data: [Math.min(props.carbs, props.maxCarbs) / props.maxCarbs],
-    colors: ["green"],
+    colors: ["#4CB944"],
   };
 
   const chartConfigCarbs = {
@@ -94,7 +95,7 @@ const FoodLogged = (props) => {
   const dataF = {
     labels: ["Fats"], // optional
     data: [Math.min(props.fats, props.maxFats) / props.maxFats],
-    colors: ["blue"],
+    colors: ["#1B77EE"],
   };
 
   const chartConfigFat = {
@@ -112,7 +113,7 @@ const FoodLogged = (props) => {
     <View>
       <Modalpop protein={props.protein} visible={visible}>
         <View style={{ flexDirection: "row" }}>
-          <Text style={{ fontSize: 18, fontWeight: "700", width: "90%" }}>{props.foodName}</Text>
+          <Text style={{ fontSize: 18, fontWeight: "700", width: "90%",  color: '#D7F2F4'}}>{props.foodName}</Text>
           <TouchableOpacity onPress={() => setVisible(false)}>
             <Image
               style={styles.tinyLogo}
@@ -120,7 +121,7 @@ const FoodLogged = (props) => {
           </TouchableOpacity>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <Text style={{ fontSize: 18, fontWeight: "400", paddingTop: 20, width: "50%" }}>
+          <Text style={{ fontSize: 18, fontWeight: "400", paddingTop: 20, width: "50%", color: '#D7F2F4'}}>
             Serving
           </Text>
           <Text
@@ -130,12 +131,13 @@ const FoodLogged = (props) => {
               paddingTop: 21,
               width: "50%",
               textAlign: "right",
+              color: '#D7F2F4'
             }}>
             {props.serving}g
           </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <Text style={{ fontSize: 18, fontWeight: "400", paddingTop: 20, width: "50%" }}>
+          <Text style={{ fontSize: 18, fontWeight: "400", paddingTop: 20, width: "50%" , color: '#D7F2F4'}}>
             Calories
           </Text>
           <Text
@@ -145,6 +147,7 @@ const FoodLogged = (props) => {
               paddingTop: 21,
               width: "50%",
               textAlign: "right",
+              color: '#D7F2F4'
             }}>
             {Math.floor(Math.floor(props.calories))} kcal
           </Text>
@@ -163,12 +166,12 @@ const FoodLogged = (props) => {
               style={styles.graph}
             />
             <View style={{ paddingTop: 10 }}>
-              <Text style={{ color: "red", fontWeight: "bold", paddingLeft: 20 }}>
+              <Text style={{ color: "#CE2029", fontWeight: "bold", paddingLeft: 20 }}>
                 Protein
               </Text>
               <Text
                 style={{
-                  color: "gray",
+                  color: "rgba(180,180,180,1)",
                   fontWeight: "bold",
                   paddingLeft: 20,
                   fontSize: 12.5,
@@ -191,12 +194,12 @@ const FoodLogged = (props) => {
               style={styles.graph}
             />
             <View style={{ paddingTop: 10 }}>
-              <Text style={{ color: "green", fontWeight: "bold", paddingLeft: 25 }}>
+              <Text style={{ color: "#4CB944", fontWeight: "bold", paddingLeft: 25 }}>
                 Carbs
               </Text>
               <Text
                 style={{
-                  color: "gray",
+                  color: "rgba(180,180,180,1)",
                   fontWeight: "bold",
                   paddingLeft: 20,
                   fontSize: 12.5,
@@ -219,12 +222,12 @@ const FoodLogged = (props) => {
               style={styles.graph}
             />
             <View style={{ paddingTop: 10, paddingLeft: 4 }}>
-              <Text style={{ color: "blue", fontWeight: "bold", paddingLeft: 30 }}>
+              <Text style={{ color: "#1B77EE", fontWeight: "bold", paddingLeft: 30 }}>
                 Fats
               </Text>
               <Text
                 style={{
-                  color: "gray",
+                  color: "rgba(180,180,180,1)",
                   fontWeight: "bold",
                   paddingLeft: 25,
                   fontSize: 12.5,
@@ -244,6 +247,7 @@ const FoodLogged = (props) => {
               fontSize: 16,
               fontWeight: "500",
               width: "75%",
+              color: '#D7F2F4'
             }}>
             {props.foodName}
           </Text>
@@ -251,14 +255,14 @@ const FoodLogged = (props) => {
             style={{
               textAlign: "right",
               paddingTop: 28,
-              color: "#42a5f5",
+              color: "#D7F2F4",
               fontWeight: "bold",
             }}>
             {props.calories} kcal
           </Text>
         </View>
 
-        <Text style={{ paddingLeft: 14, fontWeight: "bold" }}>
+        <Text style={{ paddingLeft: 14, fontWeight: "bold", color: '#D7F2F4' }}>
           Serving: {props.serving}G
         </Text>
       </TouchableOpacity>
@@ -269,7 +273,7 @@ const FoodLogged = (props) => {
 const styles = StyleSheet.create({
   container: {
     width: 0.9 * screenWidth,
-    backgroundColor: "white",
+    backgroundColor: "#151919",
     borderRadius: 20,
     marginTop: 10,
     height: screenHeight * 0.1,
@@ -283,7 +287,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     width: screenWidth * 0.85,
     height: screenHeight * 0.4,
-    backgroundColor: "white",
+    backgroundColor: "#151919",
     paddingHorizontal: 20,
     paddingVertical: 25,
     borderRadius: 20,
@@ -295,6 +299,7 @@ const styles = StyleSheet.create({
   tinyLogo: {
     width: screenWidth * 0.08,
     height: screenWidth * 0.08,
+    tintColor: '#D7F2F4',
   },
 });
 

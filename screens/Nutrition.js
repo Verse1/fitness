@@ -71,25 +71,25 @@ const Nutrition = () => {
   const data = {
     labels: ["Protein"], // optional
     data: [proteinRatio],
-    colors: ["red"],
+    colors: ["#CE2029"],
   };
 
   const dataC = {
     labels: ["Carbs"], // optional
     data: [carbsRatio],
-    colors: ["green"],
+    colors: ["#4CB944"],
   };
 
   const dataF = {
     labels: ["Fats"], // optional
     data: [fatsRatio],
-    colors: ["blue"],
+    colors: ["#1B77EE"],
   };
 
   const dataCals = {
     labels: ["Cals"], // optional
     data: [calsRatio],
-    colors: ["orange"],
+    colors: ["#F1D302"],
   };
 
   const chartConfig = {
@@ -153,7 +153,7 @@ const Nutrition = () => {
             flexDirection: "row",
             backgroundColor: "white",
             borderRadius: 20,
-            width: screenWidth * 0.9,
+            width: screenWidth * 0.92,
             marginLeft: screenWidth * 0.05,
           }}>
           <View style={styles.chartCard}>
@@ -177,7 +177,7 @@ const Nutrition = () => {
                 justifyContent: "center",
                 marginBottom: 20,
               }}>
-              <Text style={{ color: "red", fontWeight: "bold" }}>Protein</Text>
+              <Text style={{ color: "#CE2029", fontWeight: "bold" }}>Protein</Text>
               <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
                 {Math.floor(foodArray.reduce((sum, item) => sum + item.protein, 0))}/{dailyProtein}g
               </Text>
@@ -202,7 +202,7 @@ const Nutrition = () => {
                 justifyContent: "center",
                 marginBottom: 20,
               }}>
-              <Text style={{ color: "green", fontWeight: "bold" }}>Carbs</Text>
+              <Text style={{ color: "#4CB944", fontWeight: "bold" }}>Carbs</Text>
               <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
                 {Math.floor(foodArray.reduce((sum, item) => sum + item.carbs, 0))}/{dailyCarbs}g
               </Text>
@@ -228,7 +228,7 @@ const Nutrition = () => {
                 justifyContent: "center",
                 marginBottom: 20,
               }}>
-              <Text style={{ color: "blue", fontWeight: "bold" }}>Fat</Text>
+              <Text style={{ color: "#1B77EE", fontWeight: "bold" }}>Fat</Text>
               <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
                 {Math.floor(foodArray.reduce((sum, item) => sum + item.fats, 0))}/{dailyFats}g
               </Text>
@@ -253,7 +253,7 @@ const Nutrition = () => {
                 justifyContent: "center",
                 marginBottom: 20,
               }}>
-              <Text style={{ color: "orange", fontWeight: "bold" }}>Calories</Text>
+              <Text style={{ color: "#F1D302", fontWeight: "bold" }}>Calories</Text>
               <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
                 {Math.floor(foodArray.reduce((sum, item) => sum + item.calories, 0))}/{dailyCalories}
               </Text>

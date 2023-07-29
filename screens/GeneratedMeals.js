@@ -49,14 +49,14 @@ const GeneratedMeals = (props) => {
       .catch((error) => console.log(error));
   };
 
-  console.log(results[0].nutrition.nutrients[1])
+  // console.log(results[0].nutrition.nutrients[1])
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   }, [navigation]); // re-run effect if navigation object changes
   return (
-    <ScrollView style={{ paddingTop: 10, paddingBottom: 10 }}>
+    <ScrollView style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: '#0F0E0E' }}>
       {results.map((meal, index) => (
         <>
           <View key={index} style={{ flexDirection: "row" }}>
@@ -66,6 +66,7 @@ const GeneratedMeals = (props) => {
                 paddingTop: screenHeight * 0.04,
                 fontSize: screenWidth * 0.075,
                 fontWeight: "700",
+                color: '#D7F2F4'
               }}>
               Meal {index + 1}
             </Text>

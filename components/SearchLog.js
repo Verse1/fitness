@@ -17,6 +17,7 @@ import { AuthContext } from "../context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { Feather } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
@@ -29,7 +30,7 @@ const SearchLog = (props) => {
   const data = {
     labels: ["Protien"], // optional
     data: [props.protein / props.maxProtein],
-    colors: ["red"],
+    colors: ["#CE2029"],
   };
 
   const chartConfig = {
@@ -46,7 +47,7 @@ const SearchLog = (props) => {
   const dataC = {
     labels: ["Carbs"], // optional
     data: [props.carbs / props.maxCarbs],
-    colors: ["green"],
+    colors: ["#4CB944"],
   };
 
   const chartConfigCarbs = {
@@ -63,7 +64,7 @@ const SearchLog = (props) => {
   const dataF = {
     labels: ["Fats"], // optional
     data: [props.fat / props.maxFats],
-    colors: ["blue"],
+    colors: ["#1B77EE"],
   };
 
   const chartConfigFat = {
@@ -135,16 +136,17 @@ const SearchLog = (props) => {
             paddingTop: 15,
             fontSize: 18,
             fontWeight: "500",
+            color: '#151919'
           }}
         >
           {capitalizeFirstChar(props.FoodName)}
         </Text>
         <TouchableOpacity style={styles.addButton} onPress={() => setVisible(true)}>
-          <Feather name="plus" color="white" size={20} />
+          <Feather name="plus" color="#D7F2F4" size={20} />
         </TouchableOpacity>
       </View>
 
-      <Text style={{ paddingLeft: 15, fontWeight: "400", paddingTop: 10, width: "60%" }}>
+      <Text style={{ paddingLeft: 15, fontWeight: "400", paddingTop: 10, width: "60%" ,color: '#151919', fontWeight: '700'}}>
         {props.serving} Grams{" "}
       </Text>
 
@@ -152,15 +154,18 @@ const SearchLog = (props) => {
         <TouchableWithoutFeedback onPress={handleOverlayPress}>
           <View style={styles.modalBackground}>
             <TouchableWithoutFeedback>
-              <View style={styles.modalContainer}>
+              <LinearGradient
+                  colors={["#151919", "#253237"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }} style={styles.modalContainer}>
                 <View style={{ flexDirection: "row" }}>
-                  <Text style={{ width: "70%", fontSize: 20, fontWeight: "500" }}>
+                  <Text style={{ width: "70%", fontSize: 20, fontWeight: "500", color: '#D7F2f4' }}>
                     {capitalizeFirstChar(props.FoodName)}
                   </Text>
                     <TouchableOpacity
                       onPress={handleLog}
                       style={{
-                        backgroundColor: "#00A3FF",
+                        backgroundColor: "#D7F2f5",
                         width: screenWidth * 0.2,
                         height: screenHeight * 0.05,
                         borderRadius: 15,
@@ -169,7 +174,7 @@ const SearchLog = (props) => {
                         alignItems: "center",
                       }}
                     >
-                      <Text style={{ fontSize: 18, color: "white", fontWeight: "700" }}>
+                      <Text style={{ fontSize: 18, color: "#151919", fontWeight: "700" }}>
                         Log
                       </Text>
                     </TouchableOpacity>
@@ -177,17 +182,17 @@ const SearchLog = (props) => {
                 </View>
 
                 <View style={{ paddingTop: screenHeight * 0.04, flexDirection: "row",  }}>
-                  <Text style={{ fontSize: 18, fontWeight: "400", width: "80%" }}>
+                  <Text style={{ fontSize: 18, fontWeight: "400", width: "80%", color:'#D7F2F4' }}>
                     Serving
                   </Text>
-                  <Text style={{ fontSize: 18, fontWeight: "500" }}>{props.serving}g</Text>
+                  <Text style={{ fontSize: 18, fontWeight: "700", color:'#D7F2F4'}}>{props.serving}g</Text>
                 </View>
 
                 <View style={{ paddingTop: 20, flexDirection: "row" }}>
-                  <Text style={{ fontSize: 18, fontWeight: "400", width: "70%" }}>
+                  <Text style={{ fontSize: 18, fontWeight: "400", width: "70%", color:'#D7F2F4'}}>
                     Calories
                   </Text>
-                  <Text style={{ fontSize: 18, fontWeight: "500" }}>
+                  <Text style={{ fontSize: 18, fontWeight: "700", color:'#D7F2F4' }}>
                     {Math.floor(props.calories)} kcal
                   </Text>
                 </View>
@@ -206,12 +211,12 @@ const SearchLog = (props) => {
                       style={styles.graph}
                     />
                     <View style={{ paddingTop: 10 }}>
-                      <Text style={{ color: "red", fontWeight: "bold", paddingLeft: 10 }}>
+                      <Text style={{ color: "#CE2029", fontWeight: "bold", paddingLeft: 10 }}>
                         Protein
                       </Text>
                       <Text
                         style={{
-                          color: "gray",
+                          color: "rgba(180,180,180,1)",
                           fontWeight: "bold",
                           paddingLeft: 10,
                           fontSize: 12.5,
@@ -235,12 +240,12 @@ const SearchLog = (props) => {
                       style={styles.graph}
                     />
                     <View style={{ paddingTop: 10 }}>
-                      <Text style={{ color: "green", fontWeight: "bold", paddingLeft: 20 }}>
+                      <Text style={{ color: "#4CB944", fontWeight: "bold", paddingLeft: 20 }}>
                         Carbs
                       </Text>
                       <Text
                         style={{
-                          color: "gray",
+                          color: "rgba(180,180,180,1)",
                           fontWeight: "bold",
                           paddingLeft: 15,
                           fontSize: 12.5,
@@ -264,12 +269,12 @@ const SearchLog = (props) => {
                       style={styles.graph}
                     />
                     <View style={{ paddingTop: 10, paddingLeft: 4 }}>
-                      <Text style={{ color: "blue", fontWeight: "bold", paddingLeft: 20 }}>
+                      <Text style={{ color: "#1B77EE", fontWeight: "bold", paddingLeft: 20 }}>
                         Fats
                       </Text>
                       <Text
                         style={{
-                          color: "gray",
+                          color: "rgba(180,180,180,1)",
                           fontWeight: "bold",
                           paddingLeft: 15,
                           fontSize: 12.5,
@@ -280,7 +285,7 @@ const SearchLog = (props) => {
                     </View>
                   </View>
                 </View>
-              </View>
+              </LinearGradient>
             </TouchableWithoutFeedback>
           </View>
         </TouchableWithoutFeedback>
@@ -291,7 +296,7 @@ const SearchLog = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: "#D7F2F4",
     width: screenWidth * 0.9,
     height: screenHeight * 0.1,
     borderRadius: 20,
@@ -322,7 +327,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 20,
     right: 20,
-    backgroundColor: "#00A3FF",
+    backgroundColor: "#151919",
     width: screenWidth * 0.1,
     height: screenWidth * 0.1,
     justifyContent: "center",

@@ -136,7 +136,6 @@ const weightTracking = () => {
               .slice()
               .reverse()
               .map((item, index) => {
-                console.log(index);
                 if (index === 0) {
                   return (
                     <WeightBar
@@ -195,7 +194,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     fontSize: screenWidth * 0.08,
     fontWeight: "bold",
-    color: "#D7F2F4"
+    color: "#D7F2F4",
   },
   pfp: {
     width: 60,

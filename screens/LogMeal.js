@@ -13,7 +13,7 @@ import React, { useLayoutEffect, useState, useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import SearchLog from "../components/SearchLog";
 import { AuthContext } from "../context/auth";
-
+import { LinearGradient } from "expo-linear-gradient";
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
@@ -103,9 +103,9 @@ const LogMeal = () => {
   }, [state]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#0F0E0E'}}>
       <View style={{ paddingLeft: screenWidth * 0.065, paddingTop: screenHeight * 0.03 }}>
-        <Text style={{ fontSize: screenWidth * 0.06, fontWeight: "700" }}>Log Food</Text>
+        <Text style={{ fontSize: screenWidth * 0.06, fontWeight: "700", color: '#D7F2F4' }}>Log Food</Text>
       </View>
 
       <View
@@ -114,38 +114,67 @@ const LogMeal = () => {
           paddingTop: screenHeight * 0.025,
           flexDirection: "row",
         }}>
-        <TextInput
-          placeholder="Search Food..."
-          value={searchText}
-          onChangeText={(text) => {
-            setSearchText(text);
-          }}
-          style={styles.searchBar}
-          onSubmitEditing={() => {
-            if (Number.isInteger(amount)) {
-              handleTextInputSubmit();
-            } else {
-              console.log("hel");
-              showAlert();
-            }
-          }} // Call handleTextInputSubmit on submit event
-        />
 
-        <TextInput
-          placeholder="Amount..."
-          value={amount}
-          onChangeText={(text) => {
-            setAmount(text);
-          }}
-          style={styles.amountBar}
-          onSubmitEditing={() => handleTextInputSubmit()}
-        />
+
+        <View style={[styles.textboxShadow, {marginRight: 20}]}>
+                <LinearGradient
+                  colors={["#151919", "#253237"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={[styles.textboxBackground, {paddingRight: 20}]}>
+                  <TextInput
+                    placeholder="Search Food..."
+                    style={[styles.textbox,{paddingRight: 20} ]}
+                    value={searchText}
+                    onChangeText={(text) => {
+                      setSearchText(text);
+                    }}
+
+                    onSubmitEditing={() => {
+                    if (Number.isInteger(amount)) {
+                      handleTextInputSubmit();
+                    } else {
+                      console.log("hel");
+                      showAlert();
+                    }}}
+                    
+                    // onChangeText={setName}
+                    placeholderTextColor="#D7F2F4"
+                    keyboardAppearance="dark"
+                    autoCorrect={false}
+                  />
+                </LinearGradient>
+        </View>
+        <View style={styles.textboxShadow}>
+                <LinearGradient
+                  colors={["#151919", "#253237"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.textboxBackground}>
+                  <TextInput
+                  placeholder="Amount..."
+                  value={amount}
+                  onChangeText={(text) => {
+                    setAmount(text);
+                  }}
+                    style={styles.textbox}
+                    onSubmitEditing={() => handleTextInputSubmit()}
+                    // onChangeText={setName}
+                    placeholderTextColor="#D7F2F4"
+                    keyboardAppearance="dark"
+                    autoCorrect={false}
+                  />
+                  <Text style={{color: "#D7F2F4", position: 'absolute', right: 15, fontWeight: '700'}}>g</Text>
+                </LinearGradient>
+        </View>
       </View>
-      <View
+      <LinearGradient
+            colors={["#151919", "#1D2528"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
         style={{
           paddingLeft: screenWidth * 0.055,
           paddingTop: screenHeight * 0.03,
-          backgroundColor: "#00A3FF",
           height: "100%",
           marginTop: screenHeight * 0.05,
           borderTopRightRadius: "50%",
@@ -155,7 +184,7 @@ const LogMeal = () => {
           style={{
             fontSize: screenWidth * 0.06,
             fontWeight: "700",
-            color: "white",
+            color: "#D7F2F4",
             paddingLeft: screenWidth * 0.02,
           }}>
           Search Results
@@ -197,7 +226,7 @@ const LogMeal = () => {
             );
           })}
         </View>
-      </View>
+      </LinearGradient>
     </SafeAreaView>
   );
 };
@@ -222,6 +251,43 @@ const styles = StyleSheet.create({
     borderColor: "#e8e8e8",
     marginLeft: 10,
   },
+  textbox: {
+    backgroundColor: "transparent",
+    width: screenWidth * 0.4,
+    height: screenHeight * 0.05,
+    alignSelf: "center",
+    borderRadius: 8,
+    position: "absolute",
+    zIndex: 1,
+    fontWeight: "500",
+    fontSize: 14,
+    paddingLeft: 20,
+    color: "#D7F2F4",
+  },
+  textboxBackground: {
+    backgroundColor: "#151919",
+    width: screenWidth * 0.4,
+    height: screenHeight * 0.05,
+    padding: 15,
+    alignSelf: "center",
+    borderRadius: 8,
+    justifyContent: "center",
+    fontSize: 15,
+  },
+  textboxShadow: {
+    width: screenWidth * 0.4,
+    height: screenHeight * 0.05,
+    alignSelf: "center",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    backgroundColor: "#151919",
+  }
 });
 
 export default LogMeal;

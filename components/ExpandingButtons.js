@@ -244,7 +244,7 @@ const ExpandingButtons = (props) => {
           </View>
           <View style={{ marginTop: 12.5}}>
           <TouchableOpacity onPress={() => handleMacroSet()} style={{backgroundColor: "#D7F2F4", width: '120%', height: "42.5%", justifyContent: 'center', alignItems: 'center', borderRadius: 10,}} >
-            <Text style={{color: '#151919', fontSize: 18, fontWeight: '700'}}>Set Macros</Text>
+            <Text style={{color: '#151919', fontSize: 18, fontWeight: '700'}}>Set my macros</Text>
 
           </TouchableOpacity>
           </View>

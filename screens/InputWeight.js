@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -63,20 +64,32 @@ const InputWeight = () => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: 1, marginTop: screenHeight * 0.175 }}>
+    <View style={{ flex: 1, paddingTop: screenHeight * 0.175, backgroundColor: '#0F0E0E'}}>
       <Text style={styles.today}>What is your weight today?</Text>
-      <TextInput
-        value={weight}
-        caretHidden={true}
-        placeholder="Enter Weight"
-        placeholderTextColor={"black"}
-        style={styles.input}
-        onChangeText={setWeight}></TextInput>
+      <View style={{paddingTop: screenHeight * 0.2}}>
+        <View style={styles.textboxShadow}>
+        <LinearGradient
+                    colors={["#151919", "#253237"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.textboxBackground}>
+        <TextInput
+          value={weight}
+          caretHidden={true}
+          placeholder="Enter Weight"
+          style={styles.input}
+          onChangeText={setWeight}
+          placeholderTextColor="#D7F2F4"
+                      keyboardAppearance="dark"
+                      autoCorrect={false}></TextInput>
+          </LinearGradient>
+          </View>
+        </View>
 
       <Pressable style={styles.button} onPress={handleAdd}>
         <Text style={styles.add}>Add Weight</Text>
       </Pressable>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -85,36 +98,68 @@ const styles = StyleSheet.create({
     fontSize: screenWidth * 0.09,
     textAlign: "center",
     fontWeight: "500",
+    color: '#D7F2F4'
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: "transparent",
     width: screenWidth * 0.5,
-    height: screenHeight * 0.07,
-    marginTop: screenHeight * 0.08,
-    marginLeft: screenWidth * 0.225,
-    textAlign: "center",
-    fontSize: 27.5,
-    borderRadius: "20%",
+    height: screenHeight * 0.05,
+    alignSelf: "center",
+    borderRadius: 8,
+    position: "absolute",
+    zIndex: 1,
+    fontWeight: "500",
+    fontSize: 14,
+    paddingLeft: 15,
+    color: "#D7F2F4",
+    // marginTop: screenHeight * 0.05
+
   },
   button: {
     alignContent: "center",
     justifyContent: "center",
     textAlign: "center",
     width: screenWidth * 0.8,
-    backgroundColor: "blue",
+    backgroundColor: "#D7F2F4",
     borderRadius: 6,
-    borderWidth: 0.7,
     borderColor: "blue",
     marginLeft: screenWidth * 0.1,
     height: screenHeight * 0.05,
-    marginTop: screenHeight * 0.03,
+    marginTop: screenHeight * 0.35,
   },
   add: {
-    color: "white",
+    color: "#151919",
     textAlign: "center",
     fontWeight: "600",
     fontSize: 15,
   },
+  textboxBackground: {
+    backgroundColor: "#151919",
+    width: screenWidth * 0.5,
+    height: screenHeight * 0.05,
+    padding: 15,
+    alignSelf: "center",
+    borderRadius: 8,
+    justifyContent: "center",
+    fontSize: 15,
+
+  },
+  textboxShadow: {
+    width: screenWidth * 0.5,
+    height: screenHeight * 0.05,
+    alignSelf: "center",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    backgroundColor: "#151919",
+    // paddingTop: screenHeight * 0.05
+  },
+  
 });
 
 export default InputWeight;

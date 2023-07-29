@@ -18,6 +18,7 @@ import { useState, useContext, useRoute, useRef } from "react";
 import { useLayoutEffect, useEffect } from "react";
 const spoon = "https://api.spoonacular.com/recipes/complexSearch";
 const headerConfig = { headers: { Accept: "application/json" } };
+import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import { AuthContext } from "../context/auth";
 // const detailedMacros = `https://api.spoonacular.com/recipes/${id}/nutritionWidget.json`
@@ -163,36 +164,38 @@ const Reco = () => {
     //     ))}
 
     // </View>
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: '#0F0E0E', height: '100%'}}>
       <Text
         style={{
           fontSize: screenWidth * 0.09,
           fontWeight: "500",
           paddingLeft: screenWidth * 0.1,
           paddingTop: 20,
+
+          color: "#D7F2F4"
         }}>
         You've got
       </Text>
       <View style={{ flexDirection: "row", paddingTop: screenHeight * 0.05 }}>
         <View style={{ paddingLeft: screenWidth * 0.1 }}>
-          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>
+          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700", color: "#D7F2F4" }}>
             {Math.max(dailyCarbs - Math.floor(totalCarbs),0)}g
           </Text>
-          <Text style={{ fontSize: screenWidth * 0.045, fontWeight: "700" }}>Carbs</Text>
+          <Text style={{ fontSize: screenWidth * 0.045, fontWeight: "700", color: "#D7F2F4"}}>Carbs</Text>
         </View>
 
         <View style={{ paddingLeft: screenWidth * 0.2 }}>
-          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>
+          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" , color: "#D7F2F4"}}>
             {Math.max(dailyProtein - Math.floor(totalProtein),0)}g
           </Text>
-          <Text style={{ fontSize: screenWidth * 0.04, fontWeight: "700" }}>Protien</Text>
+          <Text style={{ fontSize: screenWidth * 0.04, fontWeight: "700", color: "#D7F2F4" }}>Protien</Text>
         </View>
 
         <View style={{ paddingLeft: screenWidth * 0.2 }}>
-          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700" }}>
+          <Text style={{ fontSize: screenWidth * 0.05, fontWeight: "700", color: "#D7F2F4" }}>
             {Math.max(dailyFats - Math.floor(totalFats),0)}g
           </Text>
-          <Text style={{ fontSize: screenWidth * 0.045, fontWeight: "700" }}>Fat</Text>
+          <Text style={{ fontSize: screenWidth * 0.045, fontWeight: "700", color: "#D7F2F4" }}>Fat</Text>
         </View>
       </View>
 
@@ -202,12 +205,16 @@ const Reco = () => {
           fontWeight: "500",
           paddingLeft: screenWidth * 0.1,
           paddingTop: 30,
+          color: "#D7F2F4"
         }}>
         left...
       </Text>
 
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <View style={styles.barContainer}>
+      <View style={{ justifyContent: "center", alignItems: "center", paddingTop: screenHeight * 0.125 }}>
+        <LinearGradient
+            colors={["#151919", "#1D2528"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }} style={styles.barContainer}>
           <TouchableOpacity
             style={[
               styles.item,
@@ -217,7 +224,7 @@ const Reco = () => {
               },
             ]}
             onPress={() => handleItemClick(1)}>
-            <Text style={{ color: "white", fontSize: 20, fontWeight: "700" }}>1</Text>
+            <Text style={[{ color: "#D7F2F4", fontSize: 20, fontWeight: "700" },  isItemSelected(1) && styles.selectedText,]}>1</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -229,7 +236,7 @@ const Reco = () => {
               },
             ]}
             onPress={() => handleItemClick(2)}>
-            <Text style={{ color: "white", fontSize: 20, fontWeight: "700" }}>2</Text>
+            <Text style={[{ color: "#D7F2F4", fontSize: 20, fontWeight: "700" },  isItemSelected(2) && styles.selectedText,]}>2</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -241,15 +248,15 @@ const Reco = () => {
               },
             ]}
             onPress={() => handleItemClick(3)}>
-            <Text style={{ color: "white", fontSize: 20, fontWeight: "700" }}>3</Text>
+            <Text style={[{ color: "#D7F2F4", fontSize: 20, fontWeight: "700" },  isItemSelected(3) && styles.selectedText,]}>3</Text>
           </TouchableOpacity>
-        </View>
+        </LinearGradient>
       </View>
 
       <TouchableOpacity
         onPress={() => handleButtonPress()}
         style={styles.button}>
-        <Text style={{ color: "white", fontSize: 22.5, fontWeight: "600" }}>
+        <Text style={{ color: "#151919", fontSize: 22.5, fontWeight: "500" }}>
           Close your rings
         </Text>
       </TouchableOpacity>
@@ -312,14 +319,14 @@ const styles = StyleSheet.create({
     height: screenHeight * 0.4,
   },
   button: {
-    backgroundColor: "#00A3FF",
-    width: screenWidth * 0.6,
-    height: screenHeight * 0.06,
-    borderRadius: 25,
+    backgroundColor: "#D7F2F4",
+    width: screenWidth * 0.9,
+    height: screenHeight * 0.05,
+    borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: screenWidth * 0.2,
-    marginTop: screenHeight * 0.05,
+    marginLeft: screenWidth * 0.05,
+    marginTop: screenHeight * 0.34,
   },
   barContainer: {
     width: "60%",
@@ -335,9 +342,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   selectedItem: {
-    backgroundColor: "green",
+    backgroundColor: "#D7F2F4",
     borderRadius: 25,
   },
+  selectedText:{
+    color: "#151919"
+  }
 });
 
 export default Reco;

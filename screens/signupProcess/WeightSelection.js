@@ -13,6 +13,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import SmoothPicker from "react-native-smooth-picker";
+import * as Haptics from "expo-haptics";
 // import { getWeightOptions } from "../../utils/weightOptions";
 
 const screenHeight = Dimensions.get("window").height;
@@ -44,7 +45,8 @@ const WeightSelection = () => {
     setSelectedWeight(weight);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     navigation.navigate("HeightSelection", {
       userInfo: userInfo,
       userGender: userGender,

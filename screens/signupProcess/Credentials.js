@@ -17,6 +17,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AuthContext } from "../../context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import * as Haptics from "expo-haptics";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;

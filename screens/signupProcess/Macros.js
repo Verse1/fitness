@@ -8,10 +8,14 @@ import {
   Animated,
   Easing,
   TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import * as Haptics from "expo-haptics";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -26,7 +30,8 @@ const MacroSelection = () => {
   const route = useRoute();
   const { userInfo, userGender, userAge, userWeight, userHeight } = route.params;
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     navigation.navigate("WorkoutSplitSelection", {
       userInfo: userInfo,
       userGender: userGender,
@@ -101,39 +106,44 @@ const MacroSelection = () => {
           </LinearGradient>
         </View>
       </View>
+
       <View style={styles.fullScreen}>
-        <View style={styles.content}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.quantityText}>Quantity Per Day</Text>
-            {[
-              { name: "Calories", setFunction: setCalories, unit: "kCal" },
-              { name: "Protein", setFunction: setProtein, unit: "g" },
-              { name: "Carbs", setFunction: setCarbs, unit: "g" },
-              { name: "Fats", setFunction: setFats, unit: "g" },
-            ].map((item, index) => (
-              <View key={index} style={styles.inputRow}>
-                <Text style={styles.inputLabel}>{item.name}</Text>
-                <View style={styles.inputAndUnit}>
-                  <LinearGradient
-                    colors={["#151919", "#253237"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.inputBackground}
-                  />
-                  <TextInput
-                    style={styles.input}
-                    onChangeText={item.setFunction}
-                    placeholderTextColor="#D7F2F4"
-                    keyboardType="numeric"
-                    maxLength={4}
-                    keyboardAppearance="dark"
-                  />
-                  <Text style={styles.inputUnit}>{item.unit}</Text>
-                </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <KeyboardAwareScrollView style={styles.container}>
+            <View style={styles.content}>
+              <View style={styles.inputContainer}>
+                <Text style={styles.quantityText}>Quantity Per Day</Text>
+                {[
+                  { name: "Calories", setFunction: setCalories, unit: "kCal" },
+                  { name: "Protein", setFunction: setProtein, unit: "g" },
+                  { name: "Carbs", setFunction: setCarbs, unit: "g" },
+                  { name: "Fats", setFunction: setFats, unit: "g" },
+                ].map((item, index) => (
+                  <View key={index} style={styles.inputRow}>
+                    <Text style={styles.inputLabel}>{item.name}</Text>
+                    <View style={styles.inputAndUnit}>
+                      <LinearGradient
+                        colors={["#151919", "#253237"]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        style={styles.inputBackground}
+                      />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={item.setFunction}
+                        placeholderTextColor="#D7F2F4"
+                        keyboardType="numeric"
+                        maxLength={4}
+                        keyboardAppearance="dark"
+                      />
+                      <Text style={styles.inputUnit}>{item.unit}</Text>
+                    </View>
+                  </View>
+                ))}
               </View>
-            ))}
-          </View>
-        </View>
+            </View>
+          </KeyboardAwareScrollView>
+        </TouchableWithoutFeedback>
         <View style={styles.footer}>
           <View style={styles.buttonView}>
             <Pressable style={styles.continue} onPress={handleContinue}>
@@ -260,10 +270,10 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: "#D7F2F4",
-    paddingHorizontal: 5,
     backgroundColor: "transparent",
     fontWeight: "500",
     fontSize: 16,
+    padding: 10,
   },
   inputUnit: {
     color: "#D7F2F4",
@@ -271,8 +281,8 @@ const styles = StyleSheet.create({
     fontWeight: "100",
   },
   footer: {
-    flex: 1,
     justifyContent: "flex-end",
+    height: screenHeight * 0.1,
   },
   buttonView: {
     alignItems: "center",

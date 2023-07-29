@@ -13,10 +13,11 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import FemaleInactive from "../../assets/femaleInactive.svg";
+import FemaleInactive from "../../assets/femaleInactive.png";
 import FemaleActive from "../../assets/femaleActive.png";
-import MaleInactive from "../../assets/maleInactive.svg";
+import MaleInactive from "../../assets/maleInactive.png";
 import MaleActive from "../../assets/maleActive.png";
+import * as Haptics from "expo-haptics";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -30,7 +31,8 @@ const Gender = () => {
   const route = useRoute();
   const { userName } = route.params;
 
-  const handleGenderSelection = (gender) => {
+  const handleGenderSelection = async (gender) => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSelectedGender(gender);
   };
 
@@ -50,7 +52,8 @@ const Gender = () => {
     }).start();
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     navigation.navigate("Age", { userInfo: userName, userGender: selectedGender });
     console.log("Gender", userName, selectedGender, "\n");
   };
@@ -124,7 +127,7 @@ const Gender = () => {
                 {selectedGender === "female" ? (
                   <Image source={FemaleActive} style={styles.buttonSvg} />
                 ) : (
-                  <FemaleInactive style={styles.buttonSvg} />
+                  <Image source={FemaleInactive} style={styles.buttonSvg} />
                 )}
               </TouchableOpacity>
             </Animated.View>
@@ -144,7 +147,7 @@ const Gender = () => {
                 {selectedGender === "male" ? (
                   <Image source={MaleActive} style={styles.buttonSvg} />
                 ) : (
-                  <MaleInactive style={styles.buttonSvg} />
+                  <Image source={MaleInactive} style={styles.buttonSvg} />
                 )}
               </TouchableOpacity>
             </Animated.View>

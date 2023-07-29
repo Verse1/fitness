@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -61,6 +62,7 @@ const LoginRegister = ({ navigation }) => {
     onPanResponderRelease: () => {
       if (pan.x._value > swipeButtonWidth - circleRadius * 3) {
         navigation.navigate("Name");
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       }
 
       Animated.spring(pan, {

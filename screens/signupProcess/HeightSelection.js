@@ -14,6 +14,7 @@ import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { getHeightOptions } from "../../utils/heightOptions";
 import SmoothPicker from "react-native-smooth-picker";
+import * as Haptics from "expo-haptics";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
@@ -43,7 +44,8 @@ const HeightSelection = () => {
     setSelectedHeight(height);
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     navigation.navigate("Macros", {
       userInfo: userInfo,
       userGender: userGender,

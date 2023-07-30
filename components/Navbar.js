@@ -1,12 +1,15 @@
+import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const Navbar = () => {
   const navigation = useNavigation();
+  const [activePage, setActivePage] = useState("Dashboard");
 
   const navigateToPage = (page) => {
+    setActivePage(page);
+    console.log("Navigating to page: ", activePage);
     navigation.navigate(page);
   };
 
@@ -17,32 +20,56 @@ const Navbar = () => {
         <TouchableOpacity
           style={styles.iconContainer}
           onPress={() => navigateToPage("Nutrition")}>
-          <Feather name="activity" size={24} color="#FFF" />
-          <Text style={styles.label}>Nutrition</Text>
+          <Feather
+            name="activity"
+            size={24}
+            color={activePage === "Nutrition" ? "#1b77ee" : "#D7F2F4"}
+          />
+          <Text style={[styles.label, activePage === "Nutrition" && styles.activeLabel]}>
+            Nutrition
+          </Text>
         </TouchableOpacity>
 
         {/* Home button */}
         <TouchableOpacity
           style={styles.iconContainer}
           onPress={() => navigateToPage("Dashboard")}>
-          <Feather name="home" size={24} color="#FFF" />
-          <Text style={styles.label}>Home</Text>
+          <Feather
+            name="home"
+            size={24}
+            color={activePage === "Dashboard" ? "#1b77ee" : "#D7F2F4"}
+          />
+          <Text style={[styles.label, activePage === "Dashboard" && styles.activeLabel]}>
+            Home
+          </Text>
         </TouchableOpacity>
 
         {/* Weight button */}
         <TouchableOpacity
           style={styles.iconContainer}
           onPress={() => navigateToPage("Weight")}>
-          <Feather name="bar-chart-2" size={24} color="#FFF" />
-          <Text style={styles.label}>Weight</Text>
+          <Feather
+            name="bar-chart-2"
+            size={24}
+            color={activePage === "Weight" ? "#1b77ee" : "#D7F2F4"}
+          />
+          <Text style={[styles.label, activePage === "Weight" && styles.activeLabel]}>
+            Weight
+          </Text>
         </TouchableOpacity>
 
         {/* Workout button */}
         <TouchableOpacity
           style={styles.iconContainer}
           onPress={() => navigateToPage("Workout")}>
-          <Feather name="award" size={24} color="#FFF" />
-          <Text style={styles.label}>Workout</Text>
+          <Feather
+            name="award"
+            size={24}
+            color={activePage === "Workout" ? "#1b77ee" : "#D7F2F4"}
+          />
+          <Text style={[styles.label, activePage === "Workout" && styles.activeLabel]}>
+            Workout
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -51,7 +78,7 @@ const Navbar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#00A3FF",
+    backgroundColor: "#151919",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -59,7 +86,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
   },
   navbar: {
     flexDirection: "row",
@@ -73,8 +99,11 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 5,
     fontWeight: "bold",
-    color: "#FFF",
+    color: "#D7F2F4",
     fontSize: 12,
+  },
+  activeLabel: {
+    color: "#1b77ee",
   },
 });
 

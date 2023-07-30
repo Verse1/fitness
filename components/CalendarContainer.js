@@ -1,36 +1,43 @@
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { Dimensions } from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet, Dimensions } from "react-native";
 
 const screenWidth = Dimensions.get("window").width;
-const days = ["Su", "M", "Tu", "W", "Th", "F", "Sa"];
+const screenHeight = Dimensions.get("window").height;
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function CalendarContainer({ handleGoToCalendar, selectedDay }) {
   const today = new Date();
   const currentDay = today.getDay();
-  const prevTwoDays = [days[(currentDay - 2 + 7) % 7], days[(currentDay - 1 + 7) % 7]];
-  const nextDays = [
-    ...prevTwoDays,
-    days[(currentDay + 7) % 7],
-    days[(currentDay + 1) % 7],
-    days[(currentDay + 2) % 7],
-    days[(currentDay + 3) % 7],
-    days[(currentDay + 4) % 7],
+  const prevDays = [
+    days[(currentDay - 3 + 7) % 7],
+    days[(currentDay - 2 + 7) % 7],
+    days[(currentDay - 1 + 7) % 7],
   ];
+  const nextDays = Array.from({ length: 7 }, (_, i) => {
+    const dayDate = new Date();
+    dayDate.setDate(today.getDate() + i - 3);
+    return {
+      day: days[dayDate.getDay()],
+      date: dayDate.getDate(),
+    };
+  });
 
   return (
     <View style={styles.calendarContainer}>
       <View style={styles.calendar}>
-        {nextDays.map((day, index) => (
+        {nextDays.map((dayObj, index) => (
           <TouchableOpacity
             key={index}
             style={[
               styles.day,
-              index === 2 && styles.today,
-              day === selectedDay && styles.selectedDay,
+              index === 3 && styles.today,
+              dayObj.day === selectedDay && styles.selectedDay,
             ]}
-            onPress={() => handleGoToCalendar(day)}>
-            <Text style={styles.dayText}>{day}</Text>
+            onPress={() => handleGoToCalendar(dayObj.day)}>
+            <Text style={index === 3 ? styles.todayDateText : styles.dateText}>
+              {dayObj.date}
+            </Text>
+            <Text style={styles.dayText}>{dayObj.day}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -41,7 +48,7 @@ function CalendarContainer({ handleGoToCalendar, selectedDay }) {
 const styles = StyleSheet.create({
   calendarContainer: {
     paddingVertical: 10,
-    marginTop: 30,
+    marginTop: 15,
     alignItems: "center",
   },
   calendar: {
@@ -51,23 +58,35 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   today: {
-    backgroundColor: "#5067FF",
+    backgroundColor: "#FFFAFA",
   },
   selectedDay: {
-    backgroundColor: "red",
+    backgroundColor: "#D7F2F4",
+  },
+  dateText: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#FFFAFA",
+  },
+  todayDateText: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#0f0e0e",
   },
   dayText: {
-    fontSize: screenWidth / 20,
-    fontWeight: "bold",
+    color: "#BFC1C2",
+    fontSize: 14,
+    fontWeight: "500",
   },
   day: {
-    width: screenWidth / 9,
-    height: screenWidth / 9,
-    backgroundColor: "#f0f0f0",
+    width: screenWidth * 0.12,
+    height: screenHeight * 0.07,
+    borderWidth: 1,
+    borderColor: "#FFFAFA",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 12,
-    margin: 5,
+    margin: 4,
   },
 });
 

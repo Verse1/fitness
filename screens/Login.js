@@ -64,7 +64,7 @@ const Login = ({ navigation }) => {
   const [state, setState] = useContext(AuthContext);
 
   const handleLogin = async () => {
-    if (email === "frontend" && password === "frontend") {
+    if (email === "w" && password === "w") {
       navigation.navigate("Dashboard");
     }
     if (email === "" || password === "") {

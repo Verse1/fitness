@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
@@ -16,6 +17,10 @@ import Boxes from "../../components/Box";
 import LogButton from "../../components/LogButton";
 import Calendar from "../../components/CalendarContainer";
 import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
+
+screenWidth = Dimensions.get("window").width;
+screenHeight = Dimensions.get("window").height;
 
 function Workout({ route }) {
   const navigation = useNavigation();
@@ -105,19 +110,35 @@ function Workout({ route }) {
   };
 
   return (
-    <View style={styles.outerView}>
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <View style={styles.shadow}>
+          <LinearGradient
+            colors={["#151919", "#1D2528"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.header}>
+            <View style={styles.headerTop}>
+              <Image style={styles.pfp} source={require("../../images/cole.jpeg")} />
+              <Text style={styles.headerText}>My Workout</Text>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={handleGoToWorkoutSplit}>
+                <Feather name="edit-2" size={20} color="white" />
+              </TouchableOpacity>
+            </View>
+            <Calendar
+              style={styles.calendarContainer}
+              handleGoToCalendar={handleGoToCalendar}
+              selectedDay={selectedDay}
+            />
+          </LinearGradient>
+        </View>
+      </View>
       <ScrollView style={styles.scrollView}>
         <SafeAreaView style={styles.container}>
-          <View style={styles.header}>
-            <Image style={styles.pfp} source={require("../../images/cole.jpeg")} />
-            <Text style={styles.headerText}>My Workout</Text>
-          </View>
-          <View>
-            <TouchableOpacity style={styles.editButton} onPress={handleGoToWorkoutSplit}>
-              <Feather name="edit" size={24} color="black" />
-            </TouchableOpacity>
-          </View>
-          <Calendar handleGoToCalendar={handleGoToCalendar} selectedDay={selectedDay} />
           <View style={styles.listContainer}>
             {localWorkouts.length === 0 && (
               <Text style={styles.noWorkoutsText}>
@@ -155,51 +176,83 @@ function Workout({ route }) {
 }
 
 const styles = StyleSheet.create({
-  outerView: {
+  container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#0F0E0E",
+  },
+  headerContainer: {
+    position: "absolute",
+    paddingBottom: 10,
+    zIndex: 2,
+    width: "100%",
+  },
+  shadow: {
+    backgroundColor: "transparent",
+    shadowColor: "rgb(0, 0, 0)",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 15,
   },
   scrollView: {
-    backgroundColor: "#fff",
+    flex: 1,
+    top: screenHeight * 0.28,
+    backgroundColor: "#0F0E0E",
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   header: {
+    paddingTop: 52,
+    position: "absolute",
+    height: screenHeight * 0.28,
+    width: "100%",
+    padding: 10,
+  },
+  headerTop: {
     flexDirection: "row",
     alignItems: "center",
-    paddingLeft: 20,
-    justifyContent: "flex-start",
   },
   pfp: {
-    width: 60,
-    height: 60,
+    width: screenWidth * 0.14,
+    height: screenWidth * 0.14,
     borderRadius: 30,
+    marginLeft: 10,
+    marginRight: 20,
+    marginTop: 8,
   },
   headerText: {
     fontSize: 32,
+    color: "#FFFAFA",
     fontWeight: "bold",
-    marginLeft: 50,
   },
   editButton: {
     position: "absolute",
-    top: 0,
+    top: -10,
     right: 0,
     padding: 10,
-    elevation: 2,
   },
   listContainer: {
     width: "80%",
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "flex-start",
     alignSelf: "center",
     marginBottom: 10,
   },
+  noWorkoutsText: {
+    color: "#FFFAFA",
+    fontSize: 16,
+    fontWeight: "700",
+    textAlign: "center",
+    marginTop: 20,
+    marginBottom: 40,
+  },
   aiButton: {
-    backgroundColor: "#5067FF",
+    backgroundColor: "#D7F2F4",
     borderRadius: 30,
     padding: 20,
     elevation: 2,

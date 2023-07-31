@@ -34,11 +34,11 @@ import Workout from "./screens/workout/Workout";
 import WorkoutView from "./screens/workout/WorkoutView";
 import WorkoutSplit from "./screens/workout/WorkoutSplit";
 
-const withNavbar = (Component) => {
+const withNavbar = (Component, activePage) => {
   return (props) => (
     <View style={{ flex: 1, justifyContent: "space-between" }}>
       <Component {...props} />
-      <Navbar navigation={props.navigation} />
+      <Navbar navigation={props.navigation} activePage={activePage} />
     </View>
   );
 };
@@ -74,14 +74,20 @@ export default function App() {
                 <Stack.Screen name="Credentials" component={Credentials} />
 
                 {/* Workout Pages */}
-                <Stack.Screen name="Workout" component={withNavbar(Workout)} />
+                <Stack.Screen name="Workout" component={withNavbar(Workout, "Workout")} />
                 <Stack.Screen name="AddWorkout" component={AddWorkout} />
                 <Stack.Screen name="WorkoutView" component={WorkoutView} />
                 <Stack.Screen name="WorkoutSplit" component={WorkoutSplit} />
 
-                <Stack.Screen name="Dashboard" component={withNavbar(Dashboard)} />
-                <Stack.Screen name="Weight" component={withNavbar(Weight)} />
-                <Stack.Screen name="Nutrition" component={withNavbar(Nutrition)} />
+                <Stack.Screen
+                  name="Dashboard"
+                  component={withNavbar(Dashboard, "Dashboard")}
+                />
+                <Stack.Screen name="Weight" component={withNavbar(Weight, "Weight")} />
+                <Stack.Screen
+                  name="Nutrition"
+                  component={withNavbar(Nutrition, "Nutrition")}
+                />
                 <Stack.Screen name="InputWeight" component={InputWeight} />
                 <Stack.Screen name="Reco" component={Reco} />
                 <Stack.Screen name="LogMeal" component={LogMeal} />

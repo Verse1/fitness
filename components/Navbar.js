@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { active } from "d3";
 
-const Navbar = () => {
+const Navbar = ({ activePage }) => {
   const navigation = useNavigation();
-  const [activePage, setActivePage] = useState("Dashboard");
 
   const navigateToPage = (page) => {
-    setActivePage(page);
-    console.log("Navigating to page: ", activePage);
     navigation.navigate(page);
   };
 

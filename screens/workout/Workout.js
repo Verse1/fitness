@@ -18,6 +18,8 @@ import LogButton from "../../components/LogButton";
 import Calendar from "../../components/CalendarContainer";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import TopSheet from "../../components/TopSheet";
 
 screenWidth = Dimensions.get("window").width;
 screenHeight = Dimensions.get("window").height;
@@ -110,14 +112,10 @@ function Workout({ route }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={styles.shadow}>
-          <LinearGradient
-            colors={["#151919", "#1D2528"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.header}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <View style={styles.header}>
             <View style={styles.headerTop}>
               <Image style={styles.pfp} source={require("../../images/cole.jpeg")} />
               <Text style={styles.headerText}>My Workout</Text>
@@ -134,44 +132,46 @@ function Workout({ route }) {
               handleGoToCalendar={handleGoToCalendar}
               selectedDay={selectedDay}
             />
-          </LinearGradient>
-        </View>
-      </View>
-      <ScrollView style={styles.scrollView}>
-        <SafeAreaView style={styles.container}>
-          <View style={styles.listContainer}>
-            {localWorkouts.length === 0 && (
-              <Text style={styles.noWorkoutsText}>
-                You have no workouts, create a new template or generate one!
-              </Text>
-            )}
-            {localWorkouts.map((workout, index) => (
-              <Boxes
-                key={index}
-                box={workout.name}
-                isLastBox={
-                  localWorkouts.length % 2 !== 0 && index === localWorkouts.length - 1
-                }
-                handleGoToWorkoutView={() => handleGoToWorkoutView(workout)}
-                onDeleteBox={() => onDeleteHandler(index)}
-              />
-            ))}
-            <TouchableOpacity
-              style={styles.aiButton}
-              onPress={handleGoToGeneratedWorkout}>
-              <Text style={styles.aiButtonText}>Generate a Workout</Text>
-            </TouchableOpacity>
-            <View style={{ height: 100 }} />
           </View>
-        </SafeAreaView>
-      </ScrollView>
-      <LogButton onPress={handleGoToAddWorkout} />
-      <CalendarModal
-        visible={calendarModalVisible}
-        onModalClose={closeCalendarModal}
-        selectedDay={selectedDay}
-      />
-    </View>
+          <TopSheet />
+        </View>
+        <ScrollView style={styles.scrollView}>
+          <SafeAreaView style={styles.container}>
+            <View style={styles.listContainer}>
+              {localWorkouts.length === 0 && (
+                <Text style={styles.noWorkoutsText}>
+                  You have no workouts, create a new template or generate one!
+                </Text>
+              )}
+              {localWorkouts.map((workout, index) => (
+                <Boxes
+                  key={index}
+                  box={workout.name}
+                  isLastBox={
+                    localWorkouts.length % 2 !== 0 && index === localWorkouts.length - 1
+                  }
+                  handleGoToWorkoutView={() => handleGoToWorkoutView(workout)}
+                  onDeleteBox={() => onDeleteHandler(index)}
+                />
+              ))}
+              <TouchableOpacity
+                style={styles.aiButton}
+                onPress={handleGoToGeneratedWorkout}>
+                <Text style={styles.aiButtonText}>Generate a Workout</Text>
+              </TouchableOpacity>
+              <View style={{ height: 100 }} />
+            </View>
+          </SafeAreaView>
+        </ScrollView>
+        <LogButton onPress={handleGoToAddWorkout} />
+
+        <CalendarModal
+          visible={calendarModalVisible}
+          onModalClose={closeCalendarModal}
+          selectedDay={selectedDay}
+        />
+      </View>
+    </GestureHandlerRootView>
   );
 }
 
@@ -185,16 +185,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     zIndex: 2,
     width: "100%",
-  },
-  shadow: {
-    backgroundColor: "transparent",
-    shadowColor: "rgb(0, 0, 0)",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 15,
   },
   scrollView: {
     flex: 1,
@@ -210,6 +200,7 @@ const styles = StyleSheet.create({
     height: screenHeight * 0.28,
     width: "100%",
     padding: 10,
+    backgroundColor: "#151919",
   },
   headerTop: {
     flexDirection: "row",

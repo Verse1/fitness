@@ -6,22 +6,26 @@ import {
   Modal,
   SafeAreaView,
   StyleSheet,
+  Dimensions,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 
 function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
   const dayMap = {
-    Su: "Sunday",
-    M: "Monday",
-    Tu: "Tuesday",
-    W: "Wednesday",
-    Th: "Thursday",
-    F: "Friday",
-    Sa: "Saturday",
+    Sun: "Sunday",
+    Mon: "Monday",
+    Tue: "Tuesday",
+    Wed: "Wednesday",
+    Thu: "Thursday",
+    Fri: "Friday",
+    Sat: "Saturday",
   };
 
   const selectedDayFull = dayMap[selectedDay];
-  const selectedWorkout =
-    workoutSplit && selectedDayFull && workoutSplit[selectedDayFull];
+  const selectedWorkout = "Rest";
 
   return (
     <Modal
@@ -29,20 +33,26 @@ function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
       transparent={true}
       visible={visible}
       onRequestClose={onModalClose}>
-      <SafeAreaView style={styles.modalSafeArea}>
-        <View style={styles.modalView}>
-          <View style={styles.topRow}>
-            <TouchableOpacity style={styles.buttonClose} onPress={onModalClose}>
-              <Text style={styles.textStyle}>X</Text>
+      <TouchableOpacity
+        style={styles.modalSafeArea}
+        activeOpacity={1}
+        onPress={onModalClose}>
+        <View style={styles.modalView} onStartShouldSetResponder={() => true}>
+          <LinearGradient
+            colors={["#D7F2F4", "#bfeaed"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.gradientContainer}>
+            <View style={styles.topRow}>
+              <Text style={styles.dayText}>{selectedDayFull}</Text>
+            </View>
+            <Text style={styles.workoutText}>{selectedWorkout}</Text>
+            <TouchableOpacity style={styles.workoutButton}>
+              <Text style={styles.workoutButtonText}>View Workout</Text>
             </TouchableOpacity>
-            <Text style={styles.dayText}>{selectedDayFull}</Text>
-          </View>
-          <Text style={styles.workoutText}>{selectedWorkout || "Rest"}</Text>
-          <TouchableOpacity style={styles.workoutButton}>
-            <Text style={styles.workoutButtonText}>View Exercises</Text>
-          </TouchableOpacity>
+          </LinearGradient>
         </View>
-      </SafeAreaView>
+      </TouchableOpacity>
     </Modal>
   );
 }
@@ -54,16 +64,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.3)",
   },
   modalView: {
-    width: "90%",
-    height: "30%",
+    width: screenWidth * 0.9,
+    height: screenHeight * 0.2,
     marginHorizontal: 20,
     alignSelf: "center",
-    backgroundColor: "white",
-    borderRadius: 20,
-    alignItems: "center",
-    borderColor: "black",
-    borderWidth: 2,
-    padding: 20,
+    borderRadius: 25,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -73,13 +78,17 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  gradientContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 5,
+    borderRadius: 25,
+  },
   topRow: {
     flexDirection: "row",
     width: "100%",
-    justifyContent: "space-between",
-  },
-  buttonClose: {
-    fontSize: 20,
+    justifyContent: "center",
   },
   textStyle: {
     color: "black",
@@ -93,18 +102,20 @@ const styles = StyleSheet.create({
   workoutText: {
     fontSize: 32,
     fontWeight: "700",
+    color: "#151919",
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 10,
   },
   workoutButton: {
-    marginTop: 20,
-    backgroundColor: "black",
-    padding: 10,
-    borderRadius: 10,
+    marginTop: 35,
+    backgroundColor: "#151919",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 15,
   },
   workoutButtonText: {
-    color: "white",
-    fontSize: 20,
+    color: "#FFFAFA",
+    fontSize: 16,
     fontWeight: "600",
   },
 });

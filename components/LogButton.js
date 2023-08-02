@@ -2,13 +2,11 @@ import React from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
-function LogButton({ onPress, icon = "plus", color = "#5067FF" }) {
+function LogButton({ onPress }) {
   return (
     <View style={styles.floatingButtonContainer}>
-      <TouchableOpacity
-        style={[styles.floatingButton, { backgroundColor: color }]}
-        onPress={onPress}>
-        <Feather name={icon} size={30} color="#FFF" />
+      <TouchableOpacity style={styles.floatingButton} onPress={onPress}>
+        <Feather name={"plus"} size={30} color="#151919" />
       </TouchableOpacity>
     </View>
   );
@@ -30,6 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 10,
     marginBottom: 20,
+    backgroundColor: "#1b77ee",
   },
 });
 

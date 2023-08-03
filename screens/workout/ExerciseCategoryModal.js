@@ -6,7 +6,6 @@ import {
   Modal,
   SafeAreaView,
   StyleSheet,
-  ScrollView,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
@@ -28,26 +27,24 @@ function ExerciseCategoryModal({ visible, onClose, onOpenCategoryModal }) {
   };
 
   return (
-    <Modal animationType="none" transparent={true} visible={visible}>
+    <Modal animationType="fade" transparent={true} visible={visible}>
       <SafeAreaView style={styles.modalSafeArea}>
         <View style={styles.exerciseModal}>
-          <ScrollView>
-            <View style={styles.exerciseModalHeader}>
-              <TouchableOpacity style={styles.backButton} onPress={onClose}>
-                <Feather name="x" size={24} color="white" />
+          <View style={styles.exerciseModalHeader}>
+            <TouchableOpacity style={styles.backButton} onPress={onClose}>
+              <Feather name="x" size={24} color="#FFFAFA" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.listContainer}>
+            {categories.map((category, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.boxContainer}
+                onPress={() => handleCategoryClick(category)}>
+                <Text style={styles.boxText}>{category}</Text>
               </TouchableOpacity>
-            </View>
-            <View style={styles.listContainer}>
-              {categories.map((category, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.boxContainer}
-                  onPress={() => handleCategoryClick(category)}>
-                  <Text style={styles.boxText}>{category}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
+            ))}
+          </View>
         </View>
       </SafeAreaView>
     </Modal>
@@ -59,19 +56,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.3)",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   backButton: {
     padding: 10,
-    marginLeft: 0,
-    backgroundColor: "gray",
-    borderRadius: 5,
+    marginLeft: 10,
+    backgroundColor: "#151919",
+    borderRadius: 8,
   },
   exerciseModal: {
     width: "90%",
     height: "95%",
     borderRadius: 14,
-    backgroundColor: "#fff",
+    backgroundColor: "#253237",
     padding: 20,
   },
   exerciseModalHeader: {
@@ -89,7 +86,7 @@ const styles = StyleSheet.create({
   boxContainer: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#151919",
     width: "45%",
     height: "45%",
     aspectRatio: 1,
@@ -97,8 +94,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   boxText: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#d7f2f4",
   },
 });
 

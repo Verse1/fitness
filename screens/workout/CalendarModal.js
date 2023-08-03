@@ -46,6 +46,8 @@ function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
             <View style={styles.topRow}>
               <Text style={styles.dayText}>{selectedDayFull}</Text>
             </View>
+            <Text> Bruh what was I thinking</Text>
+            <Text> What is this ass feature</Text>
             <Text style={styles.workoutText}>{selectedWorkout}</Text>
             <TouchableOpacity style={styles.workoutButton}>
               <Text style={styles.workoutButtonText}>View Workout</Text>
@@ -69,14 +71,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     alignSelf: "center",
     borderRadius: 25,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
   gradientContainer: {
     flex: 1,

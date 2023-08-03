@@ -164,7 +164,6 @@ function Workout({ route }) {
           </SafeAreaView>
         </ScrollView>
         <LogButton onPress={handleGoToAddWorkout} />
-
         <CalendarModal
           visible={calendarModalVisible}
           onModalClose={closeCalendarModal}

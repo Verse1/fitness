@@ -1,19 +1,6 @@
-import React, { useLayoutEffect, useState, useRef } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  Dimensions,
-  Animated,
-  Easing,
-  TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { Feather } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Pressable, Dimensions, TextInput } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import * as Haptics from "expo-haptics";
 
@@ -23,7 +10,13 @@ const screenWidth = Dimensions.get("window").width;
 function WorkoutSplit() {
   const navigation = useNavigation();
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    navigation.goBack();
+  };
+
+  const handleCancel = async () => {
+    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     navigation.goBack();
   };
 
@@ -50,7 +43,9 @@ function WorkoutSplit() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.top}></View>
+      <View style={styles.topContainer}>
+        <Text style={styles.title}> Your Workout Split </Text>
+      </View>
       <View style={styles.content}>
         <View style={styles.dayListContainer}>
           {DAYS.map((day, index) => (
@@ -90,8 +85,11 @@ function WorkoutSplit() {
           />
         </View>
       </View>
+      <Pressable style={styles.cancel} onPress={handleCancel}>
+        <Text style={styles.cancelText}> Cancel </Text>
+      </Pressable>
       <Pressable style={styles.continue} onPress={handleContinue}>
-        <Text> Back</Text>
+        <Text style={styles.saveText}> Save </Text>
       </Pressable>
     </View>
   );
@@ -101,89 +99,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#0F0E0E",
-  },
-  top: {
-    height: screenHeight * 0.28,
-  },
-  headerContainer: {
-    paddingBottom: 10,
-    overflow: "visible",
-    position: "absolute",
-    zIndex: 2,
-    width: "100%",
-  },
-  shadow: {
-    backgroundColor: "transparent",
-    shadowColor: "rgb(0, 0, 0)",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 15,
-  },
-  header: {
-    justifyContent: "flex-start",
-    borderBottomRightRadius: 117,
-    height: screenHeight * 0.28,
-  },
-  progressContainer: {
-    top: screenHeight * 0.07,
-    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 10,
   },
-  backButton: {
-    alignSelf: "flex-start",
-    paddingLeft: 5,
-    paddingRight: 10,
-  },
-  progressBar: {
-    backgroundColor: "#FFFAFA",
-    height: 10,
-    width: screenWidth - 140,
-    borderRadius: 5,
-    marginRight: 10,
-    marginLeft: 5,
-  },
-  progressText: {
-    marginRight: 10,
-    color: "#FFFAFA",
-    fontWeight: "500",
-  },
-  Titles: {
-    top: screenHeight * 0.1,
-    width: "90%",
-    paddingLeft: 20,
+  topContainer: {
+    width: "100%",
+    height: screenHeight * 0.25,
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
+    color: "#FFFAFA",
     fontWeight: "700",
-    fontSize: 40,
-    textAlign: "left",
-    color: "#D7F2F4",
-  },
-  fullScreen: {
-    flex: 1,
-    marginTop: screenHeight * 0.28,
-    backgroundColor: "#0F0E0E",
-    justifyContent: "space-between",
+    fontSize: 32,
   },
   content: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: 55,
   },
   dayListContainer: {
-    flex: 0.4,
-    height: "100%",
+    flex: 0.5,
     width: "100%",
     marginBottom: 10,
   },
   draggableListContainer: {
-    flex: 0.6,
-    height: "100%",
+    flex: 0.5,
     width: "100%",
     marginBottom: 10,
   },
@@ -213,28 +154,29 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
   },
-  footer: {
-    height: screenHeight * 0.15,
-    justifyContent: "flex-end",
-  },
-  buttonView: {
-    alignItems: "center",
-    marginBottom: 40,
-  },
   continue: {
     backgroundColor: "#D7F2F4",
-    width: "80%",
+    width: "75%",
     padding: 10,
     borderRadius: 6,
-    borderWidth: 0.7,
-    marginVertical: 5,
-    position: "absolute",
-    bottom: 10,
+    alignItems: "center",
+    bottom: screenHeight * 0.08,
   },
-  text: {
-    color: "#151919",
-    textAlign: "center",
+  cancel: {
+    backgroundColor: "#CE2029",
+    width: "75%",
+    padding: 10,
+    borderRadius: 6,
+    alignItems: "center",
+    bottom: screenHeight * 0.095,
+  },
+  saveText: {
     fontWeight: "700",
+    fontSize: 16,
+  },
+  cancelText: {
+    fontWeight: "700",
+    fontSize: 16,
   },
 });
 

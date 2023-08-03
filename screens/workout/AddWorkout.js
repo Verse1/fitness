@@ -8,6 +8,8 @@ import {
   Modal,
   SafeAreaView,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import ExerciseCard from "../../components/ExerciseCard";
@@ -24,6 +26,7 @@ function AddWorkout({ route }) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [exercisesModalVisible, setExercisesModalVisible] = useState(false);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+  const [isExerciseAdded, setIsExerciseAdded] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const [workoutName, setWorkoutName] = useState("");
@@ -37,6 +40,11 @@ function AddWorkout({ route }) {
 
   const handleCloseExerciseModal = () => {
     setExercisesModalVisible(false);
+    if (!isExerciseAdded) {
+      setCategoryModalVisible(true);
+    } else {
+      setIsExerciseAdded(false);
+    }
   };
 
   const handleOpenDeleteModal = () => {
@@ -115,6 +123,7 @@ function AddWorkout({ route }) {
         sets: [],
       },
     ]);
+    setIsExerciseAdded(true);
   };
 
   const handleDeleteExercise = (exerciseId) => {
@@ -143,76 +152,82 @@ function AddWorkout({ route }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={handleOpenDeleteModal}>
-          <Feather name="x" size={24} color="white" />
-        </TouchableOpacity>
-        <Text style={styles.title}>New Workout</Text>
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
-      </View>
-      <TextInput
-        style={[styles.workoutName, workoutName ? styles.active : styles.inactive]}
-        placeholder="Workout Name"
-        onChangeText={(text) => setWorkoutName(text)}
-      />
-      <TextInput
-        style={[styles.notes, { height: 100 }]}
-        placeholder="Notes"
-        multiline
-        numberOfLines={4}
-        maxLength={200}
-        scrollEnabled={false}
-      />
-      {exercises.map((exercise) => (
-        <ExerciseCard
-          key={exercise.id}
-          exercise={exercise}
-          handleAddSet={handleAddSet}
-          handleDeleteSet={handleDeleteSet}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={handleOpenDeleteModal}>
+            <Feather name="x" size={24} color="#FFFAFA" />
+          </TouchableOpacity>
+          <Text style={styles.title}>New Workout</Text>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.buttonText}>Save</Text>
+          </TouchableOpacity>
+        </View>
+        <TextInput
+          style={styles.workoutName}
+          placeholder="Workout Name"
+          placeholderTextColor={"#a9a9a9"}
+          onChangeText={(text) => setWorkoutName(text)}
         />
-      ))}
-      <TouchableOpacity style={styles.addButton} onPress={handleOpenCategoryModal}>
-        <Text style={styles.addButtonText}>Add Exercise</Text>
-      </TouchableOpacity>
-      <ExerciseCategoryModal
-        visible={categoryModalVisible}
-        onClose={handleCloseCategoryModal}
-        onOpenCategoryModal={handleOpenExerciseModal}
-      />
-      <ExercisesModal
-        visible={exercisesModalVisible}
-        selectedCategory={selectedCategory}
-        onAddExercise={handleAddExercise}
-        onClose={handleCloseExerciseModal}
-      />
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={deleteModalVisible}
-        onRequestClose={() => {
-          setDeleteModalVisible(!deleteModalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Do you want to delete the workout?</Text>
-            <View style={styles.modalButtons}>
-              <TouchableOpacity style={styles.confirmDeleteButton} onPress={handleDelete}>
-                <Text style={styles.modalButtonText}>Delete</Text>
-              </TouchableOpacity>
+        <TextInput
+          style={[styles.notes, { height: 100 }]}
+          placeholder="Notes"
+          placeholderTextColor={"#a9a9a9"}
+          multiline
+          numberOfLines={4}
+          maxLength={200}
+          scrollEnabled={false}
+        />
+        {exercises.map((exercise) => (
+          <ExerciseCard
+            key={exercise.id}
+            exercise={exercise}
+            handleAddSet={handleAddSet}
+            handleDeleteSet={handleDeleteSet}
+          />
+        ))}
+        <TouchableOpacity style={styles.addButton} onPress={handleOpenCategoryModal}>
+          <Text style={styles.addButtonText}>Add Exercise</Text>
+        </TouchableOpacity>
+        <ExerciseCategoryModal
+          visible={categoryModalVisible}
+          onClose={handleCloseCategoryModal}
+          onOpenCategoryModal={handleOpenExerciseModal}
+        />
+        <ExercisesModal
+          visible={exercisesModalVisible}
+          selectedCategory={selectedCategory}
+          onAddExercise={handleAddExercise}
+          onClose={handleCloseExerciseModal}
+        />
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={deleteModalVisible}
+          onRequestClose={() => {
+            setDeleteModalVisible(!deleteModalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Do you want to delete the workout?</Text>
+              <View style={styles.modalButtons}>
+                <TouchableOpacity
+                  style={styles.confirmDeleteButton}
+                  onPress={handleDelete}>
+                  <Text style={styles.modalButtonText}>Delete</Text>
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.noButton}
-                onPress={() => setModalVisible(false)}>
-                <Text style={styles.modalButtonText}>No</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.noButton}
+                  onPress={() => setDeleteModalVisible(false)}>
+                  <Text style={styles.modalButtonText}>Back</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
-    </SafeAreaView>
+        </Modal>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -220,6 +235,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: "#0f0e0e",
   },
   header: {
     flexDirection: "row",
@@ -230,14 +246,22 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 10,
     marginLeft: 10,
-    backgroundColor: "gray",
-    borderRadius: 5,
+    backgroundColor: "#151919",
+    borderRadius: 8,
   },
   saveButton: {
-    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
     marginRight: 10,
-    borderRadius: 5,
-    backgroundColor: "blue",
+    borderRadius: 8,
+    height: 44,
+    width: 60,
+    backgroundColor: "#1B77EE",
+  },
+  buttonText: {
+    color: "#151919",
+    fontWeight: "bold",
+    fontSize: 16,
   },
   addButton: {
     width: "80%",
@@ -245,7 +269,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 20,
     borderRadius: 5,
-    backgroundColor: "lightblue",
+    backgroundColor: "#1B77EE",
     alignItems: "center",
   },
   deleteButton: {
@@ -258,34 +282,28 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 20,
-    fontWeight: "500",
+    fontSize: 24,
+    color: "#FFFAFA",
+    fontWeight: "700",
   },
   workoutName: {
     fontSize: 24,
     fontWeight: "bold",
     padding: 10,
     marginBottom: 10,
-  },
-  active: {
-    color: "black",
-  },
-  inactive: {
-    color: "gray",
+    color: "#FFFAFA",
   },
   notes: {
     fontSize: 16,
     padding: 10,
     marginBottom: 20,
     borderColor: "transparent",
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
+    color: "#FFFAFA",
+    fontWeight: "400",
   },
   addButtonText: {
-    color: "blue",
-    fontWeight: "bold",
+    color: "#151919",
+    fontWeight: "700",
     fontSize: 18,
   },
   deleteButtonText: {
@@ -305,14 +323,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    backgroundColor: "#151919",
   },
   modalButtons: {
     flexDirection: "row",
@@ -322,20 +333,23 @@ const styles = StyleSheet.create({
   confirmDeleteButton: {
     flex: 1,
     margin: 10,
-    backgroundColor: "red",
-    borderRadius: 5,
+    backgroundColor: "#CE2029",
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
   },
   noButton: {
     flex: 1,
     margin: 10,
-    backgroundColor: "gray",
-    borderRadius: 5,
+    backgroundColor: "#A9A9A9",
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
   },
   modalText: {
+    color: "#FFFAFA",
+    fontSize: 16,
+    fontWeight: "700",
     marginBottom: 15,
     textAlign: "center",
   },
@@ -344,70 +358,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
     textAlign: "center",
-  },
-  modalSafeArea: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.3)",
-  },
-  exerciseModal: {
-    width: "90%",
-    height: "90%",
-    borderRadius: 14,
-    backgroundColor: "#fff",
-    padding: 20,
-  },
-  exerciseModalHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  exerciseModalAdd: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  searchBarContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
-  exerciseModalSearchBar: {
-    height: 40,
-    flex: 1,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 10,
-    marginTop: 20,
-    marginRight: 10,
-  },
-  filterButton: {
-    marginTop: 20,
-  },
-  card: {
-    backgroundColor: "#000",
-    borderRadius: 10,
-    padding: 20,
-    marginBottom: 20,
-  },
-  cardTitle: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  addSetButton: {
-    alignItems: "center",
-    padding: 10,
-    borderRadius: 5,
-    borderColor: "#fff",
-    borderWidth: 1,
-    marginTop: 10,
-  },
-  addSetText: {
-    color: "#fff",
   },
 });
 

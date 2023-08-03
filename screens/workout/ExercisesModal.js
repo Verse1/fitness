@@ -85,7 +85,7 @@ function ExercisesModal({ visible, onClose, onAddExercise }) {
 
   return (
     <Modal
-      animationType="none"
+      animationType="slide"
       transparent={true}
       visible={visible}
       onRequestClose={onClose}>
@@ -93,7 +93,7 @@ function ExercisesModal({ visible, onClose, onAddExercise }) {
         <View style={styles.exerciseModal}>
           <View style={styles.exerciseModalHeader}>
             <TouchableOpacity style={styles.backButton} onPress={onClose}>
-              <Feather name="x" size={24} color="white" />
+              <Feather name="x" size={24} color="#FFFAFA" />
             </TouchableOpacity>
           </View>
           <FlatList
@@ -116,13 +116,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.3)",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   exerciseModal: {
     width: "90%",
     height: "95%",
     borderRadius: 14,
-    backgroundColor: "#fff",
+    backgroundColor: "#253237",
     padding: 20,
   },
   exerciseModalHeader: {
@@ -133,12 +133,17 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 10,
-    backgroundColor: "gray",
-    borderRadius: 5,
+    marginLeft: 10,
+    backgroundColor: "#151919",
+    borderRadius: 8,
   },
   exerciseName: {
     fontSize: 16,
+    fontWeight: "500",
+    color: "#FFFAFA",
     marginBottom: 10,
+    marginLeft: 10,
+    marginVertical: 6,
   },
 });
 

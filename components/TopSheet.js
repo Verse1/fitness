@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View, Text } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   Extrapolate,
@@ -20,7 +20,9 @@ const TopSheet = () => {
     translateY.value = withSpring(destination, { damping: 50 });
   }, []);
 
+  const swipeThreshold = screenHeight * 0.4 * 0.1;
   const context = useSharedValue({ y: 0 });
+
   const gesture = Gesture.Pan()
     .onStart(() => {
       context.value = { y: translateY.value };
@@ -32,6 +34,9 @@ const TopSheet = () => {
     })
     .onEnd(() => {
       if (translateY.value > screenHeight * 0.2) {
+        scrollTo(screenHeight * 0.4);
+        return;
+      } else if (translateY.value > screenHeight * 0.4 - swipeThreshold) {
         scrollTo(screenHeight * 0.4);
         return;
       } else if (translateY.value < screenHeight * 0.2) {
@@ -55,6 +60,8 @@ const TopSheet = () => {
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View style={[styles.container, rTopSheetStyle]}>
+        <View style={styles.topMargin} />
+        <Text style={styles.text}> SEIHFWEHFE </Text>
         <View style={styles.line} />
       </Animated.View>
     </GestureDetector>
@@ -62,6 +69,10 @@ const TopSheet = () => {
 };
 
 const styles = StyleSheet.create({
+  topMargin: {
+    backgroundColor: "red",
+    height: 80,
+  },
   container: {
     height: screenHeight * 0.5,
     width: screenWidth,
@@ -79,6 +90,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 2,
     top: screenHeight * 0.5 - 15,
+    position: "absolute",
+  },
+  text: {
+    color: "#FFFAFA",
+    zIndex: 1,
   },
 });
 export default TopSheet;

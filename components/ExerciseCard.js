@@ -1,18 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Animated,
-  Dimensions,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from "react-native";
 import { createUUID } from "../utils/generateUUID";
 import Feather from "react-native-vector-icons/Feather";
 import SetCard from "./SetCard";
 
-const ExerciseCard = ({ exercise, handleAddSet, handleDeleteSet }) => {
-  const [sets, setSets] = useState(exercise.sets || []);
+const ExerciseCard = ({
+  exercise,
+  handleAddSet,
+  handleDeleteSet,
+  handleDeleteExercise,
+}) => {
+  const initialSet = {
+    id: createUUID(),
+    weight: "",
+    reps: "",
+  };
+  const [sets, setSets] = useState(
+    exercise.sets?.length > 0 ? exercise.sets : [initialSet]
+  );
   const [showIcon, setShowIcon] = useState(false);
   const animatedValue = useRef(new Animated.Value(0)).current;
 
@@ -45,7 +50,10 @@ const ExerciseCard = ({ exercise, handleAddSet, handleDeleteSet }) => {
           reps: "",
         },
       ];
-      handleAddSet(exercise.id, newSets);
+      // dont remove this, prevents double call to each exercisecard
+      if (prevSets.length === 0) {
+        handleAddSet(exercise.id, newSets);
+      }
       return newSets;
     });
   };
@@ -66,7 +74,9 @@ const ExerciseCard = ({ exercise, handleAddSet, handleDeleteSet }) => {
       onLongPress={() => setShowIcon(true)}>
       <Animated.View style={[styles.card, animatedStyle]}>
         <View style={styles.header}>
-          <Text style={styles.cardTitle}>{exercise.name}</Text>
+          <Text style={[styles.cardTitle, showIcon && styles.disabledTitle]}>
+            {exercise.name}
+          </Text>
           {showIcon && (
             <TouchableOpacity
               style={styles.trashIcon}
@@ -118,6 +128,9 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 10,
     lineHeight: 24,
+  },
+  disabledTitle: {
+    color: "#323334",
   },
   trashIcon: {
     view: "hidden",

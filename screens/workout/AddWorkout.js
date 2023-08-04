@@ -10,6 +10,7 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import ExerciseCard from "../../components/ExerciseCard";
@@ -40,7 +41,7 @@ function AddWorkout({ route }) {
 
   const handleCloseExerciseModal = () => {
     setExercisesModalVisible(false);
-    if (!isExerciseAdded) {
+    if (isExerciseAdded) {
       setCategoryModalVisible(true);
     } else {
       setIsExerciseAdded(false);
@@ -154,78 +155,83 @@ function AddWorkout({ route }) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={handleOpenDeleteModal}>
-            <Feather name="x" size={24} color="#FFFAFA" />
-          </TouchableOpacity>
-          <Text style={styles.title}>New Workout</Text>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.buttonText}>Save</Text>
-          </TouchableOpacity>
-        </View>
-        <TextInput
-          style={styles.workoutName}
-          placeholder="Workout Name"
-          placeholderTextColor={"#a9a9a9"}
-          onChangeText={(text) => setWorkoutName(text)}
-        />
-        <TextInput
-          style={[styles.notes, { height: 100 }]}
-          placeholder="Notes"
-          placeholderTextColor={"#a9a9a9"}
-          multiline
-          numberOfLines={4}
-          maxLength={200}
-          scrollEnabled={false}
-        />
-        {exercises.map((exercise) => (
-          <ExerciseCard
-            key={exercise.id}
-            exercise={exercise}
-            handleAddSet={handleAddSet}
-            handleDeleteSet={handleDeleteSet}
+        <ScrollView>
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={handleOpenDeleteModal}>
+              <Feather name="x" size={24} color="#FFFAFA" />
+            </TouchableOpacity>
+            <Text style={styles.title}>New Workout</Text>
+            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+              <Text style={styles.buttonText}>Save</Text>
+            </TouchableOpacity>
+          </View>
+          <TextInput
+            style={styles.workoutName}
+            placeholder="Workout Name"
+            placeholderTextColor={"#a9a9a9"}
+            onChangeText={(text) => setWorkoutName(text)}
           />
-        ))}
-        <TouchableOpacity style={styles.addButton} onPress={handleOpenCategoryModal}>
-          <Text style={styles.addButtonText}>Add Exercise</Text>
-        </TouchableOpacity>
-        <ExerciseCategoryModal
-          visible={categoryModalVisible}
-          onClose={handleCloseCategoryModal}
-          onOpenCategoryModal={handleOpenExerciseModal}
-        />
-        <ExercisesModal
-          visible={exercisesModalVisible}
-          selectedCategory={selectedCategory}
-          onAddExercise={handleAddExercise}
-          onClose={handleCloseExerciseModal}
-        />
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={deleteModalVisible}
-          onRequestClose={() => {
-            setDeleteModalVisible(!deleteModalVisible);
-          }}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Do you want to delete the workout?</Text>
-              <View style={styles.modalButtons}>
-                <TouchableOpacity
-                  style={styles.confirmDeleteButton}
-                  onPress={handleDelete}>
-                  <Text style={styles.modalButtonText}>Delete</Text>
-                </TouchableOpacity>
+          <TextInput
+            style={[styles.notes, { height: 100 }]}
+            placeholder="Notes"
+            placeholderTextColor={"#a9a9a9"}
+            multiline
+            numberOfLines={4}
+            maxLength={200}
+            scrollEnabled={false}
+          />
 
-                <TouchableOpacity
-                  style={styles.noButton}
-                  onPress={() => setDeleteModalVisible(false)}>
-                  <Text style={styles.modalButtonText}>Back</Text>
-                </TouchableOpacity>
+          {exercises.map((exercise) => (
+            <ExerciseCard
+              key={exercise.id}
+              exercise={exercise}
+              handleAddSet={handleAddSet}
+              handleDeleteSet={handleDeleteSet}
+              handleDeleteExercise={handleDeleteExercise}
+            />
+          ))}
+          <TouchableOpacity style={styles.addButton} onPress={handleOpenCategoryModal}>
+            <Text style={styles.addButtonText}>Add Exercise</Text>
+          </TouchableOpacity>
+
+          <ExerciseCategoryModal
+            visible={categoryModalVisible}
+            onClose={handleCloseCategoryModal}
+            onOpenCategoryModal={handleOpenExerciseModal}
+          />
+          <ExercisesModal
+            visible={exercisesModalVisible}
+            selectedCategory={selectedCategory}
+            onAddExercise={handleAddExercise}
+            onClose={handleCloseExerciseModal}
+          />
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={deleteModalVisible}
+            onRequestClose={() => {
+              setDeleteModalVisible(!deleteModalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Do you want to delete the workout?</Text>
+                <View style={styles.modalButtons}>
+                  <TouchableOpacity
+                    style={styles.confirmDeleteButton}
+                    onPress={handleDelete}>
+                    <Text style={styles.modalButtonText}>Delete</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.noButton}
+                    onPress={() => setDeleteModalVisible(false)}>
+                    <Text style={styles.modalButtonText}>Back</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        </ScrollView>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

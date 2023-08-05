@@ -10,7 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { Feather } from "@expo/vector-icons";
 
-const LIST_ITEM_HEIGHT = 50;
+const LIST_ITEM_HEIGHT = 65;
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * 0.3;
 
@@ -55,32 +55,44 @@ function SetCard({ data, setNumber, onDelete, onSetChange }) {
   return (
     <Animated.View style={styles.taskContainer}>
       <Animated.View style={[styles.iconContainer, rIconContainerStyle]}>
-        <Feather name={"trash-2"} size={LIST_ITEM_HEIGHT * 0.4} color={"red"} />
+        <Feather name={"trash-2"} size={24} color={"#CE2029"} />
       </Animated.View>
       <PanGestureHandler onGestureEvent={panGesture}>
         <Animated.View style={[styles.task, rStyle]}>
-          <View style={styles.row}>
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Set</Text>
-              <Text style={styles.label}>Previous</Text>
-              <Text style={styles.label}>Weight</Text>
-              <Text style={styles.label}>Reps</Text>
+          <View style={styles.column}>
+            <View style={styles.row}>
+              <View style={styles.setLabelContainer}>
+                <Text style={styles.label}>Set</Text>
+              </View>
+              <View style={styles.setInputContainer}>
+                <View style={styles.setView}>
+                  <Text style={styles.setNumber}>{setNumber}</Text>
+                </View>
+              </View>
             </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.input}>{setNumber}</Text>
-              <TextInput style={styles.input} keyboardType="numeric" />
-              <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                value={weight}
-                onChangeText={setWeight}
-              />
-              <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                value={reps}
-                onChangeText={setReps}
-              />
+            <View style={styles.row}>
+              <View style={styles.otherLabelContainer}>
+                <Text style={styles.label}>Reps</Text>
+                <Text style={styles.label}>Weight</Text>
+              </View>
+              <View style={styles.otherInputContainer}>
+                <TextInput
+                  style={styles.input}
+                  keyboardType="numeric"
+                  value={reps}
+                  onChangeText={setReps}
+                  keyboardAppearance="dark"
+                  maxLength={4}
+                />
+                <TextInput
+                  style={styles.input}
+                  keyboardType="numeric"
+                  value={weight}
+                  onChangeText={setWeight}
+                  keyboardAppearance="dark"
+                  maxLength={4}
+                />
+              </View>
             </View>
           </View>
         </Animated.View>
@@ -100,17 +112,8 @@ const styles = StyleSheet.create({
     height: LIST_ITEM_HEIGHT,
     justifyContent: "center",
     paddingLeft: 20,
-    backgroundColor: "white",
+    backgroundColor: "#151919",
     borderRadius: 10,
-    shadowOpacity: 0.08,
-    shadowOffset: {
-      width: 0,
-      height: 20,
-    },
-    shadowRadius: 10,
-  },
-  taskTitle: {
-    fontSize: 16,
   },
   iconContainer: {
     height: LIST_ITEM_HEIGHT,
@@ -120,34 +123,63 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
   },
+  column: {
+    flexDirection: "row",
+  },
   row: {
     flexDirection: "column",
     flex: 1,
     height: LIST_ITEM_HEIGHT,
   },
-  labelContainer: {
+  setLabelContainer: {
     flex: 1 / 3,
     flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingTop: 5,
+    justifyContent: "flex-start",
+    paddingBottom: 7,
   },
-  inputContainer: {
+  setInputContainer: {
     flex: 2 / 3,
     flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
+    justifyContent: "flex-start",
+  },
+  otherLabelContainer: {
+    flex: 1 / 3,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingBottom: 7,
+  },
+  otherInputContainer: {
+    flex: 2 / 3,
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   label: {
-    flex: 1,
-    fontSize: 12,
+    paddingLeft: 5,
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#FFFAFA",
+  },
+  setView: {
+    width: "25%",
+    height: "100%",
+    borderRadius: 5,
+    backgroundColor: "#253237",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  setNumber: {
+    color: "#FFFAFA",
+    fontSize: 18,
+    fontWeight: "700",
   },
   input: {
-    flex: 1,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 4,
-    padding: 2,
+    textAlign: "center",
+    width: "40%",
+    borderRadius: 5,
+    backgroundColor: "#253237",
+    color: "#FFFAFA",
+    fontSize: 16,
+    fontWeight: "700",
   },
 });
 

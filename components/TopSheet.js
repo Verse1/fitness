@@ -61,7 +61,7 @@ const TopSheet = () => {
     <GestureDetector gesture={gesture}>
       <Animated.View style={[styles.container, rTopSheetStyle]}>
         <View style={styles.topMargin} />
-        <Text style={styles.text}> SEIHFWEHFE </Text>
+        <Text style={styles.text}> Social Media shit here </Text>
         <View style={styles.line} />
       </Animated.View>
     </GestureDetector>

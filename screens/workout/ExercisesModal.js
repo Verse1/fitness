@@ -9,6 +9,7 @@ import {
   FlatList,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 
 // const categoryApiMapping = {
@@ -90,7 +91,7 @@ function ExercisesModal({ visible, onClose, onAddExercise }) {
       visible={visible}
       onRequestClose={onClose}>
       <SafeAreaView style={styles.modalSafeArea}>
-        <View style={styles.exerciseModal}>
+        <LinearGradient colors={["#253237", "#28393e"]} style={styles.exerciseModal}>
           <View style={styles.exerciseModalHeader}>
             <TouchableOpacity style={styles.backButton} onPress={onClose}>
               <Feather name="x" size={24} color="#FFFAFA" />
@@ -105,7 +106,7 @@ function ExercisesModal({ visible, onClose, onAddExercise }) {
             )}
             keyExtractor={(item, index) => item.id || index.toString()}
           />
-        </View>
+        </LinearGradient>
       </SafeAreaView>
     </Modal>
   );

@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 const categories = [
   "Chest",
@@ -29,7 +30,7 @@ function ExerciseCategoryModal({ visible, onClose, onOpenCategoryModal }) {
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
       <SafeAreaView style={styles.modalSafeArea}>
-        <View style={styles.exerciseModal}>
+        <LinearGradient colors={["#253237", "#28393e"]} style={styles.exerciseModal}>
           <View style={styles.exerciseModalHeader}>
             <TouchableOpacity style={styles.backButton} onPress={onClose}>
               <Feather name="x" size={24} color="#FFFAFA" />
@@ -45,7 +46,7 @@ function ExerciseCategoryModal({ visible, onClose, onOpenCategoryModal }) {
               </TouchableOpacity>
             ))}
           </View>
-        </View>
+        </LinearGradient>
       </SafeAreaView>
     </Modal>
   );

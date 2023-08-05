@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { createUUID } from "../../utils/generateUUID";
 import ExerciseCard from "../../components/ExerciseCard";
 
 function WorkoutView({ route, navigation }) {
@@ -9,54 +8,23 @@ function WorkoutView({ route, navigation }) {
 
   const handleStartWorkout = () => {};
 
-  // const handleAddExercise = () => {};
-
   const handleGoBack = () => {
     navigation.goBack();
   };
 
+  const handleAddExercise = () => {};
   const handleAddSet = (exerciseId) => {};
   const handleDeleteSet = (exerciseId) => {};
-
-  // const handleAddSet = (exerciseId) => {
-  //   setExercises(
-  //     exercises.map((exercise) => {
-  //       if (exercise._id === exerciseId) {
-  //         const newSet = {
-  //           _id: createUUID(),
-  //           reps: 0,
-  //           weight: 0,
-  //         };
-  //         return { ...exercise, sets: [...exercise.sets, newSet] };
-  //       }
-  //       return exercise;
-  //     })
-  //   );
-  // };
-
-  // const handleDeleteSet = (exerciseId, setId) => {
-  //   setExercises(
-  //     exercises.map((exercise) => {
-  //       if (exercise._id === exerciseId) {
-  //         return {
-  //           ...exercise,
-  //           sets: exercise.sets.filter((set) => set._id !== setId),
-  //         };
-  //       }
-  //       return exercise;
-  //     })
-  //   );
-  // };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-          <Feather name="arrow-left" size={24} color="black" />
+          <Feather name="arrow-left" size={24} color="#FFFAFA" />
         </TouchableOpacity>
         <Text style={styles.title}>Your {workoutName} Routine</Text>
         <TouchableOpacity style={styles.exportButton}>
-          <Feather name="download" size={24} color="black" />
+          <Feather name="download" size={24} color="#FFFAFA" />
         </TouchableOpacity>
       </View>
       {workoutExercises.map((exercise) => (
@@ -68,7 +36,7 @@ function WorkoutView({ route, navigation }) {
         />
       ))}
       {/* Removed handleAddExercise from onPress */}
-      <TouchableOpacity style={styles.addExerciseButton}>
+      <TouchableOpacity style={styles.addExerciseButton} onPress={handleAddExercise}>
         <Text style={styles.buttonText}>Add Exercise</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.startWorkoutButton} onPress={handleStartWorkout}>
@@ -82,18 +50,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#2a2727",
+    backgroundColor: "#0f0e0e",
   },
   header: {
+    marginTop: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginBottom: 40,
   },
   title: {
-    fontSize: 20,
-    fontWeight: "500",
-    color: "#fff",
+    fontSize: 26,
+    fontWeight: "700",
+    color: "#D7F2F4",
   },
   card: {
     backgroundColor: "#000",
@@ -119,32 +88,33 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   addExerciseButton: {
-    padding: 15,
-    borderRadius: 5,
-    backgroundColor: "blue",
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#1b77ee",
     margin: 10,
     width: "90%",
     alignSelf: "center",
   },
   startWorkoutButton: {
-    padding: 15,
-    borderRadius: 5,
-    backgroundColor: "green",
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#CE2029",
     margin: 10,
     width: "90%",
     alignSelf: "center",
     marginBottom: 150,
   },
   buttonText: {
-    color: "white",
-    fontWeight: "bold",
+    fontSize: 16,
+    color: "#FFFAFA",
+    fontWeight: "700",
     textAlign: "center",
   },
   backButton: {
-    marginLeft: 10,
+    marginLeft: 20,
   },
   exportButton: {
-    marginRight: 10,
+    marginRight: 20,
   },
 });
 

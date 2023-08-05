@@ -111,7 +111,7 @@ const ExerciseCard = ({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#151919",
-    borderRadius: 10,
+    borderRadius: 15,
     padding: 20,
     marginBottom: 20,
     marginHorizontal: 10,

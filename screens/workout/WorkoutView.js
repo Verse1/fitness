@@ -1,28 +1,14 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  Keyboard,
-} from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import ViewCard from "../../components/ViewCard";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 function WorkoutView({ route, navigation }) {
   const { workoutName, workoutExercises } = route.params;
 
-  const handleStartWorkout = () => {};
-
   const handleGoBack = () => {
     navigation.goBack();
   };
-
-  const handleAddExercise = () => {};
-  const handleAddSet = (exerciseId) => {};
-  const handleDeleteSet = (exerciseId) => {};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,10 +24,10 @@ function WorkoutView({ route, navigation }) {
       {workoutExercises.map((exercise) => (
         <ViewCard key={exercise._id} exercise={exercise} />
       ))}
-      <TouchableOpacity style={styles.addExerciseButton} onPress={handleAddExercise}>
+      <TouchableOpacity style={styles.addExerciseButton}>
         <Text style={styles.buttonText}>Edit Workout</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.startWorkoutButton} onPress={handleStartWorkout}>
+      <TouchableOpacity style={styles.startWorkoutButton}>
         <Text style={styles.buttonText}>Start Workout</Text>
       </TouchableOpacity>
     </SafeAreaView>

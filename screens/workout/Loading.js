@@ -8,7 +8,7 @@ const Loading = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.navigate("GeneratedWorkout");
-    }, 1000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, [navigation]);
 
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#00A3FF",
+    backgroundColor: "#1b77ee",
   },
 });
 

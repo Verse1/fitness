@@ -17,7 +17,6 @@ import Boxes from "../../components/Box";
 import LogButton from "../../components/LogButton";
 import Calendar from "../../components/CalendarContainer";
 import axios from "axios";
-import { LinearGradient } from "expo-linear-gradient";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import TopSheet from "../../components/TopSheet";
 
@@ -210,7 +209,7 @@ const styles = StyleSheet.create({
     height: screenWidth * 0.14,
     borderRadius: 30,
     marginLeft: 10,
-    marginRight: 20,
+    marginRight: 30,
     marginTop: 8,
   },
   headerText: {

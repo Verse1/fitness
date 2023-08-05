@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 const LIST_ITEM_HEIGHT = 65;
 
-function SetCard({ data, setNumber }) {
-  const [weight, setWeight] = useState(data.weight || "");
-  const [reps, setReps] = useState(data.reps || "");
+function ViewSet({ data, setNumber }) {
+  const weight = data.weight || "";
+  const reps = data.reps || "";
 
   return (
     <View style={styles.taskContainer}>
@@ -32,10 +32,10 @@ function SetCard({ data, setNumber }) {
             </View>
             <View style={styles.otherInputContainer}>
               <View style={styles.input}>
-                <Text style={styles.inputText}></Text>
+                <Text style={styles.inputText}>{reps}</Text>
               </View>
               <View style={styles.input}>
-                <Text style={styles.inputText}></Text>
+                <Text style={styles.inputText}>{weight}</Text>
               </View>
             </View>
           </View>
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     flexDirection: "row",
+    paddingTop: 5,
   },
   task: {
     width: "100%",
@@ -120,10 +121,14 @@ const styles = StyleSheet.create({
     width: "40%",
     borderRadius: 5,
     backgroundColor: "#253237",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  inputText: {
     color: "#FFFAFA",
     fontSize: 16,
     fontWeight: "700",
   },
 });
 
-export default SetCard;
+export default ViewSet;

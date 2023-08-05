@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import ViewSet from "./ViewSet";
 
@@ -28,11 +28,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10,
   },
   cardTitle: {
     color: "#FFFAFA",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "700",
     marginBottom: 10,
     lineHeight: 24,

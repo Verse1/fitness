@@ -7,12 +7,6 @@ const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function CalendarContainer({ handleGoToCalendar, selectedDay }) {
   const today = new Date();
-  const currentDay = today.getDay();
-  const prevDays = [
-    days[(currentDay - 3 + 7) % 7],
-    days[(currentDay - 2 + 7) % 7],
-    days[(currentDay - 1 + 7) % 7],
-  ];
   const nextDays = Array.from({ length: 7 }, (_, i) => {
     const dayDate = new Date();
     dayDate.setDate(today.getDate() + i - 3);

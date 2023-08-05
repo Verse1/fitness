@@ -24,7 +24,7 @@ import HeightSelection from "./screens/signupProcess/HeightSelection";
 import WeightSelection from "./screens/signupProcess/WeightSelection";
 import Gender from "./screens/signupProcess/Gender";
 import Age from "./screens/signupProcess/Age";
-import Loading from "./screens/Loading";
+import Loading from "./screens/workout/Loading";
 import GeneratedWorkout from "./screens/workout/GeneratedWorkout";
 import Macros from "./screens/signupProcess/Macros";
 

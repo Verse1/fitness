@@ -53,7 +53,6 @@ const WeightSelection = () => {
       userAge: userAge,
       userWeight: selectedWeight,
     });
-    console.log("Weight", userInfo, userGender, userAge, selectedWeight, "\n");
   };
 
   const progressAnim = useRef(new Animated.Value((2 / 8) * 100)).current;

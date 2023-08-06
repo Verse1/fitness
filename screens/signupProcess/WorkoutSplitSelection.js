@@ -51,20 +51,6 @@ const SplitSelection = () => {
       userFats: userFats,
       userSplit: userSplit,
     });
-    console.log(
-      "Split:",
-      userInfo,
-      userGender,
-      userAge,
-      userWeight,
-      userHeight,
-      userCalories,
-      userProtein,
-      userCarbs,
-      userFats,
-      userSplit,
-      "\n"
-    );
   };
 
   const progressAnim = useRef(new Animated.Value((5 / 8) * 100)).current;

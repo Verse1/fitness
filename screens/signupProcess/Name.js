@@ -40,7 +40,6 @@ const Name = () => {
   const handleContinue = async () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     navigation.navigate("Gender", { userName: name });
-    console.log("Name", name, "\n");
   };
 
   useLayoutEffect(() => {

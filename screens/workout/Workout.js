@@ -54,12 +54,6 @@ function Workout({ route }) {
     fetchWorkouts();
   }, []);
 
-  // useEffect(() => {
-  //   if (newWorkout && newWorkout._id) {
-  //     setLocalWorkouts((prevWorkouts) => [...prevWorkouts, newWorkout]);
-  //   }
-  // }, [newWorkout]);
-
   const handleGoToGeneratedWorkout = () => {
     navigation.navigate("Loading");
   };
@@ -82,11 +76,15 @@ function Workout({ route }) {
   };
 
   const handleGoToWorkoutSplit = () => {
-    navigation.navigate("WorkoutSplit");
+    navigation.navigate("WorkoutSplit", { workoutSplit: state.user.workoutSplit });
   };
 
   const handleGoToAddWorkout = () => {
     navigation.navigate("AddWorkout", { userId: state.user._id });
+  };
+
+  handleGoToProfile = () => {
+    navigation.navigate("Profile");
   };
 
   const onDeleteHandler = async (index) => {
@@ -116,7 +114,9 @@ function Workout({ route }) {
         <View style={styles.headerContainer}>
           <View style={styles.header}>
             <View style={styles.headerTop}>
-              <Image style={styles.pfp} source={require("../../images/cole.jpeg")} />
+              <TouchableOpacity onPress={handleGoToProfile}>
+                <Image style={styles.pfp} source={require("../../images/cole.jpeg")} />
+              </TouchableOpacity>
               <Text style={styles.headerText}>My Workout</Text>
             </View>
             <View>

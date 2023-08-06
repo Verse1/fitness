@@ -237,7 +237,7 @@ const Dashboard = (props) => {
   const gymPlaylistArray = props.gymPlaylistArray;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#0f0e0e" }}>
       {/* Profle Picture */}
       <View style={styles.user}>
         <Image style={styles.pfp} source={require("../images/cole.jpeg")}></Image>
@@ -272,6 +272,7 @@ const Dashboard = (props) => {
           paddingLeft: 20,
           paddingTop: 10,
           paddingBottom: 10,
+          color: "#FFFAFA",
         }}>
         Recommended Gym Playlists
       </Text>
@@ -381,19 +382,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   pfp: {
-    width: 75,
-    height: 75,
+    width: 60,
+    height: 60,
     borderRadius: 60,
   },
   date: {
     paddingLeft: 21,
     paddingTop: 5,
-    color: "gray",
+    color: "#BFC1C2",
     fontWeight: "500",
   },
   userText: {
     paddingLeft: 20,
     fontSize: 25,
+    color: "#FFFAFA",
   },
   // Navbar styling also moved to App.js
   // bottom: {
@@ -414,7 +416,7 @@ const styles = StyleSheet.create({
     borderRadius: "50%",
   },
   buttonText: {
-    color: "white",
+    color: "#FFFAFA",
     textAlign: "center",
     fontSize: 40,
     marginLeft: 2,
@@ -422,12 +424,6 @@ const styles = StyleSheet.create({
   },
   middleSection: {
     paddingTop: 30,
-  },
-  header: {},
-  title: {
-    fontSize: 20,
-    fontWeight: "700",
-    marginLeft: 20,
   },
   videoSection: {
     paddingLeft: 8.5,

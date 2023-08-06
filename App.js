@@ -8,6 +8,7 @@ import { AuthProvider } from "./context/auth";
 // Screens
 import LoginRegister from "./screens/LoginRegister";
 import Login from "./screens/Login";
+import Profile from "./screens/Profile";
 import Dashboard from "./screens/Dashboard";
 import Navbar from "./components/Navbar";
 import Weight from "./screens/Weight";
@@ -16,6 +17,11 @@ import InputWeight from "./screens/InputWeight";
 import Reco from "./screens/Reco";
 import LogMeal from "./screens/LogMeal";
 import GeneratedMeals from "./screens/GeneratedMeals";
+import AddWorkout from "./screens/workout/AddWorkout";
+import Workout from "./screens/workout/Workout";
+import WorkoutView from "./screens/workout/WorkoutView";
+import WorkoutSplit from "./screens/workout/WorkoutSplit";
+
 // Sign Up Process
 import Name from "./screens/signupProcess/Name";
 import Credentials from "./screens/signupProcess/Credentials";
@@ -27,12 +33,6 @@ import Age from "./screens/signupProcess/Age";
 import Loading from "./screens/workout/Loading";
 import GeneratedWorkout from "./screens/workout/GeneratedWorkout";
 import Macros from "./screens/signupProcess/Macros";
-
-// New Changes
-import AddWorkout from "./screens/workout/AddWorkout";
-import Workout from "./screens/workout/Workout";
-import WorkoutView from "./screens/workout/WorkoutView";
-import WorkoutSplit from "./screens/workout/WorkoutSplit";
 
 const withNavbar = (Component, activePage) => {
   return (props) => (
@@ -79,6 +79,7 @@ export default function App() {
                 <Stack.Screen name="WorkoutView" component={WorkoutView} />
                 <Stack.Screen name="WorkoutSplit" component={WorkoutSplit} />
 
+                <Stack.Screen name="Profile" component={Profile} />
                 <Stack.Screen
                   name="Dashboard"
                   component={withNavbar(Dashboard, "Dashboard")}

@@ -80,7 +80,6 @@ const AgeSelection = () => {
       userGender: userGender,
       userAge: selectedAge,
     });
-    console.log("Age", userInfo, userGender, selectedAge, "\n");
   };
 
   const progressAnim = useRef(new Animated.Value((1 / 8) * 100)).current;

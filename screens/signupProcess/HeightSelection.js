@@ -53,15 +53,6 @@ const HeightSelection = () => {
       userWeight: userWeight,
       userHeight: selectedHeight,
     });
-    console.log(
-      "Height",
-      userInfo,
-      userGender,
-      userAge,
-      userWeight,
-      selectedHeight,
-      "\n"
-    );
   };
 
   const progressAnim = useRef(new Animated.Value((3 / 8) * 100)).current;

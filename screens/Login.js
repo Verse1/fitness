@@ -111,6 +111,7 @@ const Login = ({ navigation }) => {
           <Text style={styles.inputLabel}>Email</Text>
           <Animated.View style={{ transform: [{ scale: emailScale }] }}>
             <TextInput
+              autoFocus={true}
               onFocus={() => animateInput(emailScale)}
               onChangeText={setEmail}
               value={email}

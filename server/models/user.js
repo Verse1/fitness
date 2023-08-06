@@ -122,6 +122,10 @@ const userSchema = new Schema({
     type: Number,
     required: true,
   },
+  workoutSplit: {
+    type: [String],
+    required: true,
+  },
   workouts: [
     {
       type: Schema.Types.ObjectId,

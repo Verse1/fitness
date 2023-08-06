@@ -55,7 +55,6 @@ const Gender = () => {
   const handleContinue = async () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     navigation.navigate("Age", { userInfo: userName, userGender: selectedGender });
-    console.log("Gender", userName, selectedGender, "\n");
   };
 
   const progressAnim = useRef(new Animated.Value(0)).current;
@@ -81,7 +80,6 @@ const Gender = () => {
       easing: Easing.elastic(1),
     }).start();
   }, []);
-
 
   return (
     <View style={styles.container}>

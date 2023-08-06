@@ -17,6 +17,7 @@ export const signup = async (req, res) => {
       dailyProtein,
       dailyCarbs,
       dailyFats,
+      workoutSplit,
     } = req.body;
 
     if (!email) {
@@ -54,12 +55,13 @@ export const signup = async (req, res) => {
       age,
       weightHistory: [{ weight, date, changeWeight: 0 }],
       dailyFood: [],
-      workouts: [],
       weeklyFood: [],
       dailyCalories,
       dailyProtein,
       dailyCarbs,
       dailyFats,
+      workoutSplit,
+      workouts: [],
     }).save();
 
     //creating signed token

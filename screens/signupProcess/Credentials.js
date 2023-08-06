@@ -39,7 +39,7 @@ const Credentials = () => {
     userProtein,
     userCarbs,
     userFats,
-    // userSplit,
+    userSplit,
   } = route.params;
 
   const handleCredentials = async () => {
@@ -57,6 +57,7 @@ const Credentials = () => {
         dailyProtein: userProtein,
         dailyCarbs: userCarbs,
         dailyFats: userFats,
+        workoutSplit: userSplit,
       });
       console.log(resp.data.error);
       if (resp.data.error) {

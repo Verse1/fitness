@@ -7,8 +7,9 @@ import * as Haptics from "expo-haptics";
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
 
-function WorkoutSplit() {
+function WorkoutSplit({ route }) {
   const navigation = useNavigation();
+  const workoutSplit = route.params.workoutSplit;
 
   const handleContinue = async () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -29,15 +30,11 @@ function WorkoutSplit() {
     "Friday",
     "Saturday",
   ];
-  const DRAGGABLE_DATA = [
-    { key: "0", label: "Rest" },
-    { key: "1", label: "Rest" },
-    { key: "2", label: "Rest" },
-    { key: "3", label: "Rest" },
-    { key: "4", label: "Rest" },
-    { key: "5", label: "Rest" },
-    { key: "6", label: "Rest" },
-  ];
+
+  const DRAGGABLE_DATA = workoutSplit.map((label, index) => ({
+    key: index.toString(),
+    label,
+  }));
 
   const [draggableData, setDraggableData] = useState(DRAGGABLE_DATA);
 

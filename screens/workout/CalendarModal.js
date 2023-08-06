@@ -14,7 +14,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
-  const dayMap = {
+  const dayMapOne = {
     Sun: 0,
     Mon: 1,
     Tue: 2,
@@ -24,7 +24,18 @@ function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
     Sat: 6,
   };
 
-  const selectedDayIndex = dayMap[selectedDay];
+  const dayMapTwo = {
+    Sun: "Sunday",
+    Mon: "Monday",
+    Tue: "Tuesday",
+    Wed: "Wednesday",
+    Thu: "Thursday",
+    Fri: "Friday",
+    Sat: "Saturday",
+  };
+
+  const selectedDayFull = dayMapTwo[selectedDay];
+  const selectedDayIndex = dayMapOne[selectedDay];
   const selectedWorkout = workoutSplit[selectedDayIndex] || "Rest";
 
   return (
@@ -44,7 +55,7 @@ function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
             end={{ x: 1, y: 0 }}
             style={styles.gradientContainer}>
             <View style={styles.topRow}>
-              <Text style={styles.dayText}>{Object.keys(dayMap)[selectedDayIndex]}</Text>
+              <Text style={styles.dayText}>{selectedDayFull}</Text>
             </View>
             <Text style={styles.workoutText}>{selectedWorkout}</Text>
             <TouchableOpacity style={styles.workoutButton}>

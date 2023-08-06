@@ -15,17 +15,17 @@ const screenHeight = Dimensions.get("window").height;
 
 function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
   const dayMap = {
-    Sun: "Sunday",
-    Mon: "Monday",
-    Tue: "Tuesday",
-    Wed: "Wednesday",
-    Thu: "Thursday",
-    Fri: "Friday",
-    Sat: "Saturday",
+    Sun: 0,
+    Mon: 1,
+    Tue: 2,
+    Wed: 3,
+    Thu: 4,
+    Fri: 5,
+    Sat: 6,
   };
 
-  const selectedDayFull = dayMap[selectedDay];
-  const selectedWorkout = "Rest";
+  const selectedDayIndex = dayMap[selectedDay];
+  const selectedWorkout = workoutSplit[selectedDayIndex] || "Rest";
 
   return (
     <Modal
@@ -44,10 +44,8 @@ function CalendarModal({ visible, onModalClose, selectedDay, workoutSplit }) {
             end={{ x: 1, y: 0 }}
             style={styles.gradientContainer}>
             <View style={styles.topRow}>
-              <Text style={styles.dayText}>{selectedDayFull}</Text>
+              <Text style={styles.dayText}>{Object.keys(dayMap)[selectedDayIndex]}</Text>
             </View>
-            <Text> Bruh what was I thinking</Text>
-            <Text> What is this ass feature</Text>
             <Text style={styles.workoutText}>{selectedWorkout}</Text>
             <TouchableOpacity style={styles.workoutButton}>
               <Text style={styles.workoutButtonText}>View Workout</Text>

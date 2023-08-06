@@ -167,6 +167,7 @@ function Workout({ route }) {
           visible={calendarModalVisible}
           onModalClose={closeCalendarModal}
           selectedDay={selectedDay}
+          workoutSplit={state.user.workoutSplit}
         />
       </View>
     </GestureHandlerRootView>

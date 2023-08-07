@@ -6,7 +6,6 @@ import {
   Pressable,
   ImageBackground,
   Dimensions,
-  Image,
   PanResponder,
   Animated,
 } from "react-native";

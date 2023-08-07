@@ -54,14 +54,22 @@ const Nutrition = () => {
     }
   }, [state]);
 
-
-
-
-  const totalProtein = Math.min(foodArray.reduce((sum, item) => sum + item.protein, 0), dailyProtein);
-  const totalCarbs = Math.min(foodArray.reduce((sum, item) => sum + item.carbs, 0), dailyCarbs);
-  const totalFats = Math.min(foodArray.reduce((sum, item) => sum + item.fats, 0), dailyFats);
-  const totalCals = Math.min(foodArray.reduce((sum, item) => sum + item.calories, 0), dailyCalories);
-
+  const totalProtein = Math.min(
+    foodArray.reduce((sum, item) => sum + item.protein, 0),
+    dailyProtein
+  );
+  const totalCarbs = Math.min(
+    foodArray.reduce((sum, item) => sum + item.carbs, 0),
+    dailyCarbs
+  );
+  const totalFats = Math.min(
+    foodArray.reduce((sum, item) => sum + item.fats, 0),
+    dailyFats
+  );
+  const totalCals = Math.min(
+    foodArray.reduce((sum, item) => sum + item.calories, 0),
+    dailyCalories
+  );
 
   const proteinRatio = dailyProtein !== 0 ? totalProtein / dailyProtein : 0;
   const carbsRatio = dailyCarbs !== 0 ? totalCarbs / dailyCarbs : 0;
@@ -137,7 +145,7 @@ const Nutrition = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#0F0E0E'}}>
+    <View style={{ flex: 1, backgroundColor: "#0F0E0E" }}>
       <ScrollView style={{ flex: 1 }}>
         <SafeAreaView>
           <View style={styles.header}>
@@ -146,9 +154,9 @@ const Nutrition = () => {
           </View>
         </SafeAreaView>
         <LinearGradient
-            colors={["#151919", "#1D2528"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
+          colors={["#151919", "#1D2528"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
           style={{
             flexDirection: "row",
             backgroundColor: "white",
@@ -179,7 +187,8 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "#CE2029", fontWeight: "bold" }}>Protein</Text>
               <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(foodArray.reduce((sum, item) => sum + item.protein, 0))}/{dailyProtein}g
+                {Math.floor(foodArray.reduce((sum, item) => sum + item.protein, 0))}/
+                {dailyProtein}g
               </Text>
             </View>
           </View>
@@ -204,7 +213,8 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "#4CB944", fontWeight: "bold" }}>Carbs</Text>
               <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(foodArray.reduce((sum, item) => sum + item.carbs, 0))}/{dailyCarbs}g
+                {Math.floor(foodArray.reduce((sum, item) => sum + item.carbs, 0))}/
+                {dailyCarbs}g
               </Text>
             </View>
           </View>
@@ -230,7 +240,8 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "#1B77EE", fontWeight: "bold" }}>Fat</Text>
               <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(foodArray.reduce((sum, item) => sum + item.fats, 0))}/{dailyFats}g
+                {Math.floor(foodArray.reduce((sum, item) => sum + item.fats, 0))}/
+                {dailyFats}g
               </Text>
             </View>
           </View>
@@ -255,20 +266,33 @@ const Nutrition = () => {
               }}>
               <Text style={{ color: "#F1D302", fontWeight: "bold" }}>Calories</Text>
               <Text style={{ color: "#D7F2F4", fontWeight: "700", fontSize: 12.5 }}>
-                {Math.floor(foodArray.reduce((sum, item) => sum + item.calories, 0))}/{dailyCalories}
+                {Math.floor(foodArray.reduce((sum, item) => sum + item.calories, 0))}/
+                {dailyCalories}
               </Text>
             </View>
           </View>
         </LinearGradient>
 
         <View style={{ paddingLeft: 20, paddingTop: 10 }}>
-          <Text style={{ fontSize: 20, fontWeight: "700", paddingLeft: 5, color: "#D7F2F4" }}>
+          <Text
+            style={{ fontSize: 20, fontWeight: "700", paddingLeft: 5, color: "#D7F2F4" }}>
             Logged Food
           </Text>
-          {foodArray && foodArray.length > 0 &&  foodArray.map((item, index) => (
-            <FoodLogged  foodName={capitalizeFirstChar(item.foodName)} calories={Math.floor(item.calories)} serving={item.servingAmount} protein={item.protein} carbs={item.carbs} fats={item.fats} maxCarbs={dailyCarbs} maxProtein={dailyProtein} maxFats={dailyFats} />
-          ))}
-
+          {foodArray &&
+            foodArray.length > 0 &&
+            foodArray.map((item, index) => (
+              <FoodLogged
+                foodName={capitalizeFirstChar(item.foodName)}
+                calories={Math.floor(item.calories)}
+                serving={item.servingAmount}
+                protein={item.protein}
+                carbs={item.carbs}
+                fats={item.fats}
+                maxCarbs={dailyCarbs}
+                maxProtein={dailyProtein}
+                maxFats={dailyFats}
+              />
+            ))}
         </View>
 
         <View style={{ paddingTop: screenHeight * 0.05, paddingLeft: 10 }}>
@@ -278,7 +302,7 @@ const Nutrition = () => {
               fontWeight: "700",
               paddingLeft: 15,
               paddingBottom: 10,
-              color: "#D7F2F4"
+              color: "#D7F2F4",
             }}>
             Previous Food Logs
           </Text>
@@ -288,8 +312,9 @@ const Nutrition = () => {
               horizontal
               style={styles.containerWeek}>
               {weekArray &&
-                weekArray.map((item) => (
+                weekArray.map((item, index) => (
                   <DayLogged
+                    key={index}
                     protein={item.protein}
                     carbs={item.carbs}
                     fats={item.fats}
@@ -318,7 +343,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     fontSize: screenWidth * 0.08,
     fontWeight: "bold",
-    color: "#D7F2F4"
+    color: "#D7F2F4",
   },
   pfp: {
     width: 60,

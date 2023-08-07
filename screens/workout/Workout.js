@@ -81,8 +81,6 @@ function Workout({ route }) {
 
   const onDeleteHandler = async (index) => {
     const workoutToDelete = localWorkouts[index];
-    console.log("Deleting workout with ID: ", workoutToDelete._id);
-
     if (workoutToDelete._id) {
       try {
         await axios.delete(`http://localhost:8000/api/workout/${workoutToDelete._id}`, {

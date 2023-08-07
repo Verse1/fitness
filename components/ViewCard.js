@@ -9,7 +9,7 @@ const ViewCard = ({ exercise }) => {
         <Text style={styles.cardTitle}>{exercise.name}</Text>
       </View>
       {exercise.sets.map((set, index) => (
-        <ViewSet key={set.id} data={set} setNumber={index + 1} />
+        <ViewSet key={set._id} data={set} setNumber={index + 1} />
       ))}
     </View>
   );

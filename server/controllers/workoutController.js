@@ -42,7 +42,6 @@ exports.fetchWorkouts = async (req, res) => {
     const workouts = await Workout.find({
       _id: { $in: user.workouts },
     });
-    console.log(JSON.stringify(workouts, null, 2));
     res.status(200).json(workouts);
   } catch (error) {
     console.error("Error in fetchWorkouts:", error);
@@ -52,7 +51,6 @@ exports.fetchWorkouts = async (req, res) => {
 
 exports.deleteWorkout = async (req, res) => {
   try {
-    // const { workoutId, userId } = req.body;
     const { workoutId } = req.params;
     const { userId } = req.body;
 

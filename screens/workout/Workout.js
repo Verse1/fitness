@@ -25,34 +25,26 @@ screenHeight = Dimensions.get("window").height;
 
 function Workout({ route }) {
   const navigation = useNavigation();
-  const newWorkout = route.params?.newWorkout;
-
-  const [localWorkouts, setLocalWorkouts] = useState([]);
-  const [state] = useContext(AuthContext);
-
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
+
+  // Get all the data stored in the user now contains each workout information too
+  const [state] = useContext(AuthContext);
+
+  // ***************************************************************************************
+  // If user creates a new workout instead of fetching the data from the backend instead route it locally and save it locally
+  // ( the database and local state are copies of each other but do not talk to each other)
+  // To save like the data shit idk what it saves but it saves calls
+  // When the user logs in all the workout data is fetched once so there is no need for constant get calls
+  const newWorkout = route.params?.newWorkout;
+  const [localWorkouts, setLocalWorkouts] = useState(state.user.workouts || []);
 
   useEffect(() => {
     if (newWorkout) {
       setLocalWorkouts((prevWorkouts) => [...prevWorkouts, newWorkout]);
     }
   }, [newWorkout]);
-
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/api/workout/${state.user._id}`
-        );
-        setLocalWorkouts(response.data);
-      } catch (error) {
-        console.error("Error fetching workouts:", error);
-      }
-    };
-
-    fetchWorkouts();
-  }, []);
+  // ***************************************************************************************
 
   const handleGoToGeneratedWorkout = () => {
     navigation.navigate("Loading");
@@ -70,11 +62,6 @@ function Workout({ route }) {
     setCalendarModalVisible(true);
   };
 
-  const closeCalendarModal = () => {
-    setCalendarModalVisible(false);
-    setSelectedDay("");
-  };
-
   const handleGoToWorkoutSplit = () => {
     navigation.navigate("WorkoutSplit", { workoutSplit: state.user.workoutSplit });
   };
@@ -83,8 +70,13 @@ function Workout({ route }) {
     navigation.navigate("AddWorkout", { userId: state.user._id });
   };
 
-  handleGoToProfile = () => {
+  const handleGoToProfile = () => {
     navigation.navigate("Profile");
+  };
+
+  const closeCalendarModal = () => {
+    setCalendarModalVisible(false);
+    setSelectedDay("");
   };
 
   const onDeleteHandler = async (index) => {

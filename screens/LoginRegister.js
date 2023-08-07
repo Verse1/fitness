@@ -18,7 +18,6 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const LoginRegister = ({ navigation }) => {
-  const appleScale = useRef(new Animated.Value(1)).current;
   const signInScale = useRef(new Animated.Value(1)).current;
   const swipeButtonWidth = screenWidth * 0.9;
   const circleRadius = 30;

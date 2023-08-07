@@ -1,40 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  ScrollView,
-  Button,
-  Pressable,
-  Alert,
-} from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
-import { LinearGradient } from "expo-linear-gradient";
 import { AuthContext } from "../context/auth";
-
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
-import * as d3 from "d3";
+import { LineChart } from "react-native-chart-kit";
 
 import WeightBar from "../components/WeightBar";
 
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
-
-const goToWeight = () => {
-  console.log("in");
-};
 
 const weightTracking = () => {
   const navigation = useNavigation();
@@ -80,7 +55,7 @@ const weightTracking = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#0F0E0E'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#0F0E0E" }}>
       <ScrollView>
         <View style={styles.header}>
           <Text style={styles.headerText}>My Weight</Text>
@@ -88,8 +63,7 @@ const weightTracking = () => {
         </View>
 
         <LineChart
-
-    withInnerLines={false}
+          withInnerLines={false}
           data={{
             labels: labels,
             datasets: [
@@ -104,8 +78,8 @@ const weightTracking = () => {
           yAxisInterval={1} // optional, defaults to 1
           chartConfig={{
             propsForBackgroundLines: {
-    strokeDasharray: '', // solid background lines with no dashes
-  },
+              strokeDasharray: "", // solid background lines with no dashes
+            },
             backgroundColor: "#151919",
             backgroundGradientFrom: "#151919",
             backgroundGradientTo: "#1D2528",
@@ -139,6 +113,7 @@ const weightTracking = () => {
                 if (index === 0) {
                   return (
                     <WeightBar
+                      key={index}
                       date={item.date}
                       weight={item.weight}
                       change={item.changeWeight}
@@ -278,8 +253,7 @@ const styles = StyleSheet.create({
   historyTitle: {
     fontSize: 25,
     fontWeight: "bold",
-    color: "#D7F2F4"
-
+    color: "#D7F2F4",
   },
   weightBars: {
     paddingVertical: 10,

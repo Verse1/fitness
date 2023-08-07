@@ -2,7 +2,6 @@ import User from "../models/user";
 
 export const macros = async (req, res) => {
   try {
-    // const foodObject = req.body.foodObject;
     const { dailyCalories, dailyProtein, dailyFats, dailyCarbs } = req.body;
 
     const userId = req.body.id;
@@ -21,7 +20,6 @@ export const macros = async (req, res) => {
     user.dailyFats = dailyFats;
     user.dailyCarbs = dailyCarbs;
 
-    // user.dailyFood.push(foodObject);
     await user.save();
 
     user.password = undefined;

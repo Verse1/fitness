@@ -82,7 +82,7 @@ const Login = ({ navigation }) => {
         alert(resp.data.error);
       } else {
         setState(resp.data);
-        console.log("This", resp.data);
+        console.log(JSON.stringify(resp.data));
         await AsyncStorage.setItem("auth-rn", JSON.stringify(resp.data));
         navigation.navigate("Dashboard");
       }

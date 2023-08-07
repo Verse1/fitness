@@ -4,7 +4,6 @@ import cors from "cors";
 import mongoose from "mongoose";
 
 import User from "./models/user";
-import Workout from "./models/workoutSchema";
 
 import workoutRoutes from "./routes/workoutRoutes";
 import authRoutes from "./routes/auth";

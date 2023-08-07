@@ -85,9 +85,7 @@ export const signup = async (req, res) => {
 export const signin = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Changed this from const to let user so that I can use it down to retrieve teh workout information with the user sign in
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ email }).exec();
 
     if (!user) {
       return res.json({
@@ -105,10 +103,17 @@ export const signin = async (req, res) => {
       });
     }
 
-    // If the password matches, continue with further logic
-
-    //Added this line
-    user = await User.findOne({ email }).populate("workouts", "name");
+    user = await User.findOne({ email }).populate({
+      path: "workouts",
+      populate: {
+        path: "exercises",
+        model: "Exercise",
+        populate: {
+          path: "sets",
+          model: "Set",
+        },
+      },
+    });
 
     //create signed token
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
@@ -117,7 +122,6 @@ export const signin = async (req, res) => {
 
     user.password = undefined;
     user.secret = undefined;
-    console.log("Printing here", user);
 
     return res.json({
       token,
